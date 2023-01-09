@@ -1,5 +1,9 @@
 # Subsonic Connector
 
+## Status
+
+This software is in its eary development phase.
+
 ## Instructions
 
 Create your own `.env` file. Use `.sample.env` as a reference for the format of the file.
