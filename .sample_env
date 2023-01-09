@@ -1,0 +1,5 @@
+SERVER_URL=https://yourserver.yourdomain.com
+SERVER_PORT=443
+USERNAME=username
+PASSWORD=password
+
