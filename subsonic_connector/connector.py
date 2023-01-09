@@ -58,6 +58,14 @@ class Connector:
             fromYear, toYear,
             genre, musicFolderId)
 
+    def search2(self, 
+            query, 
+            artistCount = 20, artistOffset = 0, 
+            albumCount = 20, albumOffset = 0, 
+            songCount = 20, songOffset = 0, 
+            musicFolderId = None):
+        return self.__connect().search2(query)
+
     def buildSongUrl(self, song_id : str) -> str:
         connection = self.__connect()
         qdict = connection._getBaseQdict()

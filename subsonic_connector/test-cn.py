@@ -40,7 +40,7 @@ print(type(artists))
 all_artists = artists["artists"]
 all_artist_list = all_artists["index"]
 
-max = 3
+max = 1
 cnt = 0
 for current in all_artist_list:
     current_initial = current["name"]
@@ -53,6 +53,16 @@ for current in all_artist_list:
         current_artist_album_count = current_artist["albumCount"]
         current_artist_url = current_artist["artistImageUrl"] if "artistImageUrl" in current_artist else None
         print("Artist {}|{}|{}".format(current_initial, current_artist_name, current_artist_album_count))
-        print("  URL: {}".format(current_artist_url))
+        print("  LastFM Image (unsafe?): [{}]".format(current_artist_url))
+        current_artist_albums = ssc.search2(current_artist_name, albumCount = 0, songCount = 0)
+        album_list = current_artist_albums["searchResult2"]["album"]
+        #pprint(current_artist_albums)
+        for current_album in album_list:
+            current_album_name = current_album["name"]
+            if "coverArt" in current_album:
+                current_album_cover_art = current_album["coverArt"]
+                current_album_cover_art_url = ssc.buildCoverArtUrl(current_album_cover_art)
+                print("    Album Art from [{}]: [{}]".format(current_album_name, current_album_cover_art_url))
+        pprint(album_list)
     cnt += 1
     if cnt == max: break
