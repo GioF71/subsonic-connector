@@ -18,6 +18,12 @@ class Connector:
         self.__config__[Connector.__KEY_API_VERSION] = apiVersion
         self.__config__[Connector.__KEY_APP_NAME] = appName
         
+    def getIndexes(self, musicFolderId = None, ifModifiedSince = 0):
+        return self.__connect().getIndexes(musicFolderId = musicFolderId, ifModifiedSince = ifModifiedSince)
+
+    def getArtists(self):
+        return self.__connect().getArtists()
+
     def getRandomSongs(self, size = 10, genre = None, fromYear = None, toYear = None, musicFolderId = None):
         return self.__connect().getRandomSongs(size, genre, fromYear, toYear, musicFolderId)
 

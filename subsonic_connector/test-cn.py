@@ -35,3 +35,24 @@ for song in songs['randomSongs']['song']:
     print(" -> Stream = [" + streamable_url + "]")
     print(" -> Cover  = [" + cover_url + "]")
 
+artists = ssc.getArtists()
+print(type(artists))
+all_artists = artists["artists"]
+all_artist_list = all_artists["index"]
+
+max = 3
+cnt = 0
+for current in all_artist_list:
+    current_initial = current["name"]
+    current_artist_list = current["artist"]
+    #pprint(current_artist_list)
+    for current_artist in current_artist_list:
+        #pprint(current_artist)
+        current_artist_name = current_artist["name"]
+        current_artist_id = current_artist["id"]
+        current_artist_album_count = current_artist["albumCount"]
+        current_artist_url = current_artist["artistImageUrl"] if "artistImageUrl" in current_artist else None
+        print("Artist {}|{}|{}".format(current_initial, current_artist_name, current_artist_album_count))
+        print("  URL: {}".format(current_artist_url))
+    cnt += 1
+    if cnt == max: break
