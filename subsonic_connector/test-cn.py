@@ -40,7 +40,7 @@ print(type(artists))
 all_artists = artists["artists"]
 all_artist_list = all_artists["index"]
 
-max = 1
+max = 3
 cnt = 0
 for current in all_artist_list:
     current_initial = current["name"]
@@ -54,8 +54,10 @@ for current in all_artist_list:
         current_artist_url = current_artist["artistImageUrl"] if "artistImageUrl" in current_artist else None
         print("Artist {}|{}|{}".format(current_initial, current_artist_name, current_artist_album_count))
         print("  LastFM Image (unsafe?): [{}]".format(current_artist_url))
-        current_artist_albums = ssc.search2(current_artist_name, albumCount = 0, songCount = 0)
-        album_list = current_artist_albums["searchResult2"]["album"]
+        current_artist_data = ssc.getArtist(current_artist_id)
+        #current_artist_albums = ssc.search2(current_artist_name, albumCount = 0, songCount = 0)
+        #album_list = current_artist_albums["searchResult2"]["album"]
+        album_list = current_artist_data["artist"]["album"]
         #pprint(current_artist_albums)
         for current_album in album_list:
             current_album_name = current_album["name"]

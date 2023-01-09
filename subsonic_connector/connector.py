@@ -58,6 +58,9 @@ class Connector:
             fromYear, toYear,
             genre, musicFolderId)
 
+    def getArtist(self, artist_id : str):
+        return self.__connect().getArtist(artist_id)
+
     def search2(self, 
             query, 
             artistCount = 20, artistOffset = 0, 
