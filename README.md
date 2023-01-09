@@ -2,7 +2,7 @@
 
 ## Instructions
 
-Create your own `.env` file. Use `.sample.env` as a reference for the format
+Create your own `.env` file. Use `.sample.env` as a reference for the format of the file.
 
 ## Usage
 
