@@ -13,6 +13,7 @@ from artists import Artists
 from artists_initial import ArtistsInitial
 from artist_list_item import ArtistListItem
 from search_result import SearchResult
+from artist_cover import ArtistCover
 
 SERVER_URL = config('SERVER_URL')
 print(SERVER_URL)
@@ -107,23 +108,22 @@ def show_artists(ssc):
                 current_initial.getName(),
                 c.getName()))
             artist : Artist = ssc.getArtist(c.getId())
-            first_album_name : str = None
-            first_album_cover_art : str = None
-            album_list = artist.getAlbumList()
-            if len(album_list) > 0:
-                first_album = album_list[0]
-                selected_album : Album = Album(first_album)
-                first_album_name = selected_album.getTitle()
-                first_album_cover_art = selected_album.getCoverArt()
-                if first_album_cover_art:
-                    # hashing just to make the output more compact
-                    first_album_cover_art = hashlib.md5(first_album_cover_art.encode('utf-8')).hexdigest()
-            print("Artist Initial[{}] N:[{}] AC:[{}] First:[{}] HashedCover:[{}]".format(
+            artist_cover : ArtistCover = ssc.getArtistCover(artist)
+            artist_first_album_id : str
+            artist_cover_url : str
+            hashed_cover_art : str
+            if artist_cover:
+                # set first album id
+                artist_first_album_id = artist_cover.getAlbumId()
+                # create url
+                artist_cover_url = ssc.buildCoverArtUrl(artist_cover.getCoverArt())
+                hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
+            print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
                 current_initial.getName(), 
                 c.getName(), 
                 c.getAlbumCount(),
-                first_album_name,
-                first_album_cover_art))
+                artist_first_album_id,
+                hashed_cover_art))
 
 def main():
     random_albums(ssc)

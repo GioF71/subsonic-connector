@@ -2,8 +2,10 @@ import libsonic
 from artist import Artist
 from artists import Artists
 from album_list import AlbumList
+from album import Album
 from random_songs import RandomSongs
 from search_result import SearchResult
+from artist_cover import ArtistCover
 
 class Connector:
     
@@ -77,6 +79,17 @@ class Connector:
 
     def getArtist(self, artist_id : str) -> Artist:
         return Artist(self.__connect().getArtist(artist_id))
+
+    def getArtistCover(self, artist : Artist) -> ArtistCover:
+        first_album : str = None
+        first_album_cover_art : str = None
+        album_list = artist.getAlbumList()
+        if len(album_list) > 0:
+            first_album = album_list[0]
+            selected_album : Album = Album(first_album)
+            first_album_id = selected_album.getId()
+            first_album_cover_art = selected_album.getCoverArt()
+            return ArtistCover(first_album_id, first_album_cover_art)
 
     def search(self, 
             query, 
