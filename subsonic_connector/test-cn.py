@@ -27,7 +27,7 @@ ssc = Connector(
     password = PASSWORD,
     appName="navibridge")
 
-def ewf(ssc):
+def search_earth_wind_and_fire(ssc):
     searchResultEwf : SearchResult = ssc.search(
         "Earth wind fire",
         artistCount = 0, 
@@ -91,7 +91,7 @@ def random_songs(ssr):
         #print(" -> Stream = [" + streamable_url + "]")
         #print(" -> Cover  = [" + cover_url + "]")
 
-def artists(ssc):
+def show_artists(ssc):
     max_per_initial : int = 3
     artists : Artists = ssc.getArtists()
     all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
@@ -116,6 +116,7 @@ def artists(ssc):
                 first_album_name = selected_album.getTitle()
                 first_album_cover_art = selected_album.getCoverArt()
                 if first_album_cover_art:
+                    # hashing just to make the output more compact
                     first_album_cover_art = hashlib.md5(first_album_cover_art.encode('utf-8')).hexdigest()
             print("Artist Initial[{}] N:[{}] AC:[{}] First:[{}] HashedCover:[{}]".format(
                 current_initial.getName(), 
@@ -127,5 +128,5 @@ def artists(ssc):
 random_albums(ssc)
 newest_albums(ssc)
 random_songs(ssc)
-ewf(ssc)
-artists(ssc)
+search_earth_wind_and_fire(ssc)
+show_artists(ssc)
