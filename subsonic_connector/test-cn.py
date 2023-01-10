@@ -31,7 +31,7 @@ ssc = Connector(
 def search_earth_wind_and_fire(ssc):
     searchResultEwf : SearchResult = ssc.search(
         "Earth wind fire",
-        artistCount = 0, 
+        artistCount = 10, 
         albumCount = 1000,
         songCount = 1000)
     #pprint(searchResultEwf.getData())

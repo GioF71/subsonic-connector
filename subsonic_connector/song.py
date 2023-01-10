@@ -50,5 +50,8 @@ class Song(Item):
     def getGenre(self) -> str:        
         return self.getByName("genre")
 
+    def getPath(self) -> str:
+        return self.getByName("path")
+        
     def getCreated(self) -> str:        
         return self.getByName("created")
