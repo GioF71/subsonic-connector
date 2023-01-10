@@ -26,7 +26,9 @@ class Connector:
     def getIndexes(self, 
             musicFolderId = None, 
             ifModifiedSince = 0):
-        return self.__connect().getIndexes(musicFolderId = musicFolderId, ifModifiedSince = ifModifiedSince)
+        return self.__connect().getIndexes(
+            musicFolderId = musicFolderId, 
+            ifModifiedSince = ifModifiedSince)
 
     def getArtists(self) -> Artists:
         return Artists(self.__connect().getArtists())
@@ -37,10 +39,10 @@ class Connector:
             fromYear = None, toYear = None, 
             musicFolderId = None) -> RandomSongs:
         return RandomSongs(self.__connect().getRandomSongs(
-            size, 
-            genre, 
-            fromYear, toYear, 
-            musicFolderId))
+            size = size, 
+            genre = genre, 
+            fromYear = fromYear, toYear = toYear, 
+            musicFolderId = musicFolderId))
 
     def getAlbumList(self, 
             ltype, 
