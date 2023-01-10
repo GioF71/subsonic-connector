@@ -48,10 +48,11 @@ for c in random_albums_data:
         album.getGenre()))
 
 # Random songs (three expected)
-songs = ssc.getRandomSongs(size = 3)
+#songs = ssc.getRandomSongs(size = 3).getData()
+random_songs : list = ssc.getRandomSongs(size = 3).getSongs()
 # full dump with pprint
 #pprint(songs)
-for current in songs["randomSongs"]["song"]:
+for current in random_songs:
     current_song : Song = Song(current)
     song = current_song.getData()
     print("Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
