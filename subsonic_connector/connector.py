@@ -1,5 +1,7 @@
 import libsonic
-
+from artist import Artist
+from artist_list import ArtistList
+from album_list import AlbumList
 class Connector:
     
     __KEY_BASE_URL = "baseUrl"
@@ -21,8 +23,8 @@ class Connector:
     def getIndexes(self, musicFolderId = None, ifModifiedSince = 0):
         return self.__connect().getIndexes(musicFolderId = musicFolderId, ifModifiedSince = ifModifiedSince)
 
-    def getArtists(self):
-        return self.__connect().getArtists()
+    def getArtists(self) -> ArtistList:
+        return ArtistList(self.__connect().getArtists())
 
     def getRandomSongs(self, size = 10, genre = None, fromYear = None, toYear = None, musicFolderId = None):
         return self.__connect().getRandomSongs(size, genre, fromYear, toYear, musicFolderId)
@@ -31,18 +33,18 @@ class Connector:
             ltype, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
-            genre = None, musicFolderId = None):
-        return self.__connect().getAlbumList(
+            genre = None, musicFolderId = None) -> AlbumList:
+        return AlbumList(self.__connect().getAlbumList(
             ltype, 
             size, offset, 
             fromYear, toYear,
-            genre, musicFolderId)
+            genre, musicFolderId))
 
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
-            genre = None, musicFolderId = None):
-        return self.__connect().getAlbumList(
+            genre = None, musicFolderId = None) -> AlbumList:
+        return self.getAlbumList(
             "newest", 
             size, offset, 
             fromYear, toYear,
@@ -51,8 +53,8 @@ class Connector:
     def getRandomAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
-            genre = None, musicFolderId = None):
-        return self.__connect().getAlbumList(
+            genre = None, musicFolderId = None) -> AlbumList:
+        return self.getAlbumList(
             "random", 
             size, offset, 
             fromYear, toYear,
