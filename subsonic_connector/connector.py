@@ -83,10 +83,9 @@ class Connector:
     def getArtistCover(self, artist : Artist) -> ArtistCover:
         first_album : str = None
         first_album_cover_art : str = None
-        album_list = artist.getAlbumList()
+        album_list : list[Album] = artist.getAlbumList()
         if len(album_list) > 0:
-            first_album = album_list[0]
-            selected_album : Album = Album(first_album)
+            selected_album : Album = album_list[0]
             first_album_id = selected_album.getId()
             first_album_cover_art = selected_album.getCoverArt()
             return ArtistCover(first_album_id, first_album_cover_art)
