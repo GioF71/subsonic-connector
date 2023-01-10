@@ -1,7 +1,7 @@
 from item import Item
 from item_list import ItemList
 
-class Artist(Item):
+class ArtistListItem(Item):
 
     def __init__(self, data : dict):
         super().__init__(data)
@@ -14,8 +14,3 @@ class Artist(Item):
 
     def getArtistImageUrl(self) -> int:
         return self.getByName("artistImageUrl")
-
-    def getAlbumList(self) -> list:
-        itemList : ItemList = ItemList(self.getData(), ["artist", "album"])
-        return itemList.getList()
-
