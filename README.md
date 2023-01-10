@@ -2,7 +2,7 @@
 
 ## Status
 
-This software is in its eary development phase.
+This software is in its early development phase.
 
 ## Instructions
 

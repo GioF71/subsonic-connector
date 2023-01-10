@@ -1,7 +1,12 @@
 import libsonic
 from artist import Artist
-from artist_list import ArtistList
+from artists import Artists
 from album_list import AlbumList
+from album import Album
+from random_songs import RandomSongs
+from search_result import SearchResult
+from artist_cover import ArtistCover
+
 class Connector:
     
     __KEY_BASE_URL = "baseUrl"
@@ -20,14 +25,26 @@ class Connector:
         self.__config__[Connector.__KEY_API_VERSION] = apiVersion
         self.__config__[Connector.__KEY_APP_NAME] = appName
         
-    def getIndexes(self, musicFolderId = None, ifModifiedSince = 0):
-        return self.__connect().getIndexes(musicFolderId = musicFolderId, ifModifiedSince = ifModifiedSince)
+    def getIndexes(self, 
+            musicFolderId = None, 
+            ifModifiedSince = 0):
+        return self.__connect().getIndexes(
+            musicFolderId = musicFolderId, 
+            ifModifiedSince = ifModifiedSince)
 
-    def getArtists(self) -> ArtistList:
-        return ArtistList(self.__connect().getArtists())
+    def getArtists(self) -> Artists:
+        return Artists(self.__connect().getArtists())
 
-    def getRandomSongs(self, size = 10, genre = None, fromYear = None, toYear = None, musicFolderId = None):
-        return self.__connect().getRandomSongs(size, genre, fromYear, toYear, musicFolderId)
+    def getRandomSongs(self, 
+            size = 10, 
+            genre = None, 
+            fromYear = None, toYear = None, 
+            musicFolderId = None) -> RandomSongs:
+        return RandomSongs(self.__connect().getRandomSongs(
+            size = size, 
+            genre = genre, 
+            fromYear = fromYear, toYear = toYear, 
+            musicFolderId = musicFolderId))
 
     def getAlbumList(self, 
             ltype, 
@@ -35,41 +52,57 @@ class Connector:
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return AlbumList(self.__connect().getAlbumList(
-            ltype, 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId))
+            ltype = ltype, 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId))
 
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return self.getAlbumList(
-            "newest", 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId)
+            ltype = "newest", 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId)
 
     def getRandomAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return self.getAlbumList(
-            "random", 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId)
+            ltype = "random", 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId)
 
-    def getArtist(self, artist_id : str):
-        return self.__connect().getArtist(artist_id)
+    def getArtist(self, artist_id : str) -> Artist:
+        return Artist(self.__connect().getArtist(artist_id))
 
-    def search2(self, 
+    def getArtistCover(self, artist : Artist) -> ArtistCover:
+        first_album : str = None
+        first_album_cover_art : str = None
+        album_list : list[Album] = artist.getAlbumList()
+        current : Album
+        for selected_album in album_list:
+            select_album_id = selected_album.getId()
+            select_album_cover_art = selected_album.getCoverArt()
+            if select_album_cover_art:
+                return ArtistCover(select_album_id, select_album_cover_art)
+
+    def search(self, 
             query, 
             artistCount = 20, artistOffset = 0, 
             albumCount = 20, albumOffset = 0, 
             songCount = 20, songOffset = 0, 
-            musicFolderId = None):
-        return self.__connect().search2(query)
+            musicFolderId = None) -> SearchResult:
+        return SearchResult(self.__connect().search2(
+            query = query,
+            artistCount = artistCount, artistOffset = artistOffset, 
+            albumCount = albumCount, albumOffset = albumOffset, 
+            songCount = songCount, songOffset = songOffset, 
+            musicFolderId = musicFolderId))
 
     def buildSongUrl(self, song_id : str) -> str:
         connection = self.__connect()
