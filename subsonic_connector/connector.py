@@ -1,6 +1,6 @@
 import libsonic
 from artist import Artist
-from artist_list import ArtistList
+from artists import Artists
 from album_list import AlbumList
 from random_songs import RandomSongs
 
@@ -27,8 +27,8 @@ class Connector:
             ifModifiedSince = 0):
         return self.__connect().getIndexes(musicFolderId = musicFolderId, ifModifiedSince = ifModifiedSince)
 
-    def getArtists(self) -> ArtistList:
-        return ArtistList(self.__connect().getArtists())
+    def getArtists(self) -> Artists:
+        return Artists(self.__connect().getArtists())
 
     def getRandomSongs(self, 
             size = 10, 
@@ -72,8 +72,8 @@ class Connector:
             fromYear, toYear,
             genre, musicFolderId)
 
-    def getArtist(self, artist_id : str):
-        return self.__connect().getArtist(artist_id)
+    def getArtist(self, artist_id : str) -> Artist:
+        return Artist(self.__connect().getArtist(artist_id))
 
     def search2(self, 
             query, 
