@@ -3,6 +3,7 @@ from artist import Artist
 from artists import Artists
 from album_list import AlbumList
 from random_songs import RandomSongs
+from search_result import SearchResult
 
 class Connector:
     
@@ -47,41 +48,46 @@ class Connector:
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return AlbumList(self.__connect().getAlbumList(
-            ltype, 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId))
+            ltype = ltype, 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId))
 
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return self.getAlbumList(
-            "newest", 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId)
+            ltype = "newest", 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId)
 
     def getRandomAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> AlbumList:
         return self.getAlbumList(
-            "random", 
-            size, offset, 
-            fromYear, toYear,
-            genre, musicFolderId)
+            ltype = "random", 
+            size = size, offset = offset, 
+            fromYear = fromYear, toYear = toYear,
+            genre = genre, musicFolderId = musicFolderId)
 
     def getArtist(self, artist_id : str) -> Artist:
         return Artist(self.__connect().getArtist(artist_id))
 
-    def search2(self, 
+    def search(self, 
             query, 
             artistCount = 20, artistOffset = 0, 
             albumCount = 20, albumOffset = 0, 
             songCount = 20, songOffset = 0, 
-            musicFolderId = None):
-        return self.__connect().search2(query)
+            musicFolderId = None) -> SearchResult:
+        return SearchResult(self.__connect().search2(
+            query = query,
+            artistCount = artistCount, artistOffset = artistOffset, 
+            albumCount = albumCount, albumOffset = albumOffset, 
+            songCount = songCount, songOffset = songOffset, 
+            musicFolderId = musicFolderId))
 
     def buildSongUrl(self, song_id : str) -> str:
         connection = self.__connect()

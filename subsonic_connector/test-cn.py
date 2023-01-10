@@ -12,6 +12,7 @@ from album_list import AlbumList
 from artists import Artists
 from artists_initial import ArtistsInitial
 from artist_list_item import ArtistListItem
+from search_result import SearchResult
 
 SERVER_URL = config('SERVER_URL')
 print(SERVER_URL)
@@ -25,6 +26,37 @@ ssc = Connector(
     username = USERNAME, 
     password = PASSWORD,
     appName="navibridge")
+
+def ewf(ssc):
+    searchResultEwf : SearchResult = ssc.search(
+        "Earth wind fire",
+        artistCount = 0, 
+        albumCount = 1000,
+        songCount = 1000)
+    #pprint(searchResultEwf.getData())
+    ewfAlbums : list[Album] = searchResultEwf.getAlbums()
+    ewfAlbum : Album
+    ac : int = 0
+    for ewfAlbum in ewfAlbums:
+        print("EWF ndx:[{}] T:[{}] G:[{}]".format(
+            ac,
+            ewfAlbum.getTitle(),
+            ewfAlbum.getGenre()))
+        ac += 1
+    ewfSongs : list[Song] = searchResultEwf.getSongs()
+    ewfSong : Song
+    sc : int = 0
+    for ewfSong in ewfSongs:
+        print("EWF ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}]".format(
+            sc,
+            ewfSong.getTitle(),
+            ewfSong.getArtist(),
+            ewfSong.getAlbum(),
+            ewfSong.getDiscNumber(),
+            ewfSong.getTrack()))
+        sc += 1
+    
+
 
 # Newest albums (two albums expected)
 newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getAlbums()
@@ -58,6 +90,11 @@ for current in random_songs:
     #print(" -> Stream = [" + streamable_url + "]")
     #print(" -> Cover  = [" + cover_url + "]")
 
+#####
+# EWF
+ewf(ssc)
+
+#####
 max_per_initial : int = 3
 artists : Artists = ssc.getArtists()
 all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
