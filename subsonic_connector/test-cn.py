@@ -125,8 +125,12 @@ def show_artists(ssc):
                 first_album_name,
                 first_album_cover_art))
 
-random_albums(ssc)
-newest_albums(ssc)
-random_songs(ssc)
-search_earth_wind_and_fire(ssc)
-show_artists(ssc)
+def main():
+    random_albums(ssc)
+    newest_albums(ssc)
+    random_songs(ssc)
+    search_earth_wind_and_fire(ssc)
+    show_artists(ssc)
+
+if __name__ == "__main__":
+    main()
