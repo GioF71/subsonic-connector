@@ -93,7 +93,7 @@ def random_songs(ssr):
         #print(" -> Cover  = [" + cover_url + "]")
 
 def show_artists(ssc):
-    max_per_initial : int = 3
+    max_per_initial : int = 15
     artists : Artists = ssc.getArtists()
     all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
     for current_initial in all_artists_initials:

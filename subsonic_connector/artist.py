@@ -20,7 +20,6 @@ class Artist(Item):
         itemList : ItemList = ItemList(self.getData(), ["artist", "album"])
         l : list = itemList.getList()
         result : list[Album] = []
-        for c in l:
-            result.append(Album(c))
+        for c in l: result.append(Album(c))
         return result
 

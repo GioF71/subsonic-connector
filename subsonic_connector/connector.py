@@ -84,11 +84,12 @@ class Connector:
         first_album : str = None
         first_album_cover_art : str = None
         album_list : list[Album] = artist.getAlbumList()
-        if len(album_list) > 0:
-            selected_album : Album = album_list[0]
-            first_album_id = selected_album.getId()
-            first_album_cover_art = selected_album.getCoverArt()
-            return ArtistCover(first_album_id, first_album_cover_art)
+        current : Album
+        for selected_album in album_list:
+            select_album_id = selected_album.getId()
+            select_album_cover_art = selected_album.getCoverArt()
+            if select_album_cover_art:
+                return ArtistCover(select_album_id, select_album_cover_art)
 
     def search(self, 
             query, 
