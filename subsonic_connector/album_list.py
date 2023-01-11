@@ -1,13 +1,11 @@
-from .item_list import ItemList
+from .item import Item
 from .album import Album
 
-class AlbumList(ItemList):
+class AlbumList(Item):
 
     def __init__(self, data : dict):
-        super().__init__(data, ["albumList", "album"])
+        super().__init__(data, )
 
     def getAlbums(self) -> list[Album]:
-        l : list = self.getList()
-        result : list[Album] = []
-        for c in l: result.append(Album(c))
-        return result
+        l : list = self.getList(["albumList", "album"])
+        return list(map(lambda x : Album(x), l))
