@@ -9,7 +9,7 @@ class Artist(Item):
     def getName(self) -> str | None:
         return self.getByName("name")
 
-    def getAlbumCount(self) -> int | None:
+    def getAlbumCount(self) -> str | None:
         return self.getByName("albumCount")
 
     def getArtistImageUrl(self) -> str | None:

@@ -6,7 +6,7 @@ class Item:
     def getData(self) -> dict:
         return self.__data
 
-    def getByName(self, name : str, defaultValue = None):
+    def getByName(self, name : str, defaultValue = None) -> str | None:
         return (self.getData()[name]
             if name in self.getData() 
             else defaultValue)
