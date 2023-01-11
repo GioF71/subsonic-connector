@@ -16,8 +16,20 @@ class Item:
 
     def getList(self, path : list[str]) -> list:
         result = self.getData()
+        intermediate : str = ""
         for current_path in path:
-            result = result[current_path]
-            if not result: raise Exception("Null item found")
-        if not isinstance(result, list): raise Exception("No list found at the specified path")
+            if not type(result) == dict:
+                raise Exception(
+                    "Intermediate path [{}] does not match a dictionary"
+                        .format(intermediate))
+            result = (result[current_path] 
+                if current_path in result 
+                else None)
+            if not result: raise Exception(
+                "Null item found for [{}] in [{}]".format(
+                    current_path, 
+                    type(self).__name__))
+            intermediate = current_path
+        if not isinstance(result, list): raise Exception(
+            "No list found at the specified path")
         return list(result)
