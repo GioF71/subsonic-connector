@@ -10,7 +10,5 @@ class Artists(ItemList):
     def getArtistListInitials(self) -> list[ArtistsInitial]:
         l : list = self.getList()
         result : list[ArtistsInitial] = []
-        for c in l:
-            a : ArtistsInitial = ArtistsInitial(c)
-            result.append(a)
+        for c in l: result.append(ArtistsInitial(c))
         return result

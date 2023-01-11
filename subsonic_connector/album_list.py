@@ -9,7 +9,5 @@ class AlbumList(ItemList):
     def getAlbums(self) -> list[Album]:
         l : list = self.getList()
         result : list[Album] = []
-        for c in l:
-            a : Album = Album(c)
-            result.append(a)
+        for c in l: result.append(Album(c))
         return result

@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: cn-test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/test-cn.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
