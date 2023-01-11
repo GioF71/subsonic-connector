@@ -85,8 +85,8 @@ def random_songs(ssr):
             current_song.getDiscNumber(), 
             current_song.getTrack()))
         id = current_song.getId()
-        streamable_url = ssc.buildSongUrl(id)
-        cover_url = ssc.buildCoverArtUrl(id)
+        #streamable_url = ssc.buildSongUrl(id)
+        #cover_url = ssc.buildCoverArtUrl(id)
         #print(" -> Stream = [" + streamable_url + "]")
         #print(" -> Cover  = [" + cover_url + "]")
 
@@ -116,12 +116,12 @@ def show_artists(ssc):
                 # create url
                 artist_cover_url = ssc.buildCoverArtUrl(artist_cover.getCoverArt())
                 hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
-            print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
-                current_initial.getName(), 
-                c.getName(), 
-                c.getAlbumCount(),
-                artist_first_album_id,
-                hashed_cover_art))
+                print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
+                    current_initial.getName(), 
+                    c.getName(), 
+                    c.getAlbumCount(),
+                    artist_first_album_id,
+                    hashed_cover_art))
 
 def main():
     random_albums(ssc)
