@@ -4,8 +4,8 @@ class ArtistCover:
         self.album_id = album_id
         self.cover_art = cover_art
 
-    def getAlbumId(self):
+    def getAlbumId(self) -> str:
         return self.album_id
 
-    def getCoverArt(self):
+    def getCoverArt(self) -> str:
         return self.cover_art

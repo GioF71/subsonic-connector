@@ -7,7 +7,7 @@ class ArtistsInitial(ItemList):
     def __init__(self, data : dict, list_path = ["artist"]):
         super().__init__(data, list_path)
 
-    def getName(self) -> str:
+    def getName(self) -> str | None:
         return self.getByName("name")
 
     def getArtistListItems(self) -> list[ArtistListItem]:

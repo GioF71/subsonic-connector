@@ -17,10 +17,17 @@ class Connector:
     __KEY_API_VERSION = "apiVersion"
     __KEY_APP_NAME = "appName"
 
-    def __init__(self, baseUrl : str, port : int, username : str, password : str, apiVersion : str = libsonic.API_VERSION, appName : str = "navibridge"):
+    def __init__(
+            self,
+            baseUrl : str,
+            port : str,
+            username : str,
+            password : str,
+            apiVersion : str = libsonic.API_VERSION,
+            appName : str = "navibridge"):
         self.__config__ = {}
         self.__config__[Connector.__KEY_BASE_URL] = baseUrl
-        self.__config__[Connector.__KEY_PORT] = int(port)
+        self.__config__[Connector.__KEY_PORT] = port
         self.__config__[Connector.__KEY_USERNAME] = username
         self.__config__[Connector.__KEY_PASSWORD] = password
         self.__config__[Connector.__KEY_API_VERSION] = apiVersion
@@ -81,22 +88,22 @@ class Connector:
     def getArtist(self, artist_id : str) -> Artist:
         return Artist(self.__connect().getArtist(artist_id))
 
-    def getArtistCover(self, artist : Artist) -> ArtistCover:
-        first_album : str = None
-        first_album_cover_art : str = None
+    def getArtistCover(self, artist : Artist) -> ArtistCover | None:
+        first_album : str
+        first_album_cover_art : str
         album_list : list[Album] = artist.getAlbumList()
         current : Album
         for selected_album in album_list:
             select_album_id = selected_album.getId()
             select_album_cover_art = selected_album.getCoverArt()
-            if select_album_cover_art:
+            if select_album_id and select_album_cover_art:
                 return ArtistCover(select_album_id, select_album_cover_art)
 
     def search(self, 
-            query, 
-            artistCount = 20, artistOffset = 0, 
-            albumCount = 20, albumOffset = 0, 
-            songCount = 20, songOffset = 0, 
+            query : str, 
+            artistCount : int = 20, artistOffset : int = 0, 
+            albumCount : int = 20, albumOffset : int = 0, 
+            songCount : int = 20, songOffset : int = 0, 
             musicFolderId = None) -> SearchResult:
         return SearchResult(self.__connect().search2(
             query = query,
@@ -133,22 +140,25 @@ class Connector:
             self.__get_config(Connector.__KEY_API_VERSION),
             item_id);
             
-    def __get_config(self, name : str) -> str:
-        return self.__config__[name] if name in self.__config__ else None
+    def __get_config(self, name : str) -> str | None:
+        return (self.__config__[name] 
+            if name in self.__config__ 
+            else None)
     
     def __createBaseUrlWithPort(self):
         baseUrl = self.__get_config(Connector.__KEY_BASE_URL)
         port = self.__get_config(Connector.__KEY_PORT)
         url = baseUrl
-        if (baseUrl.startswith("https://") and port != 443) or (baseUrl.startswith("http://") and port != 80):
+        if ((baseUrl and baseUrl.startswith("https://") and port != 443) or 
+            (baseUrl and baseUrl.startswith("http://") and port != 80)):
             url = "{}:{}".format(baseUrl, port)
         return url
             
     def __connect(self):
         return libsonic.Connection(
             baseUrl = self.__get_config(Connector.__KEY_BASE_URL), 
-            username = self.__get_config("username"), 
+            username = self.__get_config(Connector.__KEY_USERNAME), 
             password = self.__get_config(Connector.__KEY_PASSWORD), 
-            port=self.__get_config(Connector.__KEY_PORT),
+            port = self.__get_config(Connector.__KEY_PORT),
             appName = self.__get_config(Connector.__KEY_APP_NAME),
             apiVersion = self.__get_config(Connector.__KEY_API_VERSION))

@@ -7,13 +7,13 @@ class Artist(Item):
     def __init__(self, data : dict):
         super().__init__(data)
 
-    def getName(self) -> str:
+    def getName(self) -> str | None:
         return self.getByName("name")
 
-    def getAlbumCount(self) -> int:
+    def getAlbumCount(self) -> int | None:
         return self.getByName("albumCount")
 
-    def getArtistImageUrl(self) -> int:
+    def getArtistImageUrl(self) -> str | None:
         return self.getByName("artistImageUrl")
 
     def getAlbumList(self) -> list:

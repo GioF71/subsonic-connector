@@ -10,4 +10,4 @@ class ItemList(Item):
         result = self.getData()
         for path in self.__list_path:
             result = result[path]
-        return result
+        return list(result)

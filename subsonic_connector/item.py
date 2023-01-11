@@ -7,7 +7,9 @@ class Item:
         return self.__data
 
     def getByName(self, name : str, defaultValue = None):
-        return self.getData()[name] if name in self.getData() else defaultValue
+        return (self.getData()[name]
+            if name in self.getData() 
+            else defaultValue)
 
-    def getId(self) -> str:
+    def getId(self) -> str | None:
         return self.getByName("id")
