@@ -13,3 +13,11 @@ class Item:
 
     def getId(self) -> str | None:
         return self.getByName("id")
+
+    def getList(self, path : list[str]) -> list:
+        result = self.getData()
+        for current_path in path:
+            result = result[current_path]
+            if not result: raise Exception("Null item found")
+        if not isinstance(result, list): raise Exception("No list found at the specified path")
+        return list(result)

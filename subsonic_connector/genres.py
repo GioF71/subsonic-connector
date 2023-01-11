@@ -1,10 +1,11 @@
-from .item_list import ItemList
+from .item import Item
 from .genre import Genre
 
-class Genres(ItemList):
+class Genres(Item):
 
     def __init__(self, data : dict):
-        super().__init__(data, ["genres", "genre"])
+        super().__init__(data)
 
     def getGenres(self) -> list[Genre]:
-        return list(map(lambda x : Genre(x), self.getList()))
+        l : list = self.getList(["genres", "genre"])
+        return list(map(lambda x : Genre(x), l))
