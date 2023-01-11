@@ -43,6 +43,9 @@ class Connector:
     def getArtists(self) -> Artists:
         return Artists(self.__connect().getArtists())
 
+    def getGenres(self) -> dict:
+        return self.__connect().getGenres()
+
     def getRandomSongs(self, 
             size = 10, 
             genre = None, 

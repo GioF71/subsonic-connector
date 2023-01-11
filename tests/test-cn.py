@@ -123,7 +123,11 @@ def show_artists(ssc):
                     artist_first_album_id,
                     hashed_cover_art))
 
+def showGenres(ssc):
+    pprint(ssc.getGenres())
+
 def main():
+    showGenres(ssc)
     random_albums(ssc)
     newest_albums(ssc)
     random_songs(ssc)
