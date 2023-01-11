@@ -20,7 +20,7 @@ class Connector:
     def __init__(
             self,
             baseUrl : str,
-            port : str,
+            port : int,
             username : str,
             password : str,
             apiVersion : str = libsonic.API_VERSION,
