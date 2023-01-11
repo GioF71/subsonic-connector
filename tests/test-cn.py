@@ -1,25 +1,24 @@
 from pprint import pprint
-from decouple import config
+import os
 import hashlib
 import libsonic
 
-from connector import Connector
+from subsonic_connector.connector import Connector
 
-from artist import Artist
-from album import Album
-from song import Song
-from album_list import AlbumList
-from artists import Artists
-from artists_initial import ArtistsInitial
-from artist_list_item import ArtistListItem
-from search_result import SearchResult
-from artist_cover import ArtistCover
+from subsonic_connector.artist import Artist
+from subsonic_connector.album import Album
+from subsonic_connector.song import Song
+from subsonic_connector.album_list import AlbumList
+from subsonic_connector.artists import Artists
+from subsonic_connector.artists_initial import ArtistsInitial
+from subsonic_connector.artist_list_item import ArtistListItem
+from subsonic_connector.search_result import SearchResult
+from subsonic_connector.artist_cover import ArtistCover
 
-SERVER_URL = config('SERVER_URL')
-print(SERVER_URL)
-SERVER_PORT = config('SERVER_PORT')
-USERNAME = config('USERNAME')
-PASSWORD = config('PASSWORD')
+SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
+SERVER_PORT : int = int(str(os.getenv("SUBSONIC_SERVER_PORT")))
+USERNAME : str = str(os.getenv("SUBSONIC_USERNAME"))
+PASSWORD : str = str(os.getenv("SUBSONIC_PASSWORD"))
 
 ssc = Connector(
     baseUrl = SERVER_URL, 

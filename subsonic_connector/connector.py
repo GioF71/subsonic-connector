@@ -1,11 +1,12 @@
 import libsonic
-from artist import Artist
-from artists import Artists
-from album_list import AlbumList
-from album import Album
-from random_songs import RandomSongs
-from search_result import SearchResult
-from artist_cover import ArtistCover
+
+from .artist import Artist
+from .artists import Artists
+from .album_list import AlbumList
+from .album import Album
+from .random_songs import RandomSongs
+from .search_result import SearchResult
+from .artist_cover import ArtistCover
 
 class Connector:
     

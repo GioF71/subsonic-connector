@@ -1,8 +1,8 @@
-from item import Item
-from item_list import ItemList
+from .item import Item
+from .item_list import ItemList
 
-from album import Album
-from song import Song
+from .album import Album
+from .song import Song
 
 class SearchResult(Item):
 

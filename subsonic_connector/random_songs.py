@@ -1,4 +1,4 @@
-from item_list import ItemList
+from .item_list import ItemList
 
 class RandomSongs(ItemList):
 

@@ -1,6 +1,6 @@
-from item import Item
-from item_list import ItemList
-from artist_list_item import ArtistListItem
+from .item import Item
+from .item_list import ItemList
+from .artist_list_item import ArtistListItem
 
 class ArtistsInitial(ItemList):
 

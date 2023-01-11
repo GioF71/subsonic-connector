@@ -22,3 +22,5 @@ Then you can run the simple test using the following command:
 ```text
 python subsonic_connector/test-cn.py
 ```
+
+Make sure to load the variables specified in the `.env` file.

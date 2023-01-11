@@ -1,5 +1,5 @@
-from item_list import ItemList
-from album import Album
+from .item_list import ItemList
+from .album import Album
 
 class AlbumList(ItemList):
 

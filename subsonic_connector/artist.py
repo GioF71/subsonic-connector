@@ -1,6 +1,6 @@
-from item import Item
-from item_list import ItemList
-from album import Album
+from .item import Item
+from .item_list import ItemList
+from .album import Album
 
 class Artist(Item):
 
