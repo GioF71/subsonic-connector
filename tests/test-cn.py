@@ -76,7 +76,7 @@ def random_albums(ssc):
             album.getGenre()))
 
 def random_songs(ssr):
-    random_songs : list[Song] = ssc.getRandomSongs(size = 3).getSongs()
+    random_songs : list[Song] = ssc.getRandomSongs(size = 25).getSongs()
     for current_song in random_songs:
         song = current_song.getData()
         print("Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
