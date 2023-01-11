@@ -1,5 +1,4 @@
 from .item import Item
-from .item_list import ItemList
 
 class ArtistListItem(Item):
 
