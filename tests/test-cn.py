@@ -14,6 +14,7 @@ from subsonic_connector.artists_initial import ArtistsInitial
 from subsonic_connector.artist_list_item import ArtistListItem
 from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
+from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
 
 SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
@@ -125,6 +126,8 @@ def show_artists(ssc):
                     hashed_cover_art))
 
 def showGenres(ssc):
+    genres : Genres = ssc.getGenres()
+    print("Status for genres request [{}]".format(genres.getStatus()))
     genre : Genre
     for genre in ssc.getGenres().getGenres():
         print("G:[{}] AC:[{}] SC:[{}]".format(
