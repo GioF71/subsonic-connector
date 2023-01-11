@@ -10,4 +10,6 @@ class ItemList(Item):
         result = self.getData()
         for path in self.__list_path:
             result = result[path]
+            if not result: raise Exception("Null item found")
+        if not isinstance(result, list): raise Exception("No list found at the specified path")
         return list(result)

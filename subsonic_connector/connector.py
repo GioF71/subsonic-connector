@@ -7,6 +7,7 @@ from .album import Album
 from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
+from .genres import Genres
 
 class Connector:
     
@@ -43,8 +44,8 @@ class Connector:
     def getArtists(self) -> Artists:
         return Artists(self.__connect().getArtists())
 
-    def getGenres(self) -> dict:
-        return self.__connect().getGenres()
+    def getGenres(self) -> Genres:
+        return Genres(self.__connect().getGenres())
 
     def getRandomSongs(self, 
             size = 10, 
