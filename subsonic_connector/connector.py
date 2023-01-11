@@ -159,6 +159,6 @@ class Connector:
             baseUrl = self.__get_config(Connector.__KEY_BASE_URL), 
             username = self.__get_config(Connector.__KEY_USERNAME), 
             password = self.__get_config(Connector.__KEY_PASSWORD), 
-            port = self.__get_config(Connector.__KEY_PORT),
-            appName = self.__get_config(Connector.__KEY_APP_NAME),
-            apiVersion = self.__get_config(Connector.__KEY_API_VERSION))
+            port = int(str(self.__get_config(Connector.__KEY_PORT))),
+            appName = str(self.__get_config(Connector.__KEY_APP_NAME)),
+            apiVersion = str(self.__get_config(Connector.__KEY_API_VERSION)))
