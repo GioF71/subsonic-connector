@@ -1,7 +1,6 @@
 from pprint import pprint
 import os
 import hashlib
-import libsonic
 
 from subsonic_connector.connector import Connector
 
