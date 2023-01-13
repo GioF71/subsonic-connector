@@ -14,7 +14,7 @@ class Item:
     def getId(self) -> str | None:
         return self.getByName("id")
 
-    def getList(self, path : list[str]) -> list:
+    def getList(self, path : list[str], allowEmpty = True) -> list:
         result = self.getData()
         intermediate : str = ""
         for current_path in path:
@@ -25,10 +25,11 @@ class Item:
             result = (result[current_path] 
                 if current_path in result 
                 else None)
-            if not result: raise Exception(
+            if not result and not allowEmpty: raise Exception(
                 "Null item found for [{}] in [{}]".format(
                     current_path, 
                     type(self).__name__))
+            if not result: return []
             intermediate = current_path
         if not isinstance(result, list): raise Exception(
             "No list found at the specified path")

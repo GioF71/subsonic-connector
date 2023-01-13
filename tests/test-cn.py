@@ -129,10 +129,21 @@ def showGenres(ssc):
     print("Status for genres request [{}]".format(genres.getStatus()))
     genre : Genre
     for genre in ssc.getGenres().getGenres():
-        print("G:[{}] AC:[{}] SC:[{}]".format(
-            genre.getName(),
-            genre.getAlbumCount(),
-            genre.getSongCount()))
+        if genre.getName():
+            print("G:[{}] AC:[{}] SC:[{}]".format(
+                genre.getName(),
+                genre.getAlbumCount(),
+                genre.getSongCount()))
+            showCoverArtForGenre(ssc, str(genre.getName()))
+
+def showCoverArtForGenre(ssc, genre : str):
+    select_cover_art : str = ssc.getCoverArtForGenre(genre)
+    if not select_cover_art:
+        print("No cover art for genre {}".format(genre))
+    print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
+    select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
+    if select_cover_art_url:
+        print("Cover art URL for genre: [{}] = {}".format(genre, select_cover_art_url))
 
 def main():
     showGenres(ssc)
