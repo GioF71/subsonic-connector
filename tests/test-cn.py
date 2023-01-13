@@ -124,7 +124,7 @@ def show_artists(ssc):
                     artist_first_album_id,
                     hashed_cover_art))
 
-def showGenres(ssc):
+def showGenres(ssc, cache : dict[str, str]):
     genres : Genres = ssc.getGenres()
     print("Status for genres request [{}]".format(genres.getStatus()))
     genre : Genre
@@ -134,19 +134,34 @@ def showGenres(ssc):
                 genre.getName(),
                 genre.getAlbumCount(),
                 genre.getSongCount()))
-            showCoverArtForGenre(ssc, str(genre.getName()))
+            if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
+                showCoverArtForGenre(
+                    ssc, 
+                    str(genre.getName()), 
+                    cache)
 
-def showCoverArtForGenre(ssc, genre : str):
-    select_cover_art : str = ssc.getCoverArtForGenre(genre)
+def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
+    select_cover_art : str
+    if genre in cache:
+        select_cover_art = cache[genre]
+    else:
+        select_cover_art : str = ssc.getCoverArtForGenre(genre)
+        cache[genre] = select_cover_art
     if not select_cover_art:
         print("No cover art for genre {}".format(genre))
-    print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
-    select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
-    if select_cover_art_url:
-        print("Cover art URL for genre: [{}] = {}".format(genre, select_cover_art_url))
+    else:
+        print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
+        select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
+        if select_cover_art_url:
+            print("Cover art URL for genre: [{}] = {}".format(
+                genre, 
+                select_cover_art_url))
 
 def main():
-    showGenres(ssc)
+    genre_cache : dict[str, str] = {}
+    showGenres(ssc, genre_cache)
+    # this time it will be faster
+    showGenres(ssc, genre_cache)
     random_albums(ssc)
     newest_albums(ssc)
     random_songs(ssc)
