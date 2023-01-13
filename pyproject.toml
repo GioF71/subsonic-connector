@@ -2,7 +2,7 @@
 name = "subsonic-connector"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["GioF71 <https://github.com/GioF71>"]
 readme = "README.md"
 packages = [{include = "subsonic_connector"}]
 

@@ -1,7 +1,6 @@
 from pprint import pprint
 import os
 import hashlib
-import libsonic
 
 from subsonic_connector.connector import Connector
 
@@ -14,6 +13,8 @@ from subsonic_connector.artists_initial import ArtistsInitial
 from subsonic_connector.artist_list_item import ArtistListItem
 from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
+from subsonic_connector.genres import Genres
+from subsonic_connector.genre import Genre
 
 SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
 SERVER_PORT : int = int(str(os.getenv("SUBSONIC_SERVER_PORT")))
@@ -75,9 +76,8 @@ def random_albums(ssc):
             album.getGenre()))
 
 def random_songs(ssr):
-    random_songs : list = ssc.getRandomSongs(size = 3).getSongs()
-    for current in random_songs:
-        current_song : Song = Song(current)
+    random_songs : list[Song] = ssc.getRandomSongs(size = 25).getSongs()
+    for current_song in random_songs:
         song = current_song.getData()
         print("Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
             current_song.getTitle(), 
@@ -86,8 +86,8 @@ def random_songs(ssr):
             current_song.getDiscNumber(), 
             current_song.getTrack()))
         id = current_song.getId()
-        streamable_url = ssc.buildSongUrl(id)
-        cover_url = ssc.buildCoverArtUrl(id)
+        #streamable_url = ssc.buildSongUrl(id)
+        #cover_url = ssc.buildCoverArtUrl(id)
         #print(" -> Stream = [" + streamable_url + "]")
         #print(" -> Cover  = [" + cover_url + "]")
 
@@ -117,14 +117,51 @@ def show_artists(ssc):
                 # create url
                 artist_cover_url = ssc.buildCoverArtUrl(artist_cover.getCoverArt())
                 hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
-            print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
-                current_initial.getName(), 
-                c.getName(), 
-                c.getAlbumCount(),
-                artist_first_album_id,
-                hashed_cover_art))
+                print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
+                    current_initial.getName(), 
+                    c.getName(), 
+                    c.getAlbumCount(),
+                    artist_first_album_id,
+                    hashed_cover_art))
+
+def showGenres(ssc, cache : dict[str, str]):
+    genres : Genres = ssc.getGenres()
+    print("Status for genres request [{}]".format(genres.getStatus()))
+    genre : Genre
+    for genre in ssc.getGenres().getGenres():
+        if genre.getName():
+            print("G:[{}] AC:[{}] SC:[{}]".format(
+                genre.getName(),
+                genre.getAlbumCount(),
+                genre.getSongCount()))
+            if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
+                showCoverArtForGenre(
+                    ssc, 
+                    str(genre.getName()), 
+                    cache)
+
+def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
+    select_cover_art : str
+    if genre in cache:
+        select_cover_art = cache[genre]
+    else:
+        select_cover_art : str = ssc.getCoverArtForGenre(genre)
+        cache[genre] = select_cover_art
+    if not select_cover_art:
+        print("No cover art for genre {}".format(genre))
+    else:
+        print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
+        select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
+        if select_cover_art_url:
+            print("Cover art URL for genre: [{}] = {}".format(
+                genre, 
+                select_cover_art_url))
 
 def main():
+    genre_cache : dict[str, str] = {}
+    showGenres(ssc, genre_cache)
+    # this time it will be faster
+    showGenres(ssc, genre_cache)
     random_albums(ssc)
     newest_albums(ssc)
     random_songs(ssc)

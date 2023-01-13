@@ -1,5 +1,4 @@
 from .item import Item
-from .item_list import ItemList
 from .album import Album
 
 class Artist(Item):
@@ -10,16 +9,12 @@ class Artist(Item):
     def getName(self) -> str | None:
         return self.getByName("name")
 
-    def getAlbumCount(self) -> int | None:
+    def getAlbumCount(self) -> str | None:
         return self.getByName("albumCount")
 
     def getArtistImageUrl(self) -> str | None:
         return self.getByName("artistImageUrl")
 
     def getAlbumList(self) -> list:
-        itemList : ItemList = ItemList(self.getData(), ["artist", "album"])
-        l : list = itemList.getList()
-        result : list[Album] = []
-        for c in l: result.append(Album(c))
-        return result
-
+        albumList : list = self.getList(["artist", "album"])
+        return list(map(lambda x : Album(x), albumList))

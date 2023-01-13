@@ -1,14 +1,12 @@
-from .item_list import ItemList
-from .artist_list_item import ArtistListItem
+from .item import Item
 from .artists_initial import ArtistsInitial
 
-class Artists(ItemList):
+class Artists(Item):
 
     def __init__(self, data : dict):
-        super().__init__(data, ["artists", "index"])
+        super().__init__(data)
 
     def getArtistListInitials(self) -> list[ArtistsInitial]:
-        l : list = self.getList()
-        result : list[ArtistsInitial] = []
-        for c in l: result.append(ArtistsInitial(c))
-        return result
+        return list(map(
+            lambda x : ArtistsInitial(x), 
+            self.getList(["artists", "index"])))

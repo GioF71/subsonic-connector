@@ -1,5 +1,6 @@
 import libsonic
 
+from .item import Item
 from .artist import Artist
 from .artists import Artists
 from .album_list import AlbumList
@@ -7,6 +8,7 @@ from .album import Album
 from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
+from .genres import Genres
 
 class Connector:
     
@@ -42,6 +44,26 @@ class Connector:
 
     def getArtists(self) -> Artists:
         return Artists(self.__connect().getArtists())
+
+    def getGenres(self) -> Genres:
+        return Genres(self.__connect().getGenres())
+
+    def getCoverArtForGenre(self,
+            genre : str,
+            maxSongs = 20) -> str | None:
+        songs : dict = self.__connect().getSongsByGenre(
+            genre, 
+            maxSongs)
+        if not songs: 
+            raise Exception("No songs for genre [{}]"
+                .format(genre))
+        songList = Item(songs).getList(["songsByGenre", "song"])
+        #songList : list = songs["songsByGenre"]["song"]
+        if not songList: return None
+        coverArt : str = ""
+        for current in songList:
+            current_art = current["coverArt"]
+            if current_art != "": return current_art
 
     def getRandomSongs(self, 
             size = 10, 
