@@ -129,16 +129,16 @@ def showGenres(ssc, cache : dict[str, str]):
     print("Status for genres request [{}]".format(genres.getStatus()))
     genre : Genre
     for genre in ssc.getGenres().getGenres():
-        if genre.getName():
-            print("G:[{}] AC:[{}] SC:[{}]".format(
-                genre.getName(),
-                genre.getAlbumCount(),
-                genre.getSongCount()))
-            if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
-                showCoverArtForGenre(
-                    ssc, 
-                    str(genre.getName()), 
-                    cache)
+        if not genre.getName(): break
+        print("G:[{}] AC:[{}] SC:[{}]".format(
+            genre.getName(),
+            genre.getAlbumCount(),
+            genre.getSongCount()))
+        if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
+            showCoverArtForGenre(
+                ssc, 
+                str(genre.getName()), 
+                cache)
 
 def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
     select_cover_art : str
@@ -149,13 +149,13 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
         cache[genre] = select_cover_art
     if not select_cover_art:
         print("No cover art for genre {}".format(genre))
-    else:
-        print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
-        select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
-        if select_cover_art_url:
-            print("Cover art URL for genre: [{}] = {}".format(
-                genre, 
-                select_cover_art_url))
+        return
+    print("Cover art for genre: [{}] = {}".format(genre, select_cover_art))
+    select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
+    if select_cover_art_url:
+        print("Cover art URL for genre: [{}] = {}".format(
+            genre, 
+            select_cover_art_url))
 
 def main():
     genre_cache : dict[str, str] = {}
