@@ -1,5 +1,10 @@
 # Subsonic Connector
 
+## Reference
+
+This library relies on the [pysonic](https://github.com/crustymonkey/py-sonic) project.  
+The current version I use in this project is [`0.8.0`](https://github.com/crustymonkey/py-sonic/releases/tag/0.8.0).
+
 ## Status
 
 This software is in its early development phase.
@@ -17,7 +22,7 @@ poetry shell
 poetry install
 ```
 
-### Test execution
+#### Test execution
 
 Then you can run the simple test using the following command:
 
@@ -26,4 +31,4 @@ python subsonic_connector/test-cn.py
 ```
 
 Make sure to load the variables specified in the `.env` file.  
-The test is currently just a `main`.
+The test is currently just a `main` and it requires a running subsonic server. I am currently using [Navidrome](https://github.com/navidrome/navidrome).
