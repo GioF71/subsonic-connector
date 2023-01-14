@@ -1,14 +1,33 @@
+[project]
+name = "subsonic_connector_GioF71"
+version = "0.0.1"
+authors = [
+  { name="GioF71", email="giovanni.fulco@gmail.com" },
+]
+description = "SubSonic Connector based on LibSonic"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/GioF71/subsonic-connector"
+"Bug Tracker" = "https://github.com/GioF71/subsonic-connector/issues"
+
 [tool.poetry]
 name = "subsonic-connector"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
-authors = ["GioF71 <https://github.com/GioF71>"]
+authors = ["GioF71 <giovanni.fulco@gmail.com>"]
 readme = "README.md"
 packages = [{include = "subsonic_connector"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-py-sonic = "^0.7.9"
+py-sonic = "^0.8.0"
 
 [build-system]
 requires = ["poetry-core"]
