@@ -13,7 +13,7 @@ This software is in its early development phase.
 
 Type|Link
 :---|:---
-Git Repo|[GitHub](https://github.com/GioF71/subsonic-connector)
+Source Code|[GitHub](https://github.com/GioF71/subsonic-connector)
 Python Library|[PiPy](https://pypi.org/project/subsonic-connector/)
 
 ## Instructions
