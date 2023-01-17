@@ -9,6 +9,13 @@ The current version I use in this project is [`0.8.0`](https://github.com/crusty
 
 This software is in its early development phase.
 
+## Links
+
+Type|Link
+:---|:---
+Git Repo|[GitHub](https://github.com/GioF71/subsonic-connector)
+Python Library|[PiPy](https://pypi.org/project/subsonic-connector/)
+
 ## Instructions
 
 Create your own `.env` file. Use `.sample.env` as a reference for the format of the file.
