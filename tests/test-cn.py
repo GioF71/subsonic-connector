@@ -15,6 +15,7 @@ from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
 from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
+from subsonic_connector.get_album_result import GetAlbumResult
 
 SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
 SERVER_PORT : int = int(str(os.getenv("SUBSONIC_SERVER_PORT")))
@@ -164,9 +165,16 @@ def main():
     random_album_list : list[str] = random_albums(ssc)
     if random_album_list:
         #show first
-        first_random : Album = ssc.getAlbum(random_album_list[0])
+        first_random : GetAlbumResult = ssc.getAlbum(random_album_list[0])
         if (first_random):
-            pprint(first_random.getData())
+            print("{} [{}] {} [{}] Dur: [{}] Art: [{}]".format(
+                first_random.getArtist(),
+                first_random.getArtistId(), 
+                first_random.getTitle(),
+                first_random.getId(),
+                first_random.getDuration(),
+                first_random.getCoverArt()))
+            #pprint(first_random.getData())
             song_list : list[Song] = first_random.getSongs()
             for current_song in song_list:
                 print("[{}] {} {}".format(
