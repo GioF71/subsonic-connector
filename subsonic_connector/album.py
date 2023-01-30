@@ -1,4 +1,5 @@
 from .item import Item
+from .song import Song
 
 class Album(Item):
 
@@ -19,3 +20,8 @@ class Album(Item):
 
     def getGenre(self) -> str | None:
         return self.getByName("genre")
+
+    def getSongs(self) -> list[Song]:
+        return list(map(
+            lambda x : Song(x), 
+            self.getList(["song"])))

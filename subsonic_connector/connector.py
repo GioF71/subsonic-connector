@@ -9,6 +9,7 @@ from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
+from .get_album_result import GetAlbumResult
 
 class Connector:
     
@@ -87,6 +88,13 @@ class Connector:
             fromYear = fromYear, toYear = toYear,
             genre = genre, musicFolderId = musicFolderId))
 
+    def getAlbum(self,
+            albumId : str) -> GetAlbumResult | None:
+        album = self.__connect().getAlbum(albumId)
+        return (GetAlbumResult(album) 
+            if album 
+            else None)
+            
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
