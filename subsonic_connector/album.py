@@ -41,6 +41,9 @@ class Album:
     def getDuration(self) -> str:
         return self.__item.getByName("duration")
 
+    def getSongCount(self) -> str:
+        return self.__item.getByName("songCount")
+
     def getSongs(self) -> list[Song]:
         return list(map(
             lambda x : Song(x), 
