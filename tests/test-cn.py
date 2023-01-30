@@ -15,7 +15,6 @@ from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
 from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
-from subsonic_connector.get_album_result import GetAlbumResult
 
 SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
 SERVER_PORT : int = int(str(os.getenv("SUBSONIC_SERVER_PORT")))
@@ -36,6 +35,11 @@ def search_earth_wind_and_fire(ssc):
         albumCount = 1000,
         songCount = 1000)
     #pprint(searchResultEwf.getData())
+    ewfArtists : list[Artist] = searchResultEwf.getArtists()
+    for ewfArtist in ewfArtists:
+        print("EWF Artist: {} [{}]".format(
+            ewfArtist.getName(),
+            ewfArtist.getId()))
     ewfAlbums : list[Album] = searchResultEwf.getAlbums()
     ewfAlbum : Album
     ac : int = 0
@@ -81,8 +85,8 @@ def random_albums(ssc) -> list[str]:
 
 def random_songs(ssr):
     random_songs : list[Song] = ssc.getRandomSongs(size = 25).getSongs()
+    current_song : Song
     for current_song in random_songs:
-        song = current_song.getData()
         print("Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
             current_song.getTitle(), 
             current_song.getAlbum(),
@@ -162,10 +166,11 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
             select_cover_art_url))
 
 def main():
+    search_earth_wind_and_fire(ssc)
     random_album_list : list[str] = random_albums(ssc)
     if random_album_list:
         #show first
-        first_random : GetAlbumResult = ssc.getAlbum(random_album_list[0])
+        first_random : Album = ssc.getAlbum(random_album_list[0])
         if (first_random):
             print("{} [{}] {} [{}] Dur: [{}] Art: [{}]".format(
                 first_random.getArtist(),
@@ -187,7 +192,6 @@ def main():
     showGenres(ssc, genre_cache)
     newest_albums(ssc)
     random_songs(ssc)
-    search_earth_wind_and_fire(ssc)
     show_artists(ssc)
 
 if __name__ == "__main__":

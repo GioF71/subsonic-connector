@@ -9,7 +9,6 @@ from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
-from .get_album_result import GetAlbumResult
 
 class Connector:
     
@@ -89,9 +88,9 @@ class Connector:
             genre = genre, musicFolderId = musicFolderId))
 
     def getAlbum(self,
-            albumId : str) -> GetAlbumResult | None:
+            albumId : str) -> Album | None:
         album = self.__connect().getAlbum(albumId)
-        return (GetAlbumResult(album) 
+        return (Album(album) 
             if album 
             else None)
             
