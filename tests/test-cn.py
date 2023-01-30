@@ -66,14 +66,17 @@ def newest_albums(ssc):
             album.getTitle(),
             album.getGenre()))
 
-def random_albums(ssc):
-    # Random album (just one)
+def random_albums(ssc) -> list[str]:
+    album_list : list[str] = []
+    # Random album (a few of them)
     random_album_list : list[Album] = ssc.getRandomAlbumList(size = 1000).getAlbums()
     for album in random_album_list:
         print("Album {} = [{}] Genre [{}]".format(
             album.getId(), 
             album.getTitle(),
             album.getGenre()))
+        album_list.append(album.getId())
+    return album_list
 
 def random_songs(ssr):
     random_songs : list[Song] = ssc.getRandomSongs(size = 25).getSongs()
@@ -158,11 +161,22 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
             select_cover_art_url))
 
 def main():
+    random_album_list : list[str] = random_albums(ssc)
+    if random_album_list:
+        #show first
+        first_random : Album = ssc.getAlbum(random_album_list[0])
+        if (first_random):
+            pprint(first_random.getData())
+            song_list : list[Song] = first_random.getSongs()
+            for current_song in song_list:
+                print("[{}] {} {}".format(
+                    current_song.getDiscNumber(),
+                    current_song.getTrack(),
+                    current_song.getTitle()))
     genre_cache : dict[str, str] = {}
     showGenres(ssc, genre_cache)
     # this time it will be faster
     showGenres(ssc, genre_cache)
-    random_albums(ssc)
     newest_albums(ssc)
     random_songs(ssc)
     search_earth_wind_and_fire(ssc)

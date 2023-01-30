@@ -87,6 +87,13 @@ class Connector:
             fromYear = fromYear, toYear = toYear,
             genre = genre, musicFolderId = musicFolderId))
 
+    def getAlbum(self,
+            albumId : str) -> Album | None:
+        album = self.__connect().getAlbum(albumId)
+        return (Album(album["album"]) 
+            if album and "album" in album 
+            else None)
+            
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
