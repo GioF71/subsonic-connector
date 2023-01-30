@@ -174,12 +174,13 @@ def main():
         #show first
         first_random : Album = ssc.getAlbum(random_album_list[0])
         if (first_random):
-            print("{} [{}] {} [{}] Dur: [{}] Art: [{}]".format(
+            print("{} [{}] {} [{}] Dur: [{}] Sc: [{}] Art: [{}]".format(
                 first_random.getArtist(),
                 first_random.getArtistId(), 
                 first_random.getTitle(),
                 first_random.getId(),
                 first_random.getDuration(),
+                first_random.getSongCount(),
                 first_random.getCoverArt()))
             #pprint(first_random.getData())
             song_list : list[Song] = first_random.getSongs()
