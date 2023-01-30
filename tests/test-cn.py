@@ -134,7 +134,9 @@ def show_artists(ssc):
 
 def showGenres(ssc, cache : dict[str, str]):
     genres : Genres = ssc.getGenres()
-    print("Status for genres request [{}]".format(genres.getStatus()))
+    print("Genres Request: Status [{}] Version [{}]".format(
+        genres.getResponse().getStatus(), 
+        genres.getResponse().getVersion()))
     genre : Genre
     for genre in ssc.getGenres().getGenres():
         if not genre.getName(): break

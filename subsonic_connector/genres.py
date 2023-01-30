@@ -1,12 +1,17 @@
-from .response import Response
 from .item import Item
+from .response import Response
 from .genre import Genre
 
-class Genres(Response):
+class Genres:
 
     def __init__(self, data : dict):
-        super().__init__(Item(data))
+        self.__item : Item = Item(data)
+        self.__response : Response = Response(data)
+
+    def getResponse(self) -> Response:
+        return self.__response
 
     def getGenres(self) -> list[Genre]:
-        l : list = self.getItem().getList(["genres", "genre"])
-        return list(map(lambda x : Genre(x), l))
+        return list(map(
+            lambda x : Genre(x), 
+            self.__item.getList(["genres", "genre"])))
