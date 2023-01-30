@@ -1,12 +1,12 @@
 from .item import Item
 from .artists_initial import ArtistsInitial
 
-class Artists(Item):
+class Artists:
 
     def __init__(self, data : dict):
-        super().__init__(data)
+        self.__item : Item = Item(data)
 
     def getArtistListInitials(self) -> list[ArtistsInitial]:
         return list(map(
             lambda x : ArtistsInitial(x), 
-            self.getList(["artists", "index"])))
+            self.__item.getList(["artists", "index"])))

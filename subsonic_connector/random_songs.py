@@ -1,12 +1,12 @@
 from .item import Item
 from .song import Song
 
-class RandomSongs(Item):
+class RandomSongs:
 
     def __init__(self, data : dict):
-        super().__init__(data)
+        self.__item : Item = Item(data)
 
     def getSongs(self) -> list[Song]:
         return list(map(
             lambda x : Song(x), 
-            self.getList(["randomSongs", "song"])))
+            self.__item.getList(["randomSongs", "song"])))

@@ -1,15 +1,15 @@
 from .item import Item
 
-class Genre(Item):
+class Genre:
 
-    def __init__(self, dict : dict):
-        super().__init__(dict)
+    def __init__(self, data : dict):
+        self.__item : Item = Item(data)
 
     def getName(self) -> str | None:
-        return self.getByName("value")
+        return self.__item.getByName("value")
 
     def getAlbumCount(self) -> str | None:
-        return self.getByName("albumCount")
+        return self.__item.getByName("albumCount")
 
     def getSongCount(self) -> str | None:
-        return self.getByName("songCount")
+        return self.__item.getByName("songCount")

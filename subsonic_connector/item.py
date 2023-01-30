@@ -6,6 +6,14 @@ class Item:
     def getData(self) -> dict:
         return self.__data
 
+    def isResponse(self) -> bool:
+        return (
+            "status" in self.getData() and
+            "version" in self.getData())
+
+    def hasName(self, name : str) -> bool:
+        return name in self.getData()
+
     def getByName(self, name : str, defaultValue = None) -> str | None:
         return (self.getData()[name]
             if name in self.getData() 
