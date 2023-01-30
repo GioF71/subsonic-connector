@@ -3,3 +3,4 @@ poetry.lock
 dist/*
 subsonic_connector/__pycache__/
 .vscode/settings.json
+pypi-password.txt
