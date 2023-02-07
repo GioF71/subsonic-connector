@@ -17,6 +17,8 @@ from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
 from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
+from subsonic_connector.random_songs import RandomSongs
+from subsonic_connector.response import Response
 
 print("Subclass check:", issubclass(DefaultConfiguration, Configuration))
 
@@ -58,7 +60,7 @@ def search_earth_wind_and_fire(ssc):
 
 def newest_albums(ssc):
     # Newest albums (two albums expected)
-    newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getAlbums()
+    newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getObj().getAlbums()
     for album in newest_album_list:
         print("Album {} = [{}] Genre [{}]".format(
             album.getId(), 
@@ -68,7 +70,7 @@ def newest_albums(ssc):
 def random_albums(ssc) -> list[str]:
     album_list : list[str] = []
     # Random album (a few of them)
-    random_album_list : list[Album] = ssc.getRandomAlbumList(size = 1000).getAlbums()
+    random_album_list : list[Album] = ssc.getRandomAlbumList(size = 1000).getObj().getAlbums()
     for album in random_album_list:
         print("Album {} = [{}] Genre [{}]".format(
             album.getId(), 
@@ -78,7 +80,8 @@ def random_albums(ssc) -> list[str]:
     return album_list
 
 def random_songs(ssr):
-    random_songs : list[Song] = ssc.getRandomSongs(size = 25).getSongs()
+    random_songs_response : Response[RandomSongs] = ssc.getRandomSongs(size = 25)
+    random_songs : list[Song] = random_songs_response.getObj().getSongs()
     current_song : Song
     for current_song in random_songs:
         print("Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
@@ -95,7 +98,7 @@ def random_songs(ssr):
 
 def show_artists(ssc):
     max_per_initial : int = 15
-    artists : Artists = ssc.getArtists()
+    artists : Artists = ssc.getArtists().getObj()
     all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
     for current_initial in all_artists_initials:
         cnt : int = 0
@@ -108,8 +111,7 @@ def show_artists(ssc):
                 cnt,
                 current_initial.getName(),
                 c.getName()))
-            artist : Artist = ssc.getArtist(c.getId())
-            artist_cover : ArtistCover = ssc.getArtistCover(artist)
+            artist_cover : ArtistCover = ssc.getCoverByArtistId(c.getId())
             artist_first_album_id : str
             artist_cover_url : str
             hashed_cover_art : str
@@ -126,13 +128,13 @@ def show_artists(ssc):
                     artist_first_album_id,
                     hashed_cover_art))
 
-def showGenres(ssc, cache : dict[str, str]):
-    genres : Genres = ssc.getGenres()
+def display_genres(ssc, cache : dict[str, str]):
+    genres_response : Response[Genres] = ssc.getGenres()
     print("Genres Request: Status [{}] Version [{}]".format(
-        genres.getResponse().getStatus(), 
-        genres.getResponse().getVersion()))
+        genres_response.getStatus(), 
+        genres_response.getVersion()))
     genre : Genre
-    for genre in ssc.getGenres().getGenres():
+    for genre in genres_response.getObj().getGenres() if genres_response.getObj() else []:
         if not genre.getName(): break
         print("G:[{}] AC:[{}] SC:[{}]".format(
             genre.getName(),
@@ -161,32 +163,44 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
             genre, 
             select_cover_art_url))
 
-def main():
-    search_earth_wind_and_fire(ssc)
+def display_random_rock_album_list(ssc):
+    response : Response[AlbumList] = ssc.getAlbumList(ltype = "byGenre", genre = "Rock")
+    album : Album
+    for album in response.getObj().getAlbums():
+        print("Genre: [{}] Album: [{}] Artist [{}]".format(album.getGenre(), album.getTitle(), album.getArtist()))
+
+def display_random_albums(ssc):
     random_album_list : list[str] = random_albums(ssc)
     if random_album_list:
         #show first
-        first_random : Album = ssc.getAlbum(random_album_list[0])
+        first_random : Response[Album] = ssc.getAlbum(random_album_list[0])
         if (first_random):
+            print("getAlbum response status[{}] version[{}]".format(first_random.getStatus(), first_random.getVersion()))
+        if (first_random and first_random.getObj()):
             print("{} [{}] {} [{}] Dur: [{}] Sc: [{}] Art: [{}]".format(
-                first_random.getArtist(),
-                first_random.getArtistId(), 
-                first_random.getTitle(),
-                first_random.getId(),
-                first_random.getDuration(),
-                first_random.getSongCount(),
-                first_random.getCoverArt()))
+                first_random.getObj().getArtist(),
+                first_random.getObj().getArtistId(), 
+                first_random.getObj().getTitle(),
+                first_random.getObj().getId(),
+                first_random.getObj().getDuration(),
+                first_random.getObj().getSongCount(),
+                first_random.getObj().getCoverArt()))
             #pprint(first_random.getData())
-            song_list : list[Song] = first_random.getSongs()
+            song_list : list[Song] = first_random.getObj().getSongs()
             for current_song in song_list:
                 print("[{}] {} {}".format(
                     current_song.getDiscNumber(),
                     current_song.getTrack(),
                     current_song.getTitle()))
+
+def main():
     genre_cache : dict[str, str] = {}
-    showGenres(ssc, genre_cache)
+    display_genres(ssc, genre_cache)
     # this time it will be faster
-    showGenres(ssc, genre_cache)
+    display_genres(ssc, genre_cache)
+    display_random_rock_album_list(ssc)
+    search_earth_wind_and_fire(ssc)
+    display_random_albums(ssc)
     newest_albums(ssc)
     random_songs(ssc)
     show_artists(ssc)
