@@ -92,6 +92,8 @@ def random_songs(ssr):
             current_song.getDiscNumber(), 
             current_song.getTrack()))
         id = current_song.getId()
+        song_res : Response[Song] = ssc.getSong(id)
+        print("Song Id:[{}] Title: [{}]".format(song_res.getObj().getId(), song_res.getObj().getTitle()))
         #streamable_url = ssc.buildSongUrl(id)
         #cover_url = ssc.buildCoverArtUrl(id)
         #print(" -> Stream = [" + streamable_url + "]")
@@ -197,6 +199,7 @@ def display_random_albums(ssc):
                     current_song.getTitle()))
 
 def main():
+    random_songs(ssc)
     genre_cache : dict[str, str] = {}
     display_genres(ssc, genre_cache)
     # this time it will be faster
@@ -205,7 +208,6 @@ def main():
     search_earth_wind_and_fire(ssc)
     display_random_albums(ssc)
     newest_albums(ssc)
-    random_songs(ssc)
     show_artists(ssc)
 
 if __name__ == "__main__":
