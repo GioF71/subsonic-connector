@@ -5,6 +5,7 @@ from .artist import Artist
 from .artists import Artists
 from .album_list import AlbumList
 from .album import Album
+from .song import Song
 from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
@@ -78,7 +79,12 @@ class Connector:
             albumId : str) -> Response[Album]:
         data = self.__connect().getAlbum(albumId)
         return Response(data, Album(data) if data else None)
-            
+
+    def getSong(self,
+            song_id : str) -> Response[Song]:
+        data = self.__connect().getSong(song_id)
+        return Response(data, Song(data) if data else None)
+
     def getNewestAlbumList(self, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
