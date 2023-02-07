@@ -10,6 +10,7 @@ from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
 from .response import Response
+from .list_type import ListType
 
 from .configuration import Configuration
 
@@ -62,12 +63,12 @@ class Connector:
         return Response(data, RandomSongs(data) if data else None)
 
     def getAlbumList(self, 
-            ltype, 
+            ltype : ListType = None, 
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> Response[AlbumList]:
         data : dict = self.__connect().getAlbumList(
-            ltype = ltype, 
+            ltype = ltype.getArgValue() if ltype else None, 
             size = size, offset = offset, 
             fromYear = fromYear, toYear = toYear,
             genre = genre, musicFolderId = musicFolderId)
@@ -83,7 +84,7 @@ class Connector:
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> Response[AlbumList]:
         return self.getAlbumList(
-            ltype = "newest", 
+            ltype = ListType.NEWEST, 
             size = size, offset = offset, 
             fromYear = fromYear, toYear = toYear,
             genre = genre, musicFolderId = musicFolderId)
@@ -93,7 +94,7 @@ class Connector:
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> Response[AlbumList]:
         return self.getAlbumList(
-            ltype = "random", 
+            ltype = ListType.RANDOM, 
             size = size, offset = offset, 
             fromYear = fromYear, toYear = toYear,
             genre = genre, musicFolderId = musicFolderId)
