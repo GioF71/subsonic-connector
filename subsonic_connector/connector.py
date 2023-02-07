@@ -10,31 +10,13 @@ from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
 
+from .configuration import Configuration
+
 class Connector:
     
-    __KEY_BASE_URL = "baseUrl"
-    __KEY_PORT = "port"
-    __KEY_USERNAME = "username"
-    __KEY_PASSWORD = "password"
-    __KEY_API_VERSION = "apiVersion"
-    __KEY_APP_NAME = "appName"
+    def __init__(self, configuration : Configuration):
+        self.__configuration = configuration
 
-    def __init__(
-            self,
-            baseUrl : str,
-            port : int,
-            username : str,
-            password : str,
-            apiVersion : str = libsonic.API_VERSION,
-            appName : str = "navibridge"):
-        self.__config__ = {}
-        self.__config__[Connector.__KEY_BASE_URL] = baseUrl
-        self.__config__[Connector.__KEY_PORT] = port
-        self.__config__[Connector.__KEY_USERNAME] = username
-        self.__config__[Connector.__KEY_PASSWORD] = password
-        self.__config__[Connector.__KEY_API_VERSION] = apiVersion
-        self.__config__[Connector.__KEY_APP_NAME] = appName
-        
     def getIndexes(self, 
             musicFolderId = None, 
             ifModifiedSince = 0):
@@ -146,11 +128,11 @@ class Connector:
         qdict = connection._getBaseQdict()
         return "{}/rest/stream?u={}&s={}&t={}&c={}&v={}&id={}".format(
             self.__createBaseUrlWithPort(),
-            self.__get_config(Connector.__KEY_USERNAME),
+            self.__configuration.getUserName(),
             qdict["s"], # salt
             qdict["t"], # token
-            self.__get_config(Connector.__KEY_APP_NAME),
-            self.__get_config(Connector.__KEY_API_VERSION),
+            self.__configuration.getAppName(),
+            self.__configuration.getApiVersion(),
             song_id);
 
     def buildCoverArtUrl(self, item_id : str) -> str:
@@ -162,21 +144,16 @@ class Connector:
         return "{}/rest/{}?u={}&s={}&t={}&c={}&v={}&id={}".format(
             self.__createBaseUrlWithPort(),
             verb,
-            self.__get_config(Connector.__KEY_USERNAME),
+            self.__configuration.getUserName(),
             qdict["s"], # salt
             qdict["t"], # token
-            self.__get_config(Connector.__KEY_APP_NAME),
-            self.__get_config(Connector.__KEY_API_VERSION),
+            self.__configuration.getAppName(),
+            self.__configuration.getApiVersion(),
             item_id);
             
-    def __get_config(self, name : str) -> str | None:
-        return (self.__config__[name] 
-            if name in self.__config__ 
-            else None)
-    
     def __createBaseUrlWithPort(self):
-        baseUrl = self.__get_config(Connector.__KEY_BASE_URL)
-        port = self.__get_config(Connector.__KEY_PORT)
+        baseUrl = self.__configuration.getBaseUrl()
+        port = self.__configuration.getPort()
         url = baseUrl
         if ((baseUrl and baseUrl.startswith("https://") and port != 443) or 
             (baseUrl and baseUrl.startswith("http://") and port != 80)):
@@ -185,9 +162,9 @@ class Connector:
             
     def __connect(self):
         return libsonic.Connection(
-            baseUrl = self.__get_config(Connector.__KEY_BASE_URL), 
-            username = self.__get_config(Connector.__KEY_USERNAME), 
-            password = self.__get_config(Connector.__KEY_PASSWORD), 
-            port = int(str(self.__get_config(Connector.__KEY_PORT))),
-            appName = str(self.__get_config(Connector.__KEY_APP_NAME)),
-            apiVersion = str(self.__get_config(Connector.__KEY_API_VERSION)))
+            baseUrl = self.__configuration.getBaseUrl(), 
+            username = self.__configuration.getUserName(), 
+            password = self.__configuration.getPassword(), 
+            port = int(str(self.__configuration.getPort())),
+            appName = str(self.__configuration.getAppName()),
+            apiVersion = str(self.__configuration.getApiVersion()))
