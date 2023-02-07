@@ -2,7 +2,7 @@
 
 ## Reference
 
-This library relies on the [pysonic](https://github.com/crustymonkey/py-sonic) project.  
+This library relies on the [py-sonic](https://github.com/crustymonkey/py-sonic) project.  
 The current version I use in this project is [`0.8.0`](https://github.com/crustymonkey/py-sonic/releases/tag/0.8.0).
 
 ## Status
