@@ -3,6 +3,8 @@ import os
 import hashlib
 
 from subsonic_connector.connector import Connector
+from subsonic_connector.configuration import Configuration
+from subsonic_connector.default_config import DefaultConfiguration
 
 from subsonic_connector.artist import Artist
 from subsonic_connector.album import Album
@@ -16,17 +18,9 @@ from subsonic_connector.artist_cover import ArtistCover
 from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
 
-SERVER_URL : str = str(os.getenv("SUBSONIC_SERVER_URL"))
-SERVER_PORT : int = int(str(os.getenv("SUBSONIC_SERVER_PORT")))
-USERNAME : str = str(os.getenv("SUBSONIC_USERNAME"))
-PASSWORD : str = str(os.getenv("SUBSONIC_PASSWORD"))
+print("Subclass check:", issubclass(DefaultConfiguration, Configuration))
 
-ssc = Connector(
-    baseUrl = SERVER_URL, 
-    port = SERVER_PORT, 
-    username = USERNAME, 
-    password = PASSWORD,
-    appName="navibridge")
+ssc = Connector(DefaultConfiguration())
 
 def search_earth_wind_and_fire(ssc):
     searchResultEwf : SearchResult = ssc.search(
