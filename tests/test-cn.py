@@ -19,6 +19,7 @@ from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
 from subsonic_connector.random_songs import RandomSongs
 from subsonic_connector.response import Response
+from subsonic_connector.list_type import ListType
 
 print("Subclass check:", issubclass(DefaultConfiguration, Configuration))
 
@@ -164,7 +165,9 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
             select_cover_art_url))
 
 def display_random_rock_album_list(ssc):
-    response : Response[AlbumList] = ssc.getAlbumList(ltype = "byGenre", genre = "Rock")
+    response : Response[AlbumList] = ssc.getAlbumList(
+        ltype = ListType.BY_GENRE, 
+        genre = "Rock")
     album : Album
     for album in response.getObj().getAlbums():
         print("Genre: [{}] Album: [{}] Artist [{}]".format(album.getGenre(), album.getTitle(), album.getArtist()))
