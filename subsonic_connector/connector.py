@@ -137,32 +137,33 @@ class Connector:
             musicFolderId = musicFolderId))
 
     def buildSongUrl(self, song_id : str) -> str:
-        connection = self.__connect()
-        qdict = connection._getBaseQdict()
-        return "{}/rest/stream?u={}&s={}&t={}&c={}&v={}&id={}".format(
-            self.__createBaseUrlWithPort(),
-            self.__configuration.getUserName(),
-            qdict["s"], # salt
-            qdict["t"], # token
-            self.__configuration.getAppName(),
-            self.__configuration.getApiVersion(),
-            song_id);
+        return self.__buildUrl(
+            verb = "stream",
+            url_dict = {"id" : song_id})
 
     def buildCoverArtUrl(self, item_id : str) -> str:
-        return self.__buildUrl(verb = "getCoverArt", item_id = item_id)
+        return self.__buildUrl(
+            verb = "getCoverArt", 
+            url_dict = {"id" : item_id})
 
-    def __buildUrl(self, verb, item_id : str) -> str:
+    def __addAuthParameters(self, url_dict : dict[str, str] = {}) -> dict[str, str]:
         connection = self.__connect()
         qdict = connection._getBaseQdict()
-        return "{}/rest/{}?u={}&s={}&t={}&c={}&v={}&id={}".format(
-            self.__createBaseUrlWithPort(),
-            verb,
-            self.__configuration.getUserName(),
-            qdict["s"], # salt
-            qdict["t"], # token
-            self.__configuration.getAppName(),
-            self.__configuration.getApiVersion(),
-            item_id);
+        url_dict["u"] = self.__configuration.getUserName()
+        url_dict["s"] = qdict["s"] #salt
+        url_dict["t"] = qdict["t"] #token
+        url_dict["c"] = self.__configuration.getAppName()
+        url_dict["v"] = self.__configuration.getApiVersion()
+        return url_dict
+    
+    def __buildUrl(self, verb, url_dict : dict[str, str] = {}) -> str:
+        url = "{}/rest/{}".format(self.__createBaseUrlWithPort(), verb)
+        url_dict = self.__addAuthParameters(url_dict)
+        first : bool = True
+        for key in url_dict: 
+            url += "{}{}={}".format("?" if first else "&", key, url_dict[key])
+            first = False
+        return url
             
     def __createBaseUrlWithPort(self):
         baseUrl = self.__configuration.getBaseUrl()
