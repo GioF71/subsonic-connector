@@ -82,6 +82,9 @@ def random_albums(ssc) -> list[str]:
 
 def random_songs(ssr):
     random_songs_response : Response[RandomSongs] = ssc.getRandomSongs(size = 25)
+    if not random_songs_response.isOk():
+        print("Request status:", random_songs_response.getStatus())
+        return
     random_songs : list[Song] = random_songs_response.getObj().getSongs()
     current_song : Song
     for current_song in random_songs:
