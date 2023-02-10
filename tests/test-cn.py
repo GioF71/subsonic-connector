@@ -94,10 +94,10 @@ def random_songs(ssr):
         id = current_song.getId()
         song_res : Response[Song] = ssc.getSong(id)
         print("Song Id:[{}] Title: [{}]".format(song_res.getObj().getId(), song_res.getObj().getTitle()))
-        #streamable_url = ssc.buildSongUrl(id)
-        #cover_url = ssc.buildCoverArtUrl(id)
-        #print(" -> Stream = [" + streamable_url + "]")
-        #print(" -> Cover  = [" + cover_url + "]")
+        streamable_url = ssc.buildSongUrl(id)
+        cover_url = ssc.buildCoverArtUrl(id)
+        print(" -> Stream = [" + streamable_url + "]")
+        print(" -> Cover  = [" + cover_url + "]")
 
 def show_artists(ssc):
     max_per_initial : int = 15

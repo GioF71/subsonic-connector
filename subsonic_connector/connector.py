@@ -136,10 +136,17 @@ class Connector:
             songCount = songCount, songOffset = songOffset, 
             musicFolderId = musicFolderId))
 
-    def buildSongUrl(self, song_id : str) -> str:
+    def buildSongUrlBySong(self, song : Song) -> str:
         return self.__buildUrl(
             verb = "stream",
-            url_dict = {"id" : song_id})
+            url_dict = {
+                "id" : song.getId(), 
+                "format" : song.getSuffix()})
+
+    def buildSongUrl(self, song_id : str) -> str:
+        song_res : Response[Song] = self.getSong(song_id)
+        if song_res:
+            return self.buildSongUrlBySong(song = song_res.getObj())
 
     def buildCoverArtUrl(self, item_id : str) -> str:
         return self.__buildUrl(
