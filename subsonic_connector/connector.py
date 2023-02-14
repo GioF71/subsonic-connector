@@ -180,7 +180,10 @@ class Connector:
             (baseUrl and baseUrl.startswith("http://") and port != 80)):
             url = "{}:{}".format(baseUrl, port)
         return url
-            
+
+    def download(self, song_id : str):
+        return self.__connect().download(song_id)
+
     def __connect(self):
         return libsonic.Connection(
             baseUrl = self.__configuration.getBaseUrl(), 
