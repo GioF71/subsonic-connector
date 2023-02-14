@@ -4,8 +4,6 @@ import hashlib
 
 from subsonic_connector.connector import Connector
 from subsonic_connector.configuration import Configuration
-from subsonic_connector.default_config import DefaultConfiguration
-
 from subsonic_connector.artist import Artist
 from subsonic_connector.album import Album
 from subsonic_connector.song import Song
@@ -21,45 +19,47 @@ from subsonic_connector.random_songs import RandomSongs
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
 
-print("Subclass check:", issubclass(DefaultConfiguration, Configuration))
+from test_config import TestConfig
 
-ssc = Connector(DefaultConfiguration())
+def connector():
+    return Connector(TestConfig().connector_configuration())
 
-def search_earth_wind_and_fire(ssc):
-    searchResultEwf : SearchResult = ssc.search(
-        "Earth wind fire",
+def search_something():
+    ssc = connector()
+    search_result : SearchResult = ssc.search(
+        TestConfig().searchArgument(),
         artistCount = 10, 
         albumCount = 1000,
         songCount = 1000)
-    #pprint(searchResultEwf.getData())
-    ewfArtists : list[Artist] = searchResultEwf.getArtists()
-    for ewfArtist in ewfArtists:
-        print("EWF Artist: {} [{}]".format(
-            ewfArtist.getName(),
-            ewfArtist.getId()))
-    ewfAlbums : list[Album] = searchResultEwf.getAlbums()
-    ewfAlbum : Album
+    someArtists : list[Artist] = search_result.getArtists()
+    for some_artist in someArtists:
+        print("Some Artist: {} [{}]".format(
+            some_artist.getName(),
+            some_artist.getId()))
+    some_albums : list[Album] = search_result.getAlbums()
+    some_album : Album
     ac : int = 0
-    for ewfAlbum in ewfAlbums:
-        print("EWF ndx:[{}] T:[{}] G:[{}]".format(
+    for some_album in some_albums:
+        print("Some Album ndx:[{}] T:[{}] G:[{}]".format(
             ac,
-            ewfAlbum.getTitle(),
-            ewfAlbum.getGenre()))
+            some_album.getTitle(),
+            some_album.getGenre()))
         ac += 1
-    ewfSongs : list[Song] = searchResultEwf.getSongs()
-    ewfSong : Song
+    some_songs : list[Song] = search_result.getSongs()
+    some_song : Song
     sc : int = 0
-    for ewfSong in ewfSongs:
-        print("EWF ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}]".format(
+    for some_song in some_songs:
+        print("Some Song ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}]".format(
             sc,
-            ewfSong.getTitle(),
-            ewfSong.getArtist(),
-            ewfSong.getAlbum(),
-            ewfSong.getDiscNumber(),
-            ewfSong.getTrack()))
+            some_song.getTitle(),
+            some_song.getArtist(),
+            some_song.getAlbum(),
+            some_song.getDiscNumber(),
+            some_song.getTrack()))
         sc += 1
 
-def newest_albums(ssc):
+def newest_albums():
+    ssc = connector()
     # Newest albums (two albums expected)
     newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getObj().getAlbums()
     for album in newest_album_list:
@@ -68,7 +68,8 @@ def newest_albums(ssc):
             album.getTitle(),
             album.getGenre()))
 
-def random_albums(ssc) -> list[str]:
+def random_albums() -> list[str]:
+    ssc = connector()
     album_list : list[str] = []
     # Random album (a few of them)
     random_album_list : list[Album] = ssc.getRandomAlbumList(size = 1000).getObj().getAlbums()
@@ -80,7 +81,29 @@ def random_albums(ssc) -> list[str]:
         album_list.append(album.getId())
     return album_list
 
-def random_songs(ssr):
+def download_random_song():
+    ssc = connector()
+    random_songs_response : Response[RandomSongs] = ssc.getRandomSongs(size = 1)
+    if not random_songs_response.isOk():
+        print("Request status:", random_songs_response.getStatus())
+        return
+    random_songs : list[Song] = random_songs_response.getObj().getSongs()
+    current_song : Song
+    for current_song in random_songs:
+        print("Downloading Song [{}] A:[{}] G:[{}] D:[{}] T:[{}]".format(
+            current_song.getTitle(), 
+            current_song.getAlbum(),
+            current_song.getGenre(),
+            current_song.getDiscNumber(), 
+            current_song.getTrack()))
+        filename : str = "song_{}.{}".format(current_song.getId(), current_song.getSuffix())
+        with open(filename, mode='wb') as localfile:
+            to_download = ssc.download(current_song.getId())
+            while chunk := to_download.read(5 * 1000 * 1000):
+                localfile.write(chunk)
+
+def random_songs():
+    ssc = connector()
     random_songs_response : Response[RandomSongs] = ssc.getRandomSongs(size = 25)
     if not random_songs_response.isOk():
         print("Request status:", random_songs_response.getStatus())
@@ -102,7 +125,8 @@ def random_songs(ssr):
         print(" -> Stream = [" + streamable_url + "]")
         print(" -> Cover  = [" + cover_url + "]")
 
-def show_artists(ssc):
+def show_artists():
+    ssc = connector()
     max_per_initial : int = 15
     artists : Artists = ssc.getArtists().getObj()
     all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
@@ -134,7 +158,8 @@ def show_artists(ssc):
                     artist_first_album_id,
                     hashed_cover_art))
 
-def display_genres(ssc, cache : dict[str, str]):
+def display_genres(cache : dict[str, str]):
+    ssc = connector()
     genres_response : Response[Genres] = ssc.getGenres()
     print("Genres Request: Status [{}] Version [{}]".format(
         genres_response.getStatus(), 
@@ -148,11 +173,11 @@ def display_genres(ssc, cache : dict[str, str]):
             genre.getSongCount()))
         if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
             showCoverArtForGenre(
-                ssc, 
                 str(genre.getName()), 
                 cache)
 
-def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
+def showCoverArtForGenre(genre : str, cache : dict[str, str]):
+    ssc = connector()
     select_cover_art : str
     if genre in cache:
         select_cover_art = cache[genre]
@@ -169,16 +194,18 @@ def showCoverArtForGenre(ssc, genre : str, cache : dict[str, str]):
             genre, 
             select_cover_art_url))
 
-def display_random_rock_album_list(ssc):
+def display_random_album_list_for_genre():
+    ssc = connector()
     response : Response[AlbumList] = ssc.getAlbumList(
         ltype = ListType.BY_GENRE, 
-        genre = "Rock")
+        genre = TestConfig().get_genre())
     album : Album
     for album in response.getObj().getAlbums():
         print("Genre: [{}] Album: [{}] Artist [{}]".format(album.getGenre(), album.getTitle(), album.getArtist()))
 
-def display_random_albums(ssc):
-    random_album_list : list[str] = random_albums(ssc)
+def display_random_albums():
+    ssc = connector()
+    random_album_list : list[str] = random_albums()
     if random_album_list:
         #show first
         first_random : Response[Album] = ssc.getAlbum(random_album_list[0])
@@ -200,18 +227,20 @@ def display_random_albums(ssc):
                     current_song.getDiscNumber(),
                     current_song.getTrack(),
                     current_song.getTitle()))
+                ssc
 
 def main():
-    random_songs(ssc)
+    download_random_song()
+    random_songs()
     genre_cache : dict[str, str] = {}
-    display_genres(ssc, genre_cache)
+    display_genres(genre_cache)
     # this time it will be faster
-    display_genres(ssc, genre_cache)
-    display_random_rock_album_list(ssc)
-    search_earth_wind_and_fire(ssc)
-    display_random_albums(ssc)
-    newest_albums(ssc)
-    show_artists(ssc)
+    display_genres(genre_cache)
+    display_random_album_list_for_genre()
+    search_something()
+    display_random_albums()
+    newest_albums()
+    show_artists()
 
 if __name__ == "__main__":
     main()
