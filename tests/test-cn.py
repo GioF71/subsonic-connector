@@ -63,9 +63,10 @@ def newest_albums():
     # Newest albums (two albums expected)
     newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getObj().getAlbums()
     for album in newest_album_list:
-        print("Album {} = [{}] Genre [{}]".format(
+        print("Album [{}] [{}] Year [{}] Genre [{}]".format(
             album.getId(), 
             album.getTitle(),
+            album.getYear(),
             album.getGenre()))
 
 def random_albums() -> list[str]:

@@ -38,6 +38,9 @@ class Album:
     def getGenre(self) -> str | None:
         return self.__select_item.getByName("genre")
 
+    def getYear(self) -> str | None:
+        return self.__select_item.getByName("year")
+
     def getDuration(self) -> str:
         return self.__select_item.getByName("duration")
 
