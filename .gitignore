@@ -2,6 +2,8 @@
 poetry.lock
 dist/*
 subsonic_connector/__pycache__/
+tests/__pycache__/**
+
 .vscode/settings.json
 pypi-password.txt
 
@@ -11,5 +13,6 @@ pypi-password.txt
 *.wav
 *.opus
 *.ogg
+*.m4a
 
 .DS_Store
