@@ -10,6 +10,8 @@ from .random_songs import RandomSongs
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
+from .playlists import Playlists
+from .playlist import Playlist
 from .response import Response
 from .list_type import ListType
 
@@ -31,11 +33,11 @@ class Connector:
             ifModifiedSince = ifModifiedSince)
 
     def getArtists(self) -> Response[Artists]:
-        data = self.__connect().getArtists()
+        data : dict = self.__connect().getArtists()
         return Response(data, Artists(data) if data else None)
 
     def getGenres(self) -> Response[Genres]:
-        data = self.__connect().getGenres()
+        data : dict = self.__connect().getGenres()
         return Response(data, Genres(data) if data else None)
 
     def getCoverArtForGenre(self,
@@ -80,12 +82,12 @@ class Connector:
 
     def getAlbum(self,
             albumId : str) -> Response[Album]:
-        data = self.__connect().getAlbum(albumId)
+        data : dict = self.__connect().getAlbum(albumId)
         return Response(data, Album(data) if data else None)
 
     def getSong(self,
             song_id : str) -> Response[Song]:
-        data = self.__connect().getSong(song_id)
+        data : dict = self.__connect().getSong(song_id)
         return Response(data, Song(data) if data else None)
 
     def getNewestAlbumList(self, 
@@ -109,8 +111,16 @@ class Connector:
             genre = genre, musicFolderId = musicFolderId)
 
     def getArtist(self, artist_id : str) -> Response[Artist]:
-        data = self.__connect().getArtist(artist_id)
+        data : dict = self.__connect().getArtist(artist_id)
         return Response(data, Artist(data) if data else None)
+
+    def getPlaylists(self) -> Response[Playlists]:
+        data : dict = self.__connect().getPlaylists()
+        return Response(data, Playlists(data) if data else None)
+
+    def getPlaylist(self, playlist_id : str) -> Response[Playlist]:
+        data : dict = self.__connect().getPlaylist(playlist_id)
+        return Response(data, Playlist(data) if data else None)
 
     def getCoverByArtistId(self, artist_id : str) -> ArtistCover | None:
         artist_response : Response[Artist] = self.getArtist(artist_id)
