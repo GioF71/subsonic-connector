@@ -15,6 +15,9 @@ from subsonic_connector.search_result import SearchResult
 from subsonic_connector.artist_cover import ArtistCover
 from subsonic_connector.genres import Genres
 from subsonic_connector.genre import Genre
+from subsonic_connector.playlists import Playlists
+from subsonic_connector.playlist import Playlist
+from subsonic_connector.playlist_entry import PlaylistEntry
 from subsonic_connector.random_songs import RandomSongs
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
@@ -239,9 +242,48 @@ def invalid_credentials():
     except Exception as e:
         print(f"Error [{str(e)}] occurred as expected")
 
+def print_playlist(playlist : Playlist):
+    print(f"Playlist id {playlist.getId()} name {playlist.getId()}")
+    print(f"  created      {playlist.getCreated()}")
+    print(f"  changed      {playlist.getChanged()}")
+    print(f"  coverArt     {playlist.getCoverArt()}")
+    print(f"  owner        {playlist.getOwner()}")
+    print(f"  public       {playlist.getPublic()}")
+    print(f"  duration     {playlist.getDuration()}")
+    print(f"  songCount    {playlist.getSongCount()}")
+    art_uri = connector().buildCoverArtUrl(playlist.getCoverArt())
+    print(f"  coverArt uri {art_uri}")
+    playlist_entries : list[PlaylistEntry] = playlist.getEntries()
+    entry : PlaylistEntry
+    for entry in playlist_entries:
+        print(f"    id           {entry.getId()}")
+        print(f"    parent       {entry.getParent()}")
+        print(f"    title        {entry.getTitle()}")
+        print(f"    coverArt     {entry.getCoverArt()}")
+        stream_url : str = connector().buildSongUrl(entry.getId())
+        cover_url : str = connector().buildCoverArtUrl(entry.getCoverArt())
+        print(f"    streamUrl    {stream_url}")
+        print(f"    coverArtUrl  {cover_url}")
+
+def show_playlists():
+    print("using getPlaylists")
+    playlists_response : Response[Playlists] = connector().getPlaylists()
+    if not playlists_response.isOk(): raise Exception("Cannot retrieve playlists")
+    playlists : Playlists = playlists_response.getObj()
+    playlist : Playlist
+    for playlist in playlists.getPlaylists():
+        print_playlist(playlist)
+    # also check getPlaylist method
+    print("using getPlaylist")
+    for playlist in playlists.getPlaylists():
+        id : str = playlist.getId()
+        playlist_response : Response[Playlist] = connector().getPlaylist(id)
+        if not playlist_response.isOk(): raise Exception(f"Cannot retrieve playlist [{id}]")
+        print_playlist(playlist_response.getObj())
+
 def main():
     invalid_credentials()
-    return
+    show_playlists()
     download_random_song()
     random_songs()
     genre_cache : dict[str, str] = {}
