@@ -20,6 +20,7 @@ from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
 
 from test_config import TestConfig
+from invalid_config import RandomPasswordConfiguration
 
 def connector():
     return Connector(TestConfig().connector_configuration())
@@ -230,7 +231,17 @@ def display_random_albums():
                     current_song.getTitle()))
                 ssc
 
+def invalid_credentials():
+    cn : Connector = Connector(RandomPasswordConfiguration())
+    try:
+        cn.ping()
+        raise Exception("This was expected to fail")
+    except Exception as e:
+        print(f"Error [{str(e)}] occurred as expected")
+
 def main():
+    invalid_credentials()
+    return
     download_random_song()
     random_songs()
     genre_cache : dict[str, str] = {}

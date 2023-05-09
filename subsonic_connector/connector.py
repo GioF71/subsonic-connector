@@ -20,6 +20,9 @@ class Connector:
     def __init__(self, configuration : Configuration):
         self.__configuration = configuration
 
+    def ping(self) -> bool:
+        return self.__connect().ping()
+
     def getIndexes(self, 
             musicFolderId = None, 
             ifModifiedSince = 0):
