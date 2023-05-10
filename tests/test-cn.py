@@ -281,8 +281,25 @@ def show_playlists():
         if not playlist_response.isOk(): raise Exception(f"Cannot retrieve playlist [{id}]")
         print_playlist(playlist_response.getObj())
 
+def get_artist_covers():
+    artists_response : Response[Artists] = connector().getArtists()
+    ai_list : list[ArtistsInitial] = artists_response.getObj().getArtistListInitials()
+    ai : ArtistsInitial
+    for ai in ai_list:
+        ali_list : list[ArtistListItem] = ai.getArtistListItems()
+        ali : ArtistListItem
+        for ali in ali_list:
+            artist_id : str = ali.getId()
+            artist_name : str = ali.getName()
+            album_count : str = ali.getAlbumCount()
+            cover_art : str = ali.getCoverArt()
+            artist_image_url : str = ali.getArtistImageUrl()
+            cover_art_url : str = connector().buildCoverArtUrl(cover_art)
+            print(f"found id {artist_id} name {artist_name} album_count {album_count} cover_art {cover_art} cover_art_url {cover_art_url} artist_image_url {artist_image_url}")
+
 def main():
     invalid_credentials()
+    get_artist_covers()
     show_playlists()
     download_random_song()
     random_songs()
