@@ -14,5 +14,8 @@ class ArtistListItem:
     def getAlbumCount(self) -> str | None:
         return self.__item.getByName("albumCount")
 
+    def getCoverArt(self) -> str | None:
+        return self.__item.getByName("coverArt")
+
     def getArtistImageUrl(self) -> str | None:
         return self.__item.getByName("artistImageUrl")
