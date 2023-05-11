@@ -161,6 +161,12 @@ class Connector:
         if song_res:
             return self.buildSongUrlBySong(song = song_res.getObj())
 
+    def scrobble(self, song_id : str, submission : bool = True, listenTime : int = None) -> dict:
+        return self.__connect().scrobble(
+            sid = song_id, 
+            submission = submission, 
+            listenTime = listenTime)
+
     def buildCoverArtUrl(self, item_id : str) -> str:
         return self.__buildUrl(
             verb = "getCoverArt", 

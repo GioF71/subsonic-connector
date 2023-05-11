@@ -297,8 +297,17 @@ def get_artist_covers():
             cover_art_url : str = connector().buildCoverArtUrl(cover_art)
             print(f"found id {artist_id} name {artist_name} album_count {album_count} cover_art {cover_art} cover_art_url {cover_art_url} artist_image_url {artist_image_url}")
 
+def random_scrobble():
+    response : Response[RandomSongs] = connector().getRandomSongs(size = 1)
+    song_list : list[Song] = response.getObj().getSongs()
+    if len(song_list) == 0: return
+    song : Song = song_list[0]
+    scrobble_result : dict = connector().scrobble(song.getId())
+    print(f"Song Artist:[{song.getArtist()}] Title:[{song.getTitle()}] Id:[{song.getId()}] scrobbled")
+
 def main():
     invalid_credentials()
+    random_scrobble()
     get_artist_covers()
     show_playlists()
     download_random_song()
