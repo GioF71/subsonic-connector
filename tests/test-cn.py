@@ -19,6 +19,8 @@ from subsonic_connector.playlists import Playlists
 from subsonic_connector.playlist import Playlist
 from subsonic_connector.playlist_entry import PlaylistEntry
 from subsonic_connector.random_songs import RandomSongs
+from subsonic_connector.internet_radio_stations import InternetRadioStations
+from subsonic_connector.internet_radio_station import InternetRadioStation
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
 
@@ -305,8 +307,16 @@ def random_scrobble():
     scrobble_result : dict = connector().scrobble(song.getId())
     print(f"Song Artist:[{song.getArtist()}] Title:[{song.getTitle()}] Id:[{song.getId()}] scrobbled")
 
+def list_radios():
+    response : Response[InternetRadioStations] = connector().getInternetRadioStations()
+    if not response.isOk(): raise Exception("Cannot get radio stations")
+    current : InternetRadioStation
+    for current in response.getObj().getStations():
+        print(f"Radio id:[{current.getId()}] name:[{current.getName()}] streamUrl:[{current.getStreamUrl()}] homePageUrl:[{current.getHomePageUrl()}]")
+
 def main():
     invalid_credentials()
+    list_radios()
     random_scrobble()
     get_artist_covers()
     show_playlists()

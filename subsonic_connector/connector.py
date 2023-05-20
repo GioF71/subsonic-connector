@@ -14,6 +14,7 @@ from .playlists import Playlists
 from .playlist import Playlist
 from .response import Response
 from .list_type import ListType
+from .internet_radio_stations import InternetRadioStations
 
 from .configuration import Configuration
 
@@ -148,6 +149,11 @@ class Connector:
             albumCount = albumCount, albumOffset = albumOffset, 
             songCount = songCount, songOffset = songOffset, 
             musicFolderId = musicFolderId))
+
+    def getInternetRadioStations(self) -> Response[InternetRadioStations]:
+        data : dict = self.__connect().getInternetRadioStations()
+        return Response(data, InternetRadioStations(data) if data else None)
+
 
     def buildSongUrlBySong(self, song : Song) -> str:
         return self.__buildUrl(
