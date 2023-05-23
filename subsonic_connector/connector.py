@@ -7,6 +7,8 @@ from .album_list import AlbumList
 from .album import Album
 from .song import Song
 from .random_songs import RandomSongs
+from .top_songs import TopSongs
+from .artist_info import ArtistInfo
 from .search_result import SearchResult
 from .artist_cover import ArtistCover
 from .genres import Genres
@@ -57,6 +59,22 @@ class Connector:
             current_art = current["coverArt"]
             if current_art != "": return current_art
 
+    def getTopSongs(self, 
+            artist : str,
+            count = 50) -> Response[TopSongs]:
+        data : dict = self.__connect().getTopSongs(
+            artist = artist, 
+            count = count)
+        return Response(data, TopSongs(data) if data else None)
+    
+    def getArtistInfo(self, 
+            aid, count = 20, includeNotPresent=False) -> Response[ArtistInfo]:
+        data : dict = self.__connect().getArtistInfo(
+            aid = aid, 
+            count = count,
+            includeNotPresent = includeNotPresent)
+        return Response(data, ArtistInfo(data) if data else None)
+    
     def getRandomSongs(self, 
             size = 10, 
             genre = None, 

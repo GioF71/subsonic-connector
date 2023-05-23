@@ -10,7 +10,7 @@ class SearchResult:
     def __init__(self, data : dict):
         self.__item : Item = Item(data)
 
-    def getArtists(self) -> list[Song]:
+    def getArtists(self) -> list[Artist]:
         return list(map(
             lambda x : Artist(x), 
             self.__item.getList([SearchResult.__main_element, "artist"])))

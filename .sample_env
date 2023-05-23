@@ -6,4 +6,5 @@ SUBSONIC_PASSWORD=password
 
 # test configuration
 SEARCH_ARGUMENT=earth wind fire
+TOP_SONG_ARTIST=queen
 USE_GENRE=Rock
