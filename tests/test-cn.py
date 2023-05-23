@@ -20,6 +20,8 @@ from subsonic_connector.playlist import Playlist
 from subsonic_connector.playlist_entry import PlaylistEntry
 from subsonic_connector.random_songs import RandomSongs
 from subsonic_connector.top_songs import TopSongs
+from subsonic_connector.artist_info import ArtistInfo
+from subsonic_connector.similar_artist import SimilarArtist
 from subsonic_connector.internet_radio_stations import InternetRadioStations
 from subsonic_connector.internet_radio_station import InternetRadioStation
 from subsonic_connector.response import Response
@@ -323,9 +325,25 @@ def top_songs():
     for song in res.getObj().getSongs():
         print(f"Top song: {song.getTitle()}")
 
+def artist_info():
+    top_song_artist : str = TestConfig().get_top_song_artist()
+    artist_res : SearchResult = connector().search(top_song_artist, artistCount = 1, albumCount = 0, songCount = 0)
+    artist_count : int = len(artist_res.getArtists())
+    if artist_count > 0:
+        artist_id = artist_res.getArtists()[0].getId()
+        res : Response[ArtistInfo] = connector().getArtistInfo(artist_id)
+        if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
+        bio : str = res.getObj().getBiography()
+        print(f"Got a bio of {len(bio)} characters")
+        s_a : SimilarArtist
+        sim_art_list : list[SimilarArtist] = res.getObj().getSimilarArtists()
+        for s_a in sim_art_list:
+            print(f"Similar Artist id: [{s_a.getId()}] name: [{s_a.getName()}]")
+
 def main():
     invalid_credentials()
     top_songs()
+    artist_info()
     list_radios()
     random_scrobble()
     get_artist_covers()
