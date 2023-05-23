@@ -13,3 +13,6 @@ class TestConfig:
     
     def get_genre(self) -> str:
         return os.getenv("USE_GENRE")
+    
+    def get_top_song_artist(self) -> str:
+        return os.getenv("TOP_SONG_ARTIST")

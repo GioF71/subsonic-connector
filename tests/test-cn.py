@@ -19,6 +19,7 @@ from subsonic_connector.playlists import Playlists
 from subsonic_connector.playlist import Playlist
 from subsonic_connector.playlist_entry import PlaylistEntry
 from subsonic_connector.random_songs import RandomSongs
+from subsonic_connector.top_songs import TopSongs
 from subsonic_connector.internet_radio_stations import InternetRadioStations
 from subsonic_connector.internet_radio_station import InternetRadioStation
 from subsonic_connector.response import Response
@@ -314,8 +315,17 @@ def list_radios():
     for current in response.getObj().getStations():
         print(f"Radio id:[{current.getId()}] name:[{current.getName()}] streamUrl:[{current.getStreamUrl()}] homePageUrl:[{current.getHomePageUrl()}]")
 
+def top_songs():
+    top_song_artist : str = TestConfig().get_top_song_artist()
+    res : Response[TopSongs] = connector().getTopSongs(top_song_artist)
+    if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
+    song : Song
+    for song in res.getObj().getSongs():
+        print(f"Top song: {song.getTitle()}")
+
 def main():
     invalid_credentials()
+    top_songs()
     list_radios()
     random_scrobble()
     get_artist_covers()
