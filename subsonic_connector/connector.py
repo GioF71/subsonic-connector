@@ -148,7 +148,7 @@ class Connector:
 
     def getCoverByArtist(self, artist : Artist) -> ArtistCover | None:
         album_list : list[Album] = artist.getAlbumList()
-        current : Album
+        selected_album : Album
         for selected_album in album_list:
             select_album_id = selected_album.getId()
             select_album_cover_art = selected_album.getCoverArt()
