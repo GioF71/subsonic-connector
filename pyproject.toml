@@ -1,6 +1,6 @@
 [project]
 name = "subsonic_connector_GioF71"
-version = "0.1.15"
+version = "0.1.16"
 authors = [
   {name = "GioF71", email = "giovanni.fulco@gmail.com" },
 ]
@@ -19,7 +19,7 @@ classifiers = [
 
 [tool.poetry]
 name = "subsonic-connector"
-version = "0.1.15"
+version = "0.1.16"
 description = "SubSonic Connector based on py-sonic"
 authors = ["GioF71 <giovanni.fulco@gmail.com>"]
 readme = "README.md"
