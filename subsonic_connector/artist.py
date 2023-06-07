@@ -18,16 +18,16 @@ class Artist:
             select_item = self.__item
         self.__select_item : Item = select_item
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.__select_item.getId()
 
-    def getName(self) -> str | None:
+    def getName(self) -> str:
         return self.__select_item.getByName("name")
 
-    def getAlbumCount(self) -> str | None:
+    def getAlbumCount(self) -> str:
         return self.__select_item.getByName("albumCount")
 
-    def getArtistImageUrl(self) -> str | None:
+    def getArtistImageUrl(self) -> str:
         return self.__select_item.getByName("artistImageUrl")
 
     def getAlbumList(self) -> list:

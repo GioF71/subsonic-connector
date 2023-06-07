@@ -20,25 +20,25 @@ class Album:
             self.__key_title = "title"
         self.__select_item : Item = select_item
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.__select_item.getByName("id")
 
-    def getArtist(self) -> str | None:
+    def getArtist(self) -> str:
         return self.__select_item.getByName("artist")
 
-    def getArtistId(self) -> str | None:
+    def getArtistId(self) -> str:
         return self.__select_item.getByName("artistId")
 
-    def getCoverArt(self) -> str | None:
+    def getCoverArt(self) -> str:
         return self.__select_item.getByName("coverArt")
 
-    def getTitle(self) -> str | None:
+    def getTitle(self) -> str:
         return self.__select_item.getByName(self.__key_title)
 
-    def getGenre(self) -> str | None:
+    def getGenre(self) -> str:
         return self.__select_item.getByName("genre")
 
-    def getYear(self) -> str | None:
+    def getYear(self) -> str:
         return self.__select_item.getByName("year")
 
     def getDuration(self) -> str:

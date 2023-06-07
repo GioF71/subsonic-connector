@@ -5,62 +5,62 @@ class PlaylistEntry:
     def __init__(self, data : dict):
         self.__item : Item = Item(data)
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.__item.getByName("id")
 
-    def getParent(self) -> str | None:
+    def getParent(self) -> str:
         return self.__item.getByName("parent")
     
-    def getTitle(self) -> str | None:
+    def getTitle(self) -> str:
         return self.__item.getByName("title")
 
-    def getAlbum(self) -> str | None:
+    def getAlbum(self) -> str:
         return self.__item.getByName("album")
 
-    def getArtist(self) -> str | None:
+    def getArtist(self) -> str:
         return self.__item.getByName("artist")
 
-    def getIsDir(self) -> str | None:
+    def getIsDir(self) -> str:
         return self.__item.getByName("isDir")
 
-    def getCoverArt(self) -> str | None:
+    def getCoverArt(self) -> str:
         return self.__item.getByName("coverArt")
 
-    def getCreated(self) -> str | None:
+    def getCreated(self) -> str:
         return self.__item.getByName("created")
 
-    def getDuration(self) -> str | None:
+    def getDuration(self) -> str:
         return self.__item.getByName("duration")
 
-    def getBitRate(self) -> str | None:
+    def getBitRate(self) -> str:
         return self.__item.getByName("bitRate")
     
-    def getTrack(self) -> str | None:
+    def getTrack(self) -> str:
         return self.__item.getByName("track")
 
-    def getYear(self) -> str | None:
+    def getYear(self) -> str:
         return self.__item.getByName("year")
 
-    def getSize(self) -> str | None:
+    def getSize(self) -> str:
         return self.__item.getByName("size")
 
-    def getSuffix(self) -> str | None:
+    def getSuffix(self) -> str:
         return self.__item.getByName("suffix")
     
-    def getContentType(self) -> str | None:
+    def getContentType(self) -> str:
         return self.__item.getByName("contentType")
 
-    def getIsVideo(self) -> str | None:
+    def getIsVideo(self) -> str:
         return self.__item.getByName("isVideo")
 
-    def getPath(self) -> str | None:
+    def getPath(self) -> str:
         return self.__item.getByName("path")
 
-    def getAlbumId(self) -> str | None:
+    def getAlbumId(self) -> str:
         return self.__item.getByName("albumId")
 
-    def getArtistId(self) -> str | None:
+    def getArtistId(self) -> str:
         return self.__item.getByName("artistId")
 
-    def getType(self) -> str | None:
+    def getType(self) -> str:
         return self.__item.getByName("type")

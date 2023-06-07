@@ -45,7 +45,7 @@ class Connector:
 
     def getCoverArtForGenre(self,
             genre : str,
-            maxSongs = 20) -> str | None:
+            maxSongs = 20) -> str:
         songs : dict = self.__connect().getSongsByGenre(
             genre, 
             maxSongs)
@@ -141,12 +141,12 @@ class Connector:
         data : dict = self.__connect().getPlaylist(playlist_id)
         return Response(data, Playlist(data) if data else None)
 
-    def getCoverByArtistId(self, artist_id : str) -> ArtistCover | None:
+    def getCoverByArtistId(self, artist_id : str) -> ArtistCover:
         artist_response : Response[Artist] = self.getArtist(artist_id)
         if not artist_response and not artist_response.getObj(): return None
         return self.getCoverByArtist(artist_response.getObj())
 
-    def getCoverByArtist(self, artist : Artist) -> ArtistCover | None:
+    def getCoverByArtist(self, artist : Artist) -> ArtistCover:
         album_list : list[Album] = artist.getAlbumList()
         selected_album : Album
         for selected_album in album_list:

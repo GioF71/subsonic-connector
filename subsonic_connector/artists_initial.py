@@ -6,7 +6,7 @@ class ArtistsInitial:
     def __init__(self, data : dict):
         self.__item : Item = Item(data)
 
-    def getName(self) -> str | None:
+    def getName(self) -> str:
         return self.__item.getByName("name")
 
     def getArtistListItems(self) -> list[ArtistListItem]:

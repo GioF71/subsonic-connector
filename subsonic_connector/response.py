@@ -14,10 +14,10 @@ class Response(Generic[T]):
     def getObj(self) -> T:
         return self.__t
 
-    def getStatus(self) -> str | None:
+    def getStatus(self) -> str:
         return self.__item.getByName("status")
 
-    def getVersion(self) -> str | None:
+    def getVersion(self) -> str:
         return self.__item.getByName("version")
     
     def isOk(self) -> bool:
