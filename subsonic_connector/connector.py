@@ -17,6 +17,7 @@ from .playlist import Playlist
 from .response import Response
 from .list_type import ListType
 from .internet_radio_stations import InternetRadioStations
+from .similar_songs import SimilarSongs
 
 from .configuration import Configuration
 
@@ -45,7 +46,7 @@ class Connector:
 
     def getCoverArtForGenre(self,
             genre : str,
-            maxSongs = 20) -> str | None:
+            maxSongs = 20) -> str:
         songs : dict = self.__connect().getSongsByGenre(
             genre, 
             maxSongs)
@@ -141,14 +142,14 @@ class Connector:
         data : dict = self.__connect().getPlaylist(playlist_id)
         return Response(data, Playlist(data) if data else None)
 
-    def getCoverByArtistId(self, artist_id : str) -> ArtistCover | None:
+    def getCoverByArtistId(self, artist_id : str) -> ArtistCover:
         artist_response : Response[Artist] = self.getArtist(artist_id)
         if not artist_response and not artist_response.getObj(): return None
         return self.getCoverByArtist(artist_response.getObj())
 
-    def getCoverByArtist(self, artist : Artist) -> ArtistCover | None:
+    def getCoverByArtist(self, artist : Artist) -> ArtistCover:
         album_list : list[Album] = artist.getAlbumList()
-        current : Album
+        selected_album : Album
         for selected_album in album_list:
             select_album_id = selected_album.getId()
             select_album_cover_art = selected_album.getCoverArt()
@@ -171,7 +172,10 @@ class Connector:
     def getInternetRadioStations(self) -> Response[InternetRadioStations]:
         data : dict = self.__connect().getInternetRadioStations()
         return Response(data, InternetRadioStations(data) if data else None)
-
+    
+    def getSimilarSongs(self, iid, count : int = 50) -> Response[SimilarSongs]:
+        data : dict = self.__connect().getSimilarSongs(iid = iid, count = count)
+        return Response(data, SimilarSongs(data) if data else None)
 
     def buildSongUrlBySong(self, song : Song) -> str:
         return self.__buildUrl(

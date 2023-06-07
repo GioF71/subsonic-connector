@@ -18,22 +18,22 @@ class ArtistInfo:
             select_item = self.__item
         self.__select_item : Item = select_item
 
-    def getBiography(self) -> str | None:
+    def getBiography(self) -> str:
         return self.__select_item.getByName("biography")
 
-    def getMusicBrainzId(self) -> str | None:
+    def getMusicBrainzId(self) -> str:
         return self.__select_item.getByName("musicBrainzId")
 
-    def getLastFmUrl(self) -> str | None:
+    def getLastFmUrl(self) -> str:
         return self.__select_item.getByName("lastFmUrl")
 
-    def getSmallImageUrl(self) -> str | None:
+    def getSmallImageUrl(self) -> str:
         return self.__select_item.getByName("smallImageUrl")
 
-    def getMediumImageUrl(self) -> str | None:
+    def getMediumImageUrl(self) -> str:
         return self.__select_item.getByName("mediumImageUrl")
 
-    def getLargeImageUrl(self) -> str | None:
+    def getLargeImageUrl(self) -> str:
         return self.__select_item.getByName("largeImageUrl")
 
     def getSimilarArtists(self) -> list[SimilarArtist]:

@@ -18,31 +18,31 @@ class Playlist:
             select_item = self.__item
         self.__select_item : Item = select_item
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.__select_item.getByName("id")
 
-    def getName(self) -> str | None:
+    def getName(self) -> str:
         return self.__select_item.getByName("name")
 
-    def getCreated(self) -> str | None:
+    def getCreated(self) -> str:
         return self.__select_item.getByName("created")
 
-    def getChanged(self) -> str | None:
+    def getChanged(self) -> str:
         return self.__select_item.getByName("changed")
 
-    def getCoverArt(self) -> str | None:
+    def getCoverArt(self) -> str:
         return self.__select_item.getByName("coverArt")
     
-    def getDuration(self) -> str | None:
+    def getDuration(self) -> str:
         return self.__select_item.getByName("duration")
     
-    def getOwner(self) -> str | None:
+    def getOwner(self) -> str:
         return self.__select_item.getByName("owner")
     
-    def getPublic(self) -> str | None:
+    def getPublic(self) -> str:
         return self.__select_item.getByName("public")
     
-    def getSongCount(self) -> str | None:
+    def getSongCount(self) -> str:
         return self.__select_item.getByName("songCount")
 
     def getEntries(self) -> list[PlaylistEntry]:

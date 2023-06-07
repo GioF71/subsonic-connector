@@ -24,6 +24,7 @@ from subsonic_connector.artist_info import ArtistInfo
 from subsonic_connector.similar_artist import SimilarArtist
 from subsonic_connector.internet_radio_stations import InternetRadioStations
 from subsonic_connector.internet_radio_station import InternetRadioStation
+from subsonic_connector.similar_songs import SimilarSongs
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
 
@@ -325,6 +326,23 @@ def top_songs():
     for song in res.getObj().getSongs():
         print(f"Top song: {song.getTitle()}")
 
+def similar_songs():
+    random_songs_response : Response[RandomSongs] = connector().getRandomSongs(size = 1)
+    if not random_songs_response.isOk():
+        raise Exception("Failed to get random songs")
+    if len(random_songs_response.getObj().getSongs()) == 0:
+        raise Exception("Cannot get one song")
+    song : Song = random_songs_response.getObj().getSongs()[0]
+    print(f"Song is [{song.getTitle()}] by [{song.getArtist()}]")
+    similar_songs : SimilarSongs = connector().getSimilarSongs(iid = song.getId())
+    similar_song : Song
+    for similar_song in similar_songs.getObj().getSongs():
+        print(f"A similar song is [{similar_song.getTitle()}] by [{similar_song.getArtist()}]")
+    artist_radio : SimilarSongs = connector().getSimilarSongs(iid = song.getArtistId())
+    artist_radio_song : Song
+    for artist_radio_song in artist_radio.getObj().getSongs():
+        print(f"Artist radio song is [{artist_radio_song.getTitle()}] by [{artist_radio_song.getArtist()}]")
+
 def artist_info():
     top_song_artist : str = TestConfig().get_top_song_artist()
     artist_res : SearchResult = connector().search(top_song_artist, artistCount = 1, albumCount = 0, songCount = 0)
@@ -343,6 +361,7 @@ def artist_info():
 def main():
     invalid_credentials()
     top_songs()
+    similar_songs()
     artist_info()
     list_radios()
     random_scrobble()

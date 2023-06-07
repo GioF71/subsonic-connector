@@ -17,56 +17,56 @@ class Song:
             select_item = self.__item
         self.__select_item : Item = select_item
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.__select_item.getId()
 
-    def getTitle(self) -> str | None:
+    def getTitle(self) -> str:
         return self.__select_item.getByName("title")
 
-    def getArtist(self) -> str | None:
+    def getArtist(self) -> str:
         return self.__select_item.getByName("artist")
 
-    def getArtistId(self) -> str | None:
+    def getArtistId(self) -> str:
         return self.__select_item.getByName("artistId")
 
-    def getAlbum(self) -> str | None:
+    def getAlbum(self) -> str:
         return self.__select_item.getByName("album")
 
-    def getAlbumId(self) -> str | None:
+    def getAlbumId(self) -> str:
         return self.__select_item.getByName("albumId")
 
-    def getYear(self) -> str | None:
+    def getYear(self) -> str:
         return self.__select_item.getByName("year")
 
-    def getDiscNumber(self) -> str | None:
+    def getDiscNumber(self) -> str:
         return self.__select_item.getByName("discNumber")
 
-    def getTrack(self) -> str | None:
+    def getTrack(self) -> str:
         return self.__select_item.getByName("track")
 
-    def getCoverArt(self) -> str | None:
+    def getCoverArt(self) -> str:
         return self.__select_item.getByName("coverArt")
 
-    def getContentType(self) -> str | None:     
+    def getContentType(self) -> str:     
         return self.__select_item.getByName("contentType")
 
-    def getBitRate(self) -> str | None:
+    def getBitRate(self) -> str:
         return self.__select_item.getByName("bitRate")
 
-    def getSuffix(self) -> str | None:
+    def getSuffix(self) -> str:
         return self.__select_item.getByName("suffix")
 
-    def getDuration(self) -> str | None:
+    def getDuration(self) -> str:
         return self.__select_item.getByName("duration")
 
-    def getParent(self) -> str | None:        
+    def getParent(self) -> str:        
         return self.__select_item.getByName("parent")
 
-    def getGenre(self) -> str | None:        
+    def getGenre(self) -> str:        
         return self.__select_item.getByName("genre")
 
-    def getPath(self) -> str | None:
+    def getPath(self) -> str:
         return self.__select_item.getByName("path")
         
-    def getCreated(self) -> str | None:        
+    def getCreated(self) -> str:        
         return self.__select_item.getByName("created")

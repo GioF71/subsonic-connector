@@ -14,12 +14,12 @@ class Item:
     def hasName(self, name : str) -> bool:
         return name in self.getData()
 
-    def getByName(self, name : str, defaultValue = None) -> str | None:
+    def getByName(self, name : str, defaultValue = None) -> str:
         return (self.getData()[name]
             if name in self.getData() 
             else defaultValue)
 
-    def getId(self) -> str | None:
+    def getId(self) -> str:
         return self.getByName("id")
 
     def getList(self, path : list[str], allowEmpty = True) -> list:
