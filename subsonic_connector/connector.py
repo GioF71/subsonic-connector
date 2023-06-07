@@ -17,6 +17,7 @@ from .playlist import Playlist
 from .response import Response
 from .list_type import ListType
 from .internet_radio_stations import InternetRadioStations
+from .similar_songs import SimilarSongs
 
 from .configuration import Configuration
 
@@ -171,7 +172,10 @@ class Connector:
     def getInternetRadioStations(self) -> Response[InternetRadioStations]:
         data : dict = self.__connect().getInternetRadioStations()
         return Response(data, InternetRadioStations(data) if data else None)
-
+    
+    def getSimilarSongs(self, iid, count : int = 50) -> Response[SimilarSongs]:
+        data : dict = self.__connect().getSimilarSongs(iid = iid, count = count)
+        return Response(data, SimilarSongs(data) if data else None)
 
     def buildSongUrlBySong(self, song : Song) -> str:
         return self.__buildUrl(
