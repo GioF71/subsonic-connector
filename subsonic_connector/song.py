@@ -70,3 +70,6 @@ class Song:
         
     def getCreated(self) -> str:        
         return self.__select_item.getByName("created")
+
+    def getStarred(self) -> str:        
+        return self.__select_item.getByName("starred")

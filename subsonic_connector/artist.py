@@ -33,3 +33,6 @@ class Artist:
     def getAlbumList(self) -> list:
         albumList : list = self.__select_item.getList(["album"])
         return list(map(lambda x : Album(x), albumList))
+
+    def getStarred(self) -> str:        
+        return self.__select_item.getByName("starred")

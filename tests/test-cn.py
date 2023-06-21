@@ -27,6 +27,7 @@ from subsonic_connector.internet_radio_station import InternetRadioStation
 from subsonic_connector.similar_songs import SimilarSongs
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
+from subsonic_connector.starred import Starred
 
 from test_config import TestConfig
 from invalid_config import RandomPasswordConfiguration
@@ -358,8 +359,27 @@ def artist_info():
         for s_a in sim_art_list:
             print(f"Similar Artist id: [{s_a.getId()}] name: [{s_a.getName()}]")
 
+def starred():
+    res : Response[Starred] = connector().getStarred()
+    # artists
+    artist_list : list[Artist] = res.getObj().getArtists()
+    current_artist : Artist
+    for current_artist in artist_list:
+        print(f"Found starred artist [{current_artist.getName()}] starred [{current_artist.getStarred()}]")
+    # albums
+    album_list : list[Album] = res.getObj().getAlbums()
+    current_album : Album
+    for current_album in album_list:
+        print(f"Found starred album [{current_album.getTitle()}] starred [{current_album.getStarred()}]")
+    # songs
+    song_list : list[Song] = res.getObj().getSongs()
+    current_song : Song
+    for current_song in song_list:
+        print(f"Found starred song [{current_song.getTitle()}] starred [{current_song.getStarred()}]")
+
 def main():
     invalid_credentials()
+    starred()
     top_songs()
     similar_songs()
     artist_info()
