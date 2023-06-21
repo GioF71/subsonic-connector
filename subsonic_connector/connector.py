@@ -18,6 +18,7 @@ from .response import Response
 from .list_type import ListType
 from .internet_radio_stations import InternetRadioStations
 from .similar_songs import SimilarSongs
+from .starred import Starred
 
 from .configuration import Configuration
 
@@ -168,6 +169,10 @@ class Connector:
             albumCount = albumCount, albumOffset = albumOffset, 
             songCount = songCount, songOffset = songOffset, 
             musicFolderId = musicFolderId))
+
+    def getStarred(self) -> Response[Starred]:
+        data : dict = self.__connect().getStarred()
+        return Response(data, Starred(data) if data else None)
 
     def getInternetRadioStations(self) -> Response[InternetRadioStations]:
         data : dict = self.__connect().getInternetRadioStations()
