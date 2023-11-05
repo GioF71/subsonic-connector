@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/tests/test-cn.py",
             "console": "integratedTerminal",
-            "justMyCode": false,
+            "justMyCode": true,
             "envFile": "${file}",
             "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
         },
