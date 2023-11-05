@@ -7,5 +7,5 @@ class AlbumList:
         self.__item : Item = Item(data)
 
     def getAlbums(self) -> list[Album]:
-        l : list = self.__item.getList(["albumList", "album"])
+        l : list = self.__item.getList(["albumList2", "album"])
         return list(map(lambda x : Album(x), l))

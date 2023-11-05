@@ -94,11 +94,11 @@ class Connector:
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> Response[AlbumList]:
-        data : dict = self.__connect().getAlbumList(
+        data : dict = self.__connect().getAlbumList2(
             ltype = ltype.getArgValue() if ltype else None, 
             size = size, offset = offset, 
             fromYear = fromYear, toYear = toYear,
-            genre = genre, musicFolderId = musicFolderId)
+            genre = genre)
         return Response(data, AlbumList(data) if data else None)
 
     def getAlbum(self,
