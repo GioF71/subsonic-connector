@@ -3,7 +3,7 @@ from .similar_artist import SimilarArtist
 
 class ArtistInfo:
 
-    __dict_name : str = "artistInfo"
+    __dict_name : str = "artistInfo2"
 
     def __init__(self, data : dict):
         self.__item : Item = Item(data)

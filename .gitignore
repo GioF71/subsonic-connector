@@ -16,3 +16,5 @@ pypi-password.txt
 *.m4a
 
 .DS_Store
+
+*.env

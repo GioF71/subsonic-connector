@@ -58,8 +58,8 @@ class Connector:
         if not songList: return None
         coverArt : str = ""
         for current in songList:
-            current_art = current["coverArt"]
-            if current_art != "": return current_art
+            current_art = current["coverArt"] if "coverArt" in current else None
+            if current_art: return current_art
 
     def getTopSongs(self, 
             artist : str,
@@ -71,7 +71,7 @@ class Connector:
     
     def getArtistInfo(self, 
             aid, count = 20, includeNotPresent=False) -> Response[ArtistInfo]:
-        data : dict = self.__connect().getArtistInfo(
+        data : dict = self.__connect().getArtistInfo2(
             aid = aid, 
             count = count,
             includeNotPresent = includeNotPresent)
@@ -179,7 +179,7 @@ class Connector:
         return Response(data, InternetRadioStations(data) if data else None)
     
     def getSimilarSongs(self, iid, count : int = 50) -> Response[SimilarSongs]:
-        data : dict = self.__connect().getSimilarSongs(iid = iid, count = count)
+        data : dict = self.__connect().getSimilarSongs2(iid = iid, count = count)
         return Response(data, SimilarSongs(data) if data else None)
 
     def buildSongUrlBySong(self, song : Song) -> str:
