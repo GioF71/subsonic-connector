@@ -166,16 +166,12 @@ def show_artists():
             artist_cover_url : str
             hashed_cover_art : str
             if artist_cover:
-                # set first album id
-                artist_first_album_id = artist_cover.getAlbumId()
-                # create url
-                artist_cover_url = ssc.buildCoverArtUrl(artist_cover.getCoverArt())
+                artist_cover_url = artist_cover.getArtistArtUrl()
                 hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
-                print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
+                print("Artist Initial[{}] N:[{}] AC:[{}] HashedCover:[{}]".format(
                     current_initial.getName(), 
                     c.getName(), 
                     c.getAlbumCount(),
-                    artist_first_album_id,
                     hashed_cover_art))
                 print(f"Artist [{c.getId()}] Art [{artist_cover_url}]")
 
@@ -303,8 +299,13 @@ def get_artist_covers():
     ai : ArtistsInitial
     for ai in ai_list:
         ali_list : list[ArtistListItem] = ai.getArtistListItems()
+        if not ali_list or len(ali_list) == 0: break
+        # get 1 random artist
+        select : list[ArtistListItem] = list()
+        for _ in range(1):
+            select.append(secrets.choice(ali_list))
         ali : ArtistListItem
-        for ali in ali_list:
+        for ali in select:
             artist_id : str = ali.getId()
             artist_name : str = ali.getName()
             album_count : str = ali.getAlbumCount()

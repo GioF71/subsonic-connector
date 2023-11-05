@@ -149,13 +149,19 @@ class Connector:
         return self.getCoverByArtist(artist_response.getObj())
 
     def getCoverByArtist(self, artist : Artist) -> ArtistCover:
+        artist_url : str = artist.getArtistImageUrl()
+        if artist_url: return ArtistCover(artist_id = artist.getId(), artist_art_url = artist_url)
         album_list : list[Album] = artist.getAlbumList()
         selected_album : Album
         for selected_album in album_list:
             select_album_id = selected_album.getId()
             select_album_cover_art = selected_album.getCoverArt()
             if select_album_id and select_album_cover_art:
-                return ArtistCover(select_album_id, select_album_cover_art)
+                artist_art_url : str = self.buildCoverArtUrl(select_album_cover_art)
+                return ArtistCover(
+                    artist_id = artist.getId(), 
+                    album_id = select_album_id, 
+                    artist_art_url = artist_art_url)
 
     def search(self, 
             query : str, 
