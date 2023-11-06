@@ -82,6 +82,21 @@ def newest_albums():
             album.getYear(),
             album.getGenre()))
 
+def highest_rated_albums():
+    ssc = connector()
+    # highest rated (two albums expected)
+    try:
+        album_list : list[Album] = ssc.getAlbumList(ltype = ListType.HIGHEST, size = 2).getObj().getAlbums()
+        album : Album
+        for album in album_list:
+            print("Album [{}] [{}] Year [{}] Genre [{}]".format(
+                album.getId(), 
+                album.getTitle(),
+                album.getYear(),
+                album.getGenre()))
+    except Exception as ex:
+        print(f"highest_rated_albums failed [{type(ex)}] [{ex}]")
+
 def random_albums() -> list[str]:
     ssc = connector()
     album_list : list[str] = []
@@ -403,6 +418,7 @@ def starred():
 def main():
     invalid_credentials()
     newest_albums()
+    highest_rated_albums()
     starred()
     top_songs()
     similar_songs()
