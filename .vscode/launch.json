@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: test-cn",
+            "name": "Python: test-cn (Current env file)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/tests/test-cn.py",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "envFile": "${workspaceFolder}/.env",
+            "justMyCode": false,
+            "envFile": "${file}",
             "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
         },
         {
@@ -17,7 +17,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
+            "justMyCode": false,
             "envFile": "${workspaceFolder}/.env",
             "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
         }

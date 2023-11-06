@@ -58,8 +58,8 @@ class Connector:
         if not songList: return None
         coverArt : str = ""
         for current in songList:
-            current_art = current["coverArt"]
-            if current_art != "": return current_art
+            current_art = current["coverArt"] if "coverArt" in current else None
+            if current_art: return current_art
 
     def getTopSongs(self, 
             artist : str,
@@ -71,7 +71,7 @@ class Connector:
     
     def getArtistInfo(self, 
             aid, count = 20, includeNotPresent=False) -> Response[ArtistInfo]:
-        data : dict = self.__connect().getArtistInfo(
+        data : dict = self.__connect().getArtistInfo2(
             aid = aid, 
             count = count,
             includeNotPresent = includeNotPresent)
@@ -94,11 +94,11 @@ class Connector:
             size = 10, offset = 0, 
             fromYear = None, toYear = None, 
             genre = None, musicFolderId = None) -> Response[AlbumList]:
-        data : dict = self.__connect().getAlbumList(
+        data : dict = self.__connect().getAlbumList2(
             ltype = ltype.getArgValue() if ltype else None, 
             size = size, offset = offset, 
             fromYear = fromYear, toYear = toYear,
-            genre = genre, musicFolderId = musicFolderId)
+            genre = genre)
         return Response(data, AlbumList(data) if data else None)
 
     def getAlbum(self,
@@ -149,13 +149,19 @@ class Connector:
         return self.getCoverByArtist(artist_response.getObj())
 
     def getCoverByArtist(self, artist : Artist) -> ArtistCover:
+        artist_url : str = artist.getArtistImageUrl()
+        if artist_url: return ArtistCover(artist_id = artist.getId(), artist_art_url = artist_url)
         album_list : list[Album] = artist.getAlbumList()
         selected_album : Album
         for selected_album in album_list:
             select_album_id = selected_album.getId()
             select_album_cover_art = selected_album.getCoverArt()
             if select_album_id and select_album_cover_art:
-                return ArtistCover(select_album_id, select_album_cover_art)
+                artist_art_url : str = self.buildCoverArtUrl(select_album_cover_art)
+                return ArtistCover(
+                    artist_id = artist.getId(), 
+                    album_id = select_album_id, 
+                    artist_art_url = artist_art_url)
 
     def search(self, 
             query : str, 
@@ -179,7 +185,7 @@ class Connector:
         return Response(data, InternetRadioStations(data) if data else None)
     
     def getSimilarSongs(self, iid, count : int = 50) -> Response[SimilarSongs]:
-        data : dict = self.__connect().getSimilarSongs(iid = iid, count = count)
+        data : dict = self.__connect().getSimilarSongs2(iid = iid, count = count)
         return Response(data, SimilarSongs(data) if data else None)
 
     def buildSongUrlBySong(self, song : Song) -> str:

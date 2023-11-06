@@ -9,4 +9,4 @@ class SimilarSongs:
     def getSongs(self) -> list[Song]:
         return list(map(
             lambda x : Song(x), 
-            self.__item.getList(["similarSongs", "song"])))
+            self.__item.getList(["similarSongs2", "song"])))

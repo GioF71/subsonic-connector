@@ -1,11 +1,15 @@
 class ArtistCover:
 
-    def __init__(self, album_id : str, cover_art : str):
-        self.album_id = album_id
-        self.cover_art = cover_art
+    def __init__(self, artist_id : str, artist_art_url : str, album_id : str = None):
+        self._artist_id : str = artist_id
+        self._artist_art_url : str = artist_art_url
+        self._album_id : str = album_id
 
+    def getArtistId(self) -> str:
+        return self._artist_id
+
+    def getArtistArtUrl(self) -> str:
+        return self._artist_art_url
+    
     def getAlbumId(self) -> str:
-        return self.album_id
-
-    def getCoverArt(self) -> str:
-        return self.cover_art
+        return self._album_id

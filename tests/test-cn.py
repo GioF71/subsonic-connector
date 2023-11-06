@@ -1,6 +1,7 @@
 from pprint import pprint
 import os
 import hashlib
+import secrets
 
 from subsonic_connector.connector import Connector
 from subsonic_connector.configuration import Configuration
@@ -142,10 +143,17 @@ def show_artists():
     max_per_initial : int = 15
     artists : Artists = ssc.getArtists().getObj()
     all_artists_initials : list[ArtistsInitial] = artists.getArtistListInitials()
+    if not all_artists_initials or len(all_artists_initials) == 0: return
     for current_initial in all_artists_initials:
+        # get 1 random artist per initial
+        all : list[ArtistListItem] = current_initial.getArtistListItems()
+        if not all or len(all) == 0: break
+        selected : list[ArtistListItem] = list()
+        for i in range(1):
+            selected.append(secrets.choice(all))
         cnt : int = 0
         c : ArtistListItem
-        for c in current_initial.getArtistListItems():
+        for c in selected:
             cnt += 1
             if cnt > max_per_initial:
                 break
@@ -158,17 +166,14 @@ def show_artists():
             artist_cover_url : str
             hashed_cover_art : str
             if artist_cover:
-                # set first album id
-                artist_first_album_id = artist_cover.getAlbumId()
-                # create url
-                artist_cover_url = ssc.buildCoverArtUrl(artist_cover.getCoverArt())
+                artist_cover_url = artist_cover.getArtistArtUrl()
                 hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
-                print("Artist Initial[{}] N:[{}] AC:[{}] AlbumId:[{}] HashedCover:[{}]".format(
+                print("Artist Initial[{}] N:[{}] AC:[{}] HashedCover:[{}]".format(
                     current_initial.getName(), 
                     c.getName(), 
                     c.getAlbumCount(),
-                    artist_first_album_id,
                     hashed_cover_art))
+                print(f"Artist [{c.getId()}] Art [{artist_cover_url}]")
 
 def display_genres(cache : dict[str, str]):
     ssc = connector()
@@ -294,8 +299,13 @@ def get_artist_covers():
     ai : ArtistsInitial
     for ai in ai_list:
         ali_list : list[ArtistListItem] = ai.getArtistListItems()
+        if not ali_list or len(ali_list) == 0: break
+        # get 1 random artist
+        select : list[ArtistListItem] = list()
+        for _ in range(1):
+            select.append(secrets.choice(ali_list))
         ali : ArtistListItem
-        for ali in ali_list:
+        for ali in select:
             artist_id : str = ali.getId()
             artist_name : str = ali.getName()
             album_count : str = ali.getAlbumCount()
@@ -335,10 +345,22 @@ def similar_songs():
         raise Exception("Cannot get one song")
     song : Song = random_songs_response.getObj().getSongs()[0]
     print(f"Song is [{song.getTitle()}] by [{song.getArtist()}]")
-    similar_songs : SimilarSongs = connector().getSimilarSongs(iid = song.getId())
-    similar_song : Song
-    for similar_song in similar_songs.getObj().getSongs():
-        print(f"A similar song is [{similar_song.getTitle()}] by [{similar_song.getArtist()}]")
+    try:
+        similar_songs_by_artist : SimilarSongs = connector().getSimilarSongs(iid = song.getId())
+        similar_song : Song
+        for similar_song in similar_songs_by_artist.getObj().getSongs():
+            print(f"A similar song is [{similar_song.getTitle()}] by [{similar_song.getArtist()}]")
+    except Exception as ex:
+        print(f"Cannot get similar songs by song_id: [{song.getId()}]")
+
+def artist_radio():
+    random_songs_response : Response[RandomSongs] = connector().getRandomSongs(size = 1)
+    if not random_songs_response.isOk():
+        raise Exception("Failed to get random songs")
+    if len(random_songs_response.getObj().getSongs()) == 0:
+        raise Exception("Cannot get one song")
+    song : Song = random_songs_response.getObj().getSongs()[0]
+    print(f"Song is [{song.getTitle()}] by [{song.getArtist()}]")
     artist_radio : SimilarSongs = connector().getSimilarSongs(iid = song.getArtistId())
     artist_radio_song : Song
     for artist_radio_song in artist_radio.getObj().getSongs():
@@ -382,6 +404,7 @@ def main():
     starred()
     top_songs()
     similar_songs()
+    artist_radio()
     artist_info()
     list_radios()
     random_scrobble()
