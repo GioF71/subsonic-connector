@@ -3,6 +3,9 @@ from .song import Song
 
 class Album:
 
+    __key_title : str = "title"
+    __key_name : str = "name"
+
     __dict_name : str = "album"
 
     def __init__(self, data : dict):
@@ -12,12 +15,10 @@ class Album:
             self.__is_response = True
             self.__response = self.__item
             select_item = Item(data[Album.__dict_name])
-            self.__key_title = "name"
         else:
             self.__is_response = False
             self.__response = None
             select_item = self.__item
-            self.__key_title = "title"
         self.__select_item : Item = select_item
 
     def getId(self) -> str:
@@ -33,7 +34,10 @@ class Album:
         return self.__select_item.getByName("coverArt")
 
     def getTitle(self) -> str:
-        return self.__select_item.getByName(self.__key_title)
+        title : str = self.__select_item.getByName(Album.__key_title)
+        if not title:
+            title : str = self.__select_item.getByName(Album.__key_name)
+        return title
 
     def getGenre(self) -> str:
         return self.__select_item.getByName("genre")

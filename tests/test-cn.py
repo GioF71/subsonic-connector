@@ -74,6 +74,7 @@ def newest_albums():
     ssc = connector()
     # Newest albums (two albums expected)
     newest_album_list : list[Album] = ssc.getNewestAlbumList(size = 2).getObj().getAlbums()
+    album : Album
     for album in newest_album_list:
         print("Album [{}] [{}] Year [{}] Genre [{}]".format(
             album.getId(), 
@@ -401,6 +402,7 @@ def starred():
 
 def main():
     invalid_credentials()
+    newest_albums()
     starred()
     top_songs()
     similar_songs()
@@ -419,7 +421,6 @@ def main():
     display_random_album_list_for_genre()
     search_something()
     display_random_albums()
-    newest_albums()
     show_artists()
 
 if __name__ == "__main__":
