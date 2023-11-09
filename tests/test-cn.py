@@ -82,6 +82,21 @@ def newest_albums():
             album.getYear(),
             album.getGenre()))
 
+def highest_rated_albums():
+    ssc = connector()
+    # highest rated (two albums expected)
+    try:
+        album_list : list[Album] = ssc.getAlbumList(ltype = ListType.HIGHEST, size = 2).getObj().getAlbums()
+        album : Album
+        for album in album_list:
+            print("Album [{}] [{}] Year [{}] Genre [{}]".format(
+                album.getId(), 
+                album.getTitle(),
+                album.getYear(),
+                album.getGenre()))
+    except Exception as ex:
+        print(f"highest_rated_albums failed [{type(ex)}] [{ex}]")
+
 def random_albums() -> list[str]:
     ssc = connector()
     album_list : list[str] = []
@@ -163,18 +178,19 @@ def show_artists():
                 current_initial.getName(),
                 c.getName()))
             artist_cover : ArtistCover = ssc.getCoverByArtistId(c.getId())
-            artist_first_album_id : str
-            artist_cover_url : str
+            artist_album_id : str
+            artist_art_url : str
             hashed_cover_art : str
             if artist_cover:
-                artist_cover_url = artist_cover.getArtistArtUrl()
-                hashed_cover_art = hashlib.md5(artist_cover_url.encode('utf-8')).hexdigest()
+                artist_art_url = artist_cover.getArtistArtUrl()
+                artist_album_id = artist_cover.getAlbumId()
+                hashed_cover_art = hashlib.md5(artist_art_url.encode('utf-8')).hexdigest()
                 print("Artist Initial[{}] N:[{}] AC:[{}] HashedCover:[{}]".format(
                     current_initial.getName(), 
                     c.getName(), 
                     c.getAlbumCount(),
                     hashed_cover_art))
-                print(f"Artist [{c.getId()}] Art [{artist_cover_url}]")
+                print(f"Artist [{c.getId()}] Art Url # [{hashed_cover_art}] Album_id [{artist_album_id}]")
 
 def display_genres(cache : dict[str, str]):
     ssc = connector()
@@ -403,6 +419,7 @@ def starred():
 def main():
     invalid_credentials()
     newest_albums()
+    highest_rated_albums()
     starred()
     top_songs()
     similar_songs()
