@@ -184,7 +184,7 @@ def show_artists():
             if artist_cover:
                 artist_art_url = artist_cover.getArtistArtUrl()
                 artist_album_id = artist_cover.getAlbumId()
-                hashed_cover_art = hashlib.md5(artist_art_url.encode('utf-8')).hexdigest()
+                hashed_cover_art = hashlib.md5(artist_art_url.encode('utf-8')).hexdigest() if artist_art_url else None
                 print("Artist Initial[{}] N:[{}] AC:[{}] HashedCover:[{}]".format(
                     current_initial.getName(), 
                     c.getName(), 
@@ -378,10 +378,13 @@ def artist_radio():
         raise Exception("Cannot get one song")
     song : Song = random_songs_response.getObj().getSongs()[0]
     print(f"Song is [{song.getTitle()}] by [{song.getArtist()}]")
-    artist_radio : SimilarSongs = connector().getSimilarSongs(iid = song.getArtistId())
-    artist_radio_song : Song
-    for artist_radio_song in artist_radio.getObj().getSongs():
-        print(f"Artist radio song is [{artist_radio_song.getTitle()}] by [{artist_radio_song.getArtist()}]")
+    try:
+        artist_radio : SimilarSongs = connector().getSimilarSongs(iid = song.getArtistId())
+        artist_radio_song : Song
+        for artist_radio_song in artist_radio.getObj().getSongs():
+            print(f"Artist radio song is [{artist_radio_song.getTitle()}] by [{artist_radio_song.getArtist()}]")
+    except Exception as ex:
+        print(f"Cannot get artist radio for by song_id: [{song.getId()}] artist_id: [{song.getArtistId()}]")
 
 def artist_info():
     top_song_artist : str = TestConfig().get_top_song_artist()

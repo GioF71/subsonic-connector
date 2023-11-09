@@ -5,7 +5,7 @@ from .song import Song
 
 class SearchResult:
 
-    __main_element : str = "searchResult2"
+    __main_element : str = "searchResult3"
 
     def __init__(self, data : dict):
         self.__item : Item = Item(data)

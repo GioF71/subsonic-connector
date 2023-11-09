@@ -170,7 +170,7 @@ class Connector:
             albumCount : int = 20, albumOffset : int = 0, 
             songCount : int = 20, songOffset : int = 0, 
             musicFolderId = None) -> SearchResult:
-        return SearchResult(self.__connect().search2(
+        return SearchResult(self.__connect().search3(
             query = query,
             artistCount = artistCount, artistOffset = artistOffset, 
             albumCount = albumCount, albumOffset = albumOffset, 
