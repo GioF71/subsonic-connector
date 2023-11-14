@@ -189,16 +189,22 @@ class Connector:
         data : dict = self.__connect().getSimilarSongs2(iid = iid, count = count)
         return Response(data, SimilarSongs(data) if data else None)
 
-    def buildSongUrlBySong(self, song : Song) -> str:
+    def buildSongUrlBySong(self, song : Song, format : str = None, max_bitrate : int = None) -> str:
+        url_dict : dict[str, str] = dict()
+        url_dict["id"] = song.getId()
+        if format: url_dict["format"] = format
+        if max_bitrate: url_dict["maxBitRate"] = max_bitrate
         return self.__buildUrl(
             verb = "stream",
-            url_dict = {
-                "id" : song.getId()})
+            url_dict = url_dict)
 
-    def buildSongUrl(self, song_id : str) -> str:
+    def buildSongUrl(self, song_id : str, format : str = None, max_bitrate : int = None) -> str:
         song_res : Response[Song] = self.getSong(song_id)
         if song_res:
-            return self.buildSongUrlBySong(song = song_res.getObj())
+            return self.buildSongUrlBySong(
+                song = song_res.getObj(), 
+                format = format, 
+                max_bitrate = max_bitrate)
 
     def scrobble(self, song_id : str, submission : bool = True, listenTime : int = None) -> dict:
         return self.__connect().scrobble(
