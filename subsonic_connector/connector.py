@@ -193,8 +193,7 @@ class Connector:
         return self.__buildUrl(
             verb = "stream",
             url_dict = {
-                "id" : song.getId(), 
-                "format" : song.getSuffix()})
+                "id" : song.getId()})
 
     def buildSongUrl(self, song_id : str) -> str:
         song_res : Response[Song] = self.getSong(song_id)
