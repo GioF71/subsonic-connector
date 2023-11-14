@@ -328,7 +328,7 @@ def get_artist_covers():
             album_count : str = ali.getAlbumCount()
             cover_art : str = ali.getCoverArt()
             artist_image_url : str = ali.getArtistImageUrl()
-            cover_art_url : str = connector().buildCoverArtUrl(cover_art)
+            cover_art_url : str = connector().buildCoverArtUrl(cover_art) if cover_art else None
             print(f"found id {artist_id} name {artist_name} album_count {album_count} cover_art {cover_art} cover_art_url {cover_art_url} artist_image_url {artist_image_url}")
 
 def random_scrobble():
@@ -340,19 +340,25 @@ def random_scrobble():
     print(f"Song Artist:[{song.getArtist()}] Title:[{song.getTitle()}] Id:[{song.getId()}] scrobbled")
 
 def list_radios():
-    response : Response[InternetRadioStations] = connector().getInternetRadioStations()
-    if not response.isOk(): raise Exception("Cannot get radio stations")
-    current : InternetRadioStation
-    for current in response.getObj().getStations():
-        print(f"Radio id:[{current.getId()}] name:[{current.getName()}] streamUrl:[{current.getStreamUrl()}] homePageUrl:[{current.getHomePageUrl()}]")
+    try:
+        response : Response[InternetRadioStations] = connector().getInternetRadioStations()
+        if not response.isOk(): raise Exception("Cannot get radio stations")
+        current : InternetRadioStation
+        for current in response.getObj().getStations():
+            print(f"Radio id:[{current.getId()}] name:[{current.getName()}] streamUrl:[{current.getStreamUrl()}] homePageUrl:[{current.getHomePageUrl()}]")
+    except Exception as ex:
+        print(f"Cannot get radio stations: [{type(ex)}] [{ex}]")
 
 def top_songs():
     top_song_artist : str = TestConfig().get_top_song_artist()
-    res : Response[TopSongs] = connector().getTopSongs(top_song_artist)
-    if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
-    song : Song
-    for song in res.getObj().getSongs():
-        print(f"Top song: {song.getTitle()}")
+    try:
+        res : Response[TopSongs] = connector().getTopSongs(top_song_artist)
+        if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
+        song : Song
+        for song in res.getObj().getSongs():
+            print(f"Top song: {song.getTitle()}")
+    except Exception as ex:
+        print(f"Cannot get top songs by artist: [{top_song_artist}] [{type(ex)}] [{ex}]")
 
 def similar_songs():
     random_songs_response : Response[RandomSongs] = connector().getRandomSongs(size = 1)
@@ -395,7 +401,7 @@ def artist_info():
         res : Response[ArtistInfo] = connector().getArtistInfo(artist_id)
         if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
         bio : str = res.getObj().getBiography()
-        print(f"Got a bio of {len(bio)} characters")
+        print(f"Got a bio of [{len(bio) if bio else 0}] characters")
         s_a : SimilarArtist
         sim_art_list : list[SimilarArtist] = res.getObj().getSimilarArtists()
         for s_a in sim_art_list:
