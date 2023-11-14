@@ -68,7 +68,7 @@ class Connector:
             artist = artist, 
             count = count)
         return Response(data, TopSongs(data) if data else None)
-    
+
     def getArtistInfo(self, 
             aid, count = 20, includeNotPresent=False) -> Response[ArtistInfo]:
         data : dict = self.__connect().getArtistInfo2(
@@ -216,8 +216,9 @@ class Connector:
         connection = self.__connect()
         qdict = connection._getBaseQdict()
         url_dict["u"] = self.__configuration.getUserName()
-        url_dict["s"] = qdict["s"] #salt
-        url_dict["t"] = qdict["t"] #token
+        if "s" in qdict: url_dict["s"] = qdict["s"] #salt
+        if "t" in qdict: url_dict["t"] = qdict["t"] #token
+        if "p" in qdict: url_dict["p"] = qdict["p"] #token
         url_dict["c"] = self.__configuration.getAppName()
         url_dict["v"] = self.__configuration.getApiVersion()
         return url_dict
@@ -249,5 +250,6 @@ class Connector:
             username = self.__configuration.getUserName(), 
             password = self.__configuration.getPassword(), 
             port = int(str(self.__configuration.getPort())),
+            legacyAuth = self.__configuration.getLegacyAuth(),
             appName = str(self.__configuration.getAppName()),
             apiVersion = str(self.__configuration.getApiVersion()))
