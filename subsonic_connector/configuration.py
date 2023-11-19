@@ -11,6 +11,8 @@ class ConfigurationMeta(type):
                 callable(subclass.getUserName) and
                 hasattr(subclass, 'getPassword') and
                 callable(subclass.getPassword) and
+                hasattr(subclass, 'getLegacyAuth') and
+                callable(subclass.getLegacyAuth) and
                 hasattr(subclass, 'getApiVersion') and
                 callable(subclass.getApiVersion) and
                 hasattr(subclass, 'getAppName') and
@@ -23,6 +25,7 @@ class ConfigurationInterface:
     def getPassword(self) -> str: pass
     def getApiVersion(self) -> str: pass
     def getAppName(self) -> str: pass
+    def getLegacyAuth(self) -> bool: pass
 
 class Configuration(metaclass = ConfigurationMeta):
     pass

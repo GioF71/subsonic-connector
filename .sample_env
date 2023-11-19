@@ -3,6 +3,7 @@ SUBSONIC_SERVER_URL=https://yourserver.yourdomain.com
 SUBSONIC_SERVER_PORT=443
 SUBSONIC_USERNAME=username
 SUBSONIC_PASSWORD=password
+SUBSONIC_LEGACYAUTH=false
 
 # test configuration
 SEARCH_ARGUMENT=earth wind fire
