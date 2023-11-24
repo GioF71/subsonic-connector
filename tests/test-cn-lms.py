@@ -5,10 +5,10 @@ import libsonic
 import os
 
 base_url : str = os.getenv("SUBSONIC_SERVER_URL")
-port : int = int(os.getenv("SUBSONIC_SERVER_PORT", "5082"))
+port : int = int(os.getenv("SUBSONIC_SERVER_PORT"))
 username : str = os.getenv("SUBSONIC_USERNAME")
 password : str = os.getenv("SUBSONIC_PASSWORD")
-legacy_auth : bool = os.getenv("SUBSONIC_LEGACYAUTH", "true").lower() == "true"
+legacy_auth : bool = os.getenv("SUBSONIC_LEGACYAUTH", "false").lower() == "true"
 
 # We pass in the base url, the username, password, and port number
 # Be sure to use https:// if this is an ssl connection!
@@ -28,3 +28,17 @@ for song in songs['randomSongs']['song']:
     pprint(reloaded_song)
 # We'll just pretty print the results we got to the terminal
 pprint(songs)
+#pprint(songs)
+
+i : int
+for i in range(1000):
+    env_k : str = f"ALBUM_QUERY_{i}"
+    env_v : str = os.getenv(env_k)
+    if not env_v: break
+    print(f"Album query: [{env_v}]")
+    search_result = conn.search3(query = env_v) 
+    if not 'searchResult3' in search_result: continue
+    if not 'album' in search_result['searchResult3']: continue
+    albums = search_result['searchResult3']['album']
+    for album in albums:
+        pprint(album)

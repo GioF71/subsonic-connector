@@ -2,6 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: test-cn (navidrome.env)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/test-cn.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/navidrome.env",
+            "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
+        },
+        {
             "name": "Python: test-cn (Current env file)",
             "type": "python",
             "request": "launch",

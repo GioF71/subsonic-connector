@@ -61,13 +61,14 @@ def search_something():
     some_song : Song
     sc : int = 0
     for some_song in some_songs:
-        print("Some Song ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}]".format(
+        print("Some Song ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}] G:[{}]".format(
             sc,
             some_song.getTitle(),
             some_song.getArtist(),
             some_song.getAlbum(),
             some_song.getDiscNumber(),
-            some_song.getTrack()))
+            some_song.getTrack(),
+            some_song.getGenre()))
         sc += 1
 
 def newest_albums():
@@ -427,6 +428,7 @@ def starred():
 
 def main():
     invalid_credentials()
+    search_something()
     newest_albums()
     highest_rated_albums()
     starred()
@@ -445,7 +447,6 @@ def main():
     # this time it will be faster
     display_genres(genre_cache)
     display_random_album_list_for_genre()
-    search_something()
     display_random_albums()
     show_artists()
 
