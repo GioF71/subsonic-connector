@@ -1,5 +1,6 @@
 from .item import Item
 from .song import Song
+from .multi_value import get_multi
 
 class Album:
 
@@ -21,6 +22,8 @@ class Album:
             select_item = self.__item
         self.__select_item : Item = select_item
 
+    def getItem(self): return self.__select_item
+
     def getId(self) -> str:
         return self.__select_item.getByName("id")
 
@@ -40,7 +43,14 @@ class Album:
         return title
 
     def getGenre(self) -> str:
-        return self.__select_item.getByName("genre")
+        genre_list : list[str] = self.__get_genres()
+        return genre_list[0] if genre_list and len(genre_list) > 0 else None
+    
+    def getGenres(self) -> list[str]:
+        return self.__get_genres()
+
+    def __get_genres(self) -> list[str]:
+        return get_multi(self.__select_item, "genre", "genres", "name")
 
     def getYear(self) -> str:
         return self.__select_item.getByName("year")

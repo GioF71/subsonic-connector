@@ -18,6 +18,8 @@ class ArtistInfo:
             select_item = self.__item
         self.__select_item : Item = select_item
 
+    def getItem(self): return self.__select_item
+
     def getBiography(self) -> str:
         return self.__select_item.getByName("biography")
 

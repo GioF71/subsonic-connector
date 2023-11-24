@@ -3,7 +3,7 @@ class Item:
     def __init__(self, data : dict):
         self.__data = data
 
-    def getData(self) -> dict:
+    def getData(self) -> dict[str, any]:
         return self.__data
 
     def isResponse(self) -> bool:
@@ -19,6 +19,11 @@ class Item:
             if name in self.getData() 
             else defaultValue)
 
+    def getListByName(self, name : str, defaultValue = []) -> list[dict[str, any]]:
+        return (self.getData()[name]
+            if name in self.getData() 
+            else defaultValue)
+    
     def getId(self) -> str:
         return self.getByName("id")
 

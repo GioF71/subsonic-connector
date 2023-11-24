@@ -6,6 +6,8 @@ class RandomSongs:
     def __init__(self, data : dict):
         self.__item : Item = Item(data)
 
+    def getItem(self): return self.__item
+
     def getSongs(self) -> list[Song]:
         return list(map(
             lambda x : Song(x), 

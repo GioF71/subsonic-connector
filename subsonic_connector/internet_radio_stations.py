@@ -6,6 +6,8 @@ class InternetRadioStations:
     def __init__(self, data : dict):
         self.__item : Item = Item(data)
 
+    def getItem(self): return self.__item
+
     def getStations(self) -> list[InternetRadioStation]:
         return list(map(
             lambda x : InternetRadioStation(x), 
