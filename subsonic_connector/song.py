@@ -53,13 +53,13 @@ class Song:
     def getContentType(self) -> str:     
         return self.__select_item.getByName("contentType")
 
-    def getBitRate(self) -> str:
+    def getBitRate(self) -> int:
         return self.__select_item.getByName("bitRate")
 
     def getSuffix(self) -> str:
         return self.__select_item.getByName("suffix")
 
-    def getDuration(self) -> str:
+    def getDuration(self) -> int:
         return self.__select_item.getByName("duration")
 
     def getParent(self) -> str:        
