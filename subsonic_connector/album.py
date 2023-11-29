@@ -52,13 +52,16 @@ class Album:
     def __get_genres(self) -> list[str]:
         return get_multi(self.__select_item, "genre", "genres", "name")
 
-    def getYear(self) -> str:
+    def getYear(self) -> int:
         return self.__select_item.getByName("year")
 
-    def getDuration(self) -> str:
+    def getOriginalReleaseDate(self) -> str:
+        return self.__select_item.getByName("originalReleaseDate")
+
+    def getDuration(self) -> int:
         return self.__select_item.getByName("duration")
 
-    def getSongCount(self) -> str:
+    def getSongCount(self) -> int:
         return self.__select_item.getByName("songCount")
 
     def getStarred(self) -> str:        
