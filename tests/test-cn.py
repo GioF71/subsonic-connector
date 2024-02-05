@@ -36,6 +36,26 @@ from invalid_config import RandomPasswordConfiguration
 def connector():
     return Connector(TestConfig().connector_configuration())
 
+def search_for_original_date():
+    ssc : Connector = connector()
+    search_result : SearchResult = ssc.search(
+        "Stripped",
+        artistCount = 0, 
+        albumCount = 1000,
+        songCount = 0)
+    album_list : list[Album] = search_result.getAlbums()
+    ac : int = 0
+    for album in album_list:
+            print("Some Album ndx:[{}] T:[{}] G:[{}] Y:[{}] Ord:[{}] Ory:[{}] y_expr:[{}]".format(
+                ac,
+                album.getTitle(),
+                album.getGenre(),
+                album.getYear(),
+                album.getOriginalReleaseDate(),
+                album.getOriginalReleaseYear(),
+                album.getOriginalYearWithYear()))
+            ac += 1
+            
 def search_something():
     ssc = connector()
     search_result : SearchResult = ssc.search(
@@ -428,6 +448,7 @@ def starred():
 
 def main():
     invalid_credentials()
+    search_for_original_date()
     search_something()
     newest_albums()
     highest_rated_albums()

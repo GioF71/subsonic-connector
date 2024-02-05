@@ -14,7 +14,7 @@ class Item:
     def hasName(self, name : str) -> bool:
         return name in self.getData()
 
-    def getByName(self, name : str, defaultValue = None) -> str:
+    def getByName(self, name : str, defaultValue = None) -> any:
         return (self.getData()[name]
             if name in self.getData() 
             else defaultValue)
