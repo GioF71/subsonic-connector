@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Python: test-cn (navidrome.env)",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/tests/test-cn.py",
             "console": "integratedTerminal",
@@ -12,8 +12,18 @@
             "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
         },
         {
+            "name": "Python: test-cn (lms.env)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/test-cn.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/lms.env",
+            "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"}
+        },
+        {
             "name": "Python: test-cn (Current env file)",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/tests/test-cn.py",
             "console": "integratedTerminal",
@@ -23,7 +33,7 @@
         },
         {
             "name": "Python: test-cn-lms (using lms.env file)",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/tests/test-cn-lms.py",
             "console": "integratedTerminal",
@@ -33,7 +43,7 @@
         },
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",

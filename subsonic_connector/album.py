@@ -56,7 +56,28 @@ class Album:
         return self.__select_item.getByName("year")
 
     def getOriginalReleaseDate(self) -> str:
-        return self.__select_item.getByName("originalReleaseDate")
+        ord_dict : dict[str, any] = self.__select_item.getByName("originalReleaseDate")
+        if not ord_dict: return None
+        # split and return
+        y : int = ord_dict["year"] if "year" in ord_dict else None
+        if not y: return None
+        m : int = ord_dict["month"] if "month" in ord_dict else None
+        d : int = ord_dict["day"] if "day" in ord_dict else None
+        if not m and not d: return y
+        # combine
+        return f"{y:04}-{m:02}-{d:02}"
+
+    def getOriginalReleaseYear(self) -> str:
+        ord : str = self.getOriginalReleaseDate()
+        if not ord or len(ord) < 4: return None
+        return ord[0:4]
+    
+    def getOriginalYearWithYear(self) -> str:
+        year : int = self.getYear()
+        if not year: return None
+        original_year : str = self.getOriginalReleaseYear()
+        if not original_year or int(original_year) == year: return str(year)
+        return f"{original_year} [{year}]"
 
     def getDuration(self) -> int:
         return self.__select_item.getByName("duration")
