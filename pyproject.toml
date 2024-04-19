@@ -19,7 +19,7 @@ classifiers = [
 
 [tool.poetry]
 name = "subsonic-connector"
-version = "0.3.2"
+version = "0.3.3"
 description = "SubSonic Connector based on py-sonic"
 authors = ["GioF71 <giovanni.fulco@gmail.com>"]
 readme = "README.md"
@@ -27,7 +27,7 @@ packages = [{include = "subsonic_connector"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-py-sonic = "^1.0.0"
+py-sonic = "1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
