@@ -3,24 +3,28 @@ from .artist import Artist
 from .album import Album
 from .song import Song
 
+
 class Starred:
 
-    def __init__(self, data : dict):
-        self.__item : Item = Item(data)
+    __first_entry_name: str = "starred2"
 
-    def getItem(self): return self.__item
+    def __init__(self, data: dict):
+        self.__item: Item = Item(data)
+
+    def getItem(self):
+        return self.__item
 
     def getArtists(self) -> list[Artist]:
         return list(map(
-            lambda x : Artist(x), 
-            self.__item.getList(["starred", "artist"])))
-    
+            Artist,
+            self.__item.getList([Starred.__first_entry_name, "artist"])))
+
     def getAlbums(self) -> list[Album]:
         return list(map(
-            lambda x : Album(x), 
-            self.__item.getList(["starred", "album"])))
+            Album,
+            self.__item.getList([Starred.__first_entry_name, "album"])))
 
     def getSongs(self) -> list[Song]:
         return list(map(
-            lambda x : Song(x), 
-            self.__item.getList(["starred", "song"])))
+            Song,
+            self.__item.getList([Starred.__first_entry_name, "song"])))
