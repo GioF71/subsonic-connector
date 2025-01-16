@@ -3,6 +3,7 @@
 ## 0.3.6
 
 - Removed duplicate project name (see [#95](https://github.com/GioF71/subsonic-connector/issues/95))
+- Add RELEASE.md
 
 ## 0.3.5
 
@@ -15,7 +16,16 @@
 
 ## 0.3.3
 
+- Corrected py-sonic dependency in pyproject.toml
+
 ## 0.3.2
+
+- Album: Corrected getOriginalReleaseDate
+- Album: Add getOriginalReleaseYear
+- Album: Add getOriginalYearWithYear
+- launch.json updated with "debugpy" instead of "python"
+- Item: linting improved
+- Updated tests
 
 ## 0.3.1
 
@@ -37,6 +47,8 @@
 - Avoid to add format to stream url
 
 ## 0.2.4
+
+- Support for legacy authentication
 
 ## 0.2.3
 
