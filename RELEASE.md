@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.7 (NEXT)
+
+- Support partial original release date (e.g., missing day or missing month)
+
 ## 0.3.6
 
 - Removed duplicate project name (see [#95](https://github.com/GioF71/subsonic-connector/issues/95))
