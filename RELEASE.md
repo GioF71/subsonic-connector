@@ -1,8 +1,10 @@
 # Release notes
 
-## 0.3.7 (NEXT)
+## 0.3.7
 
 - Support partial original release date (e.g., missing day or missing month)
+- Restored tool.poetry section for packages
+- Removed tool.poetry section from pyproject.toml
 
 ## 0.3.6
 
