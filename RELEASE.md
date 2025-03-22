@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.8
+
+- Bump py-sonic to 1.0.2
+
 ## 0.3.7
 
 - Support partial original release date (e.g., missing day or missing month)
