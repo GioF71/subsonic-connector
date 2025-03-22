@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.9
+
+- Fix url encoding
+
 ## 0.3.8
 
 - Bump py-sonic to 1.0.2

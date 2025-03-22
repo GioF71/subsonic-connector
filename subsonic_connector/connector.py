@@ -1,5 +1,7 @@
 import libsonic
 
+import urllib.parse
+
 from .item import Item
 from .artist import Artist
 from .artists import Artists
@@ -284,11 +286,10 @@ class Connector:
         local_url_dict: dict[str, str] = (self.__addAuthParameters(url_dict)
                                           if url_dict
                                           else dict())
-        first: bool = True
-        for key in local_url_dict:
-            url += "{}{}={}".format("?" if first else "&", key, url_dict[key])
-            first = False
-        return url
+        local_url_dict["f"] = "json"
+        params: str = urllib.parse.urlencode(local_url_dict, doseq=True)
+        return f"{url}?{params}"
+
 
     def __createBaseUrlWithPort(self):
         baseUrl = self.__configuration.getBaseUrl()
