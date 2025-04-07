@@ -179,8 +179,8 @@ def random_songs():
         song_id = current_song.getId()
         song_res: Response[Song] = ssc.getSong(song_id)
         print("Song Id:[{}] Title: [{}]".format(song_res.getObj().getId(), song_res.getObj().getTitle()))
-        streamable_url = ssc.buildSongUrl(id)
-        cover_url = ssc.buildCoverArtUrl(id)
+        streamable_url = ssc.buildSongUrl(song_id)
+        cover_url = ssc.buildCoverArtUrl(current_song.getCoverArt())
         print(" -> Stream = [" + streamable_url + "]")
         print(" -> Cover  = [" + cover_url + "]")
 
