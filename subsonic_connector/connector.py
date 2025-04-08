@@ -1,4 +1,11 @@
-import libsonic
+import os
+import sys
+
+# Add vendor directory to module search path
+parent_dir = os.path.abspath(os.path.dirname(__file__))
+vendor_dir = os.path.join(parent_dir, 'vendor')
+
+sys.path.append(vendor_dir)
 
 import urllib.parse
 
@@ -23,6 +30,8 @@ from .similar_songs import SimilarSongs
 from .starred import Starred
 
 from .configuration import Configuration
+
+import libsonic
 
 
 class Connector:
@@ -290,14 +299,13 @@ class Connector:
         params: str = urllib.parse.urlencode(local_url_dict, doseq=True)
         return f"{url}?{params}"
 
-
     def __createBaseUrlWithPort(self):
-        baseUrl = self.__configuration.getBaseUrl()
+        base_url = self.__configuration.getBaseUrl()
         port = self.__configuration.getPort()
-        url = baseUrl
-        if ((baseUrl and baseUrl.startswith("https://") and port != 443) or
-           (baseUrl and baseUrl.startswith("http://") and port != 80)):
-            url = "{}:{}".format(baseUrl, port)
+        url = base_url
+        if ((base_url and base_url.startswith("https://") and port != 443) or
+             (base_url and base_url.startswith("http://") and port != 80)):
+            url = "{}:{}".format(base_url, port)
         return url
 
     def download(self, song_id: str):
@@ -311,4 +319,5 @@ class Connector:
             port=int(str(self.__configuration.getPort())),
             legacyAuth=self.__configuration.getLegacyAuth(),
             appName=str(self.__configuration.getAppName()),
-            apiVersion=str(self.__configuration.getApiVersion()))
+            apiVersion=str(self.__configuration.getApiVersion()),
+            userAgent="subsonic-connector")

@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.10b1
+
+- Support for user agent
+
 ## 0.3.9
 
 - Fix url encoding

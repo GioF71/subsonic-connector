@@ -1,7 +1,7 @@
 [project]
 name = "subsonic_connector"
 description = "SubSonic Connector based on py-sonic"
-version = "0.3.9"
+version = "0.3.10b1"
 readme = "README.md"
 authors = [
   {name = "GioF71", email = "giovanni.fulco@gmail.com" },
@@ -13,7 +13,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "py-sonic==1.0.2"
 ]
 
 [project.urls]
