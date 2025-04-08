@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.10b2
+
+- Reduce dependency with libsonic
+
 ## 0.3.10b1
 
 - Support for user agent
