@@ -30,9 +30,12 @@ from .similar_songs import SimilarSongs
 from .starred import Starred
 
 from .configuration import Configuration
+from enum import Enum
 
 import libsonic
 
+class Constants(Enum):
+    API_VERSION = libsonic.API_VERSION
 
 class Connector:
 
