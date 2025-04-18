@@ -18,6 +18,4 @@ pypi-password.txt
 .DS_Store
 
 *.env
-subsonic_connector/vendor/libsonic/__pycache__/__init__.cpython-39.pyc
-subsonic_connector/vendor/libsonic/__pycache__/connection.cpython-39.pyc
-subsonic_connector/vendor/libsonic/__pycache__/errors.cpython-39.pyc
+subsonic_connector/vendor/libsonic/__pycache__/
