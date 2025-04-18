@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.10b3
+
+- Parametric user-agent
+
 ## 0.3.10b2
 
 - Reduce dependency with libsonic

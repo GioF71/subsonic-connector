@@ -35,6 +35,9 @@ class DefaultConfiguration(ConfigurationInterface):
             raise Exception(f"Invalid value for SUBSONIC_LEGACYAUTH [{legacy_auth_enabled_str}]")
         return legacy_auth_enabled_str == "true"
 
+    def getUserAgent(self) -> str:
+        return self.__getParameter("SUBSONIC_USER_AGENT")
+    
     def getApiVersion(self) -> str:
         return self.__getParameter("SUBSONIC_API_VERSION", libsonic.API_VERSION)
 

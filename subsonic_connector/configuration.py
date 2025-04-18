@@ -3,7 +3,7 @@ class ConfigurationMeta(type):
         return cls.__subclasscheck__(type(instance))
 
     def __subclasscheck__(cls, subclass):
-        return (hasattr(subclass, 'getBaseUrl') and 
+        return (hasattr(subclass, 'getBaseUrl') and
                 callable(subclass.getBaseUrl) and
                 hasattr(subclass, 'getPort') and
                 callable(subclass.getPort) and
@@ -13,10 +13,13 @@ class ConfigurationMeta(type):
                 callable(subclass.getPassword) and
                 hasattr(subclass, 'getLegacyAuth') and
                 callable(subclass.getLegacyAuth) and
+                hasattr(subclass, 'getUserAgent') and
+                callable(subclass.getUserAgent) and
                 hasattr(subclass, 'getApiVersion') and
                 callable(subclass.getApiVersion) and
                 hasattr(subclass, 'getAppName') and
                 callable(subclass.getAppName))
+
 
 class ConfigurationInterface:
     def getBaseUrl(self) -> str: pass
@@ -26,6 +29,8 @@ class ConfigurationInterface:
     def getApiVersion(self) -> str: pass
     def getAppName(self) -> str: pass
     def getLegacyAuth(self) -> bool: pass
+    def getUserAgent(self) -> bool: pass
 
-class Configuration(metaclass = ConfigurationMeta):
+
+class Configuration(metaclass=ConfigurationMeta):
     pass

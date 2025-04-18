@@ -1,12 +1,3 @@
-import os
-import sys
-
-# Add vendor directory to module search path
-parent_dir = os.path.abspath(os.path.dirname(__file__))
-vendor_dir = os.path.join(parent_dir, 'vendor')
-
-sys.path.append(vendor_dir)
-
 import urllib.parse
 
 from .item import Item
@@ -32,10 +23,22 @@ from .starred import Starred
 from .configuration import Configuration
 from enum import Enum
 
+import os
+import sys
+
+# Add vendor directory to module search path
+parent_dir = os.path.abspath(os.path.dirname(__file__))
+vendor_dir = os.path.join(parent_dir, 'vendor')
+
+sys.path.append(vendor_dir)
+
+
 import libsonic
+
 
 class Constants(Enum):
     API_VERSION = libsonic.API_VERSION
+
 
 class Connector:
 
@@ -307,7 +310,7 @@ class Connector:
         port = self.__configuration.getPort()
         url = base_url
         if ((base_url and base_url.startswith("https://") and port != 443) or
-             (base_url and base_url.startswith("http://") and port != 80)):
+            (base_url and base_url.startswith("http://") and port != 80)):
             url = "{}:{}".format(base_url, port)
         return url
 
@@ -323,4 +326,4 @@ class Connector:
             legacyAuth=self.__configuration.getLegacyAuth(),
             appName=str(self.__configuration.getAppName()),
             apiVersion=str(self.__configuration.getApiVersion()),
-            userAgent="subsonic-connector")
+            userAgent=self.__configuration.getUserAgent())
