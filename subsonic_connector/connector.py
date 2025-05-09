@@ -25,6 +25,7 @@ from enum import Enum
 
 import os
 import sys
+import urllib
 
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
@@ -310,19 +311,35 @@ class Connector:
         port = self.__configuration.getPort()
         url = base_url
         if ((base_url and base_url.startswith("https://") and port != 443) or
-            (base_url and base_url.startswith("http://") and port != 80)):
+                (base_url and base_url.startswith("http://") and port != 80)):
             url = "{}:{}".format(base_url, port)
-        return url
+        server_path: str = self.__configuration.getServerPath()
+        if server_path and len(server_path) > 0:
+            server_path = "/rest"
+        else:
+            if not server_path.startswith("/"):
+                server_path = f"/{server_path}"
+            server_path = "/".join([server_path, "rest"])
+        return f"{url}{server_path}"
 
     def download(self, song_id: str):
         return self.__connect().download(song_id)
 
     def __connect(self):
+        server_path: str = self.__configuration.getServerPath()
+        if server_path and len(server_path) > 0:
+            if not server_path.startswith("/"):
+                server_path = f"/{server_path}"
+            server_path = "/".join([server_path, "rest"])
+        else:
+            # leave to default.
+            server_path = "/rest"
         return libsonic.Connection(
             baseUrl=self.__configuration.getBaseUrl(),
             username=self.__configuration.getUserName(),
             password=self.__configuration.getPassword(),
             port=int(str(self.__configuration.getPort())),
+            serverPath=server_path,
             legacyAuth=self.__configuration.getLegacyAuth(),
             appName=str(self.__configuration.getAppName()),
             apiVersion=str(self.__configuration.getApiVersion()),

@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.10b4
+
+- Support server path (SUBSONIC_SERVER_PATH with default configuration method)
+
 ## 0.3.10b3
 
 - Parametric user-agent

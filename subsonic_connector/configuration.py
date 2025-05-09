@@ -7,6 +7,8 @@ class ConfigurationMeta(type):
                 callable(subclass.getBaseUrl) and
                 hasattr(subclass, 'getPort') and
                 callable(subclass.getPort) and
+                hasattr(subclass, 'getServerPath') and
+                callable(subclass.getServerPath) and
                 hasattr(subclass, 'getUserName') and
                 callable(subclass.getUserName) and
                 hasattr(subclass, 'getPassword') and
@@ -24,6 +26,7 @@ class ConfigurationMeta(type):
 class ConfigurationInterface:
     def getBaseUrl(self) -> str: pass
     def getPort(self) -> int: pass
+    def getServerPath(self) -> str: pass
     def getUserName(self) -> str: pass
     def getPassword(self) -> str: pass
     def getApiVersion(self) -> str: pass

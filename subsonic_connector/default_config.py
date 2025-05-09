@@ -23,6 +23,9 @@ class DefaultConfiguration(ConfigurationInterface):
     def getPort(self) -> str:
         return self.__getParameter("SUBSONIC_SERVER_PORT")
     
+    def getServerPath(self) -> str:
+        return self.__getParameter("SUBSONIC_SERVER_PATH")
+    
     def getUserName(self) -> str:
         return self.__getParameter("SUBSONIC_USERNAME")
     
