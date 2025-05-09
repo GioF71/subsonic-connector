@@ -298,7 +298,7 @@ class Connector:
         return url_dict
 
     def __buildUrl(self, verb, url_dict: dict[str, str] = None) -> str:
-        url: str = "{}/rest/{}".format(self.__createBaseUrlWithPort(), verb)
+        url: str = "{}/{}".format(self.__createBaseUrlWithPort(), verb)
         local_url_dict: dict[str, str] = (self.__addAuthParameters(url_dict)
                                           if url_dict
                                           else dict())
@@ -315,11 +315,11 @@ class Connector:
             url = "{}:{}".format(base_url, port)
         server_path: str = self.__configuration.getServerPath()
         if server_path and len(server_path) > 0:
-            server_path = "/rest"
-        else:
             if not server_path.startswith("/"):
                 server_path = f"/{server_path}"
             server_path = "/".join([server_path, "rest"])
+        else:
+            server_path = "/rest"
         return f"{url}{server_path}"
 
     def download(self, song_id: str):
