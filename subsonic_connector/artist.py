@@ -1,13 +1,14 @@
 from .item import Item
 from .album import Album
 
+
 class Artist:
 
-    __dict_name : str = "artist"
+    __dict_name: str = "artist"
 
-    def __init__(self, data : dict):
-        self.__item : Item = Item(data)
-        select_item : self.__item
+    def __init__(self, data: dict):
+        self.__item: Item = Item(data)
+        select_item: Item
         if self.__item.isResponse() and Artist.__dict_name in data:
             self.__is_response = True
             self.__response = self.__item
@@ -16,9 +17,10 @@ class Artist:
             self.__is_response = False
             self.__response = None
             select_item = self.__item
-        self.__select_item : Item = select_item
+        self.__select_item: Item = select_item
 
-    def getItem(self): return self.__select_item
+    def getItem(self):
+        return self.__select_item
 
     def getId(self) -> str:
         return self.__select_item.getId()
@@ -33,8 +35,8 @@ class Artist:
         return self.__select_item.getByName("artistImageUrl")
 
     def getAlbumList(self) -> list:
-        albumList : list = self.__select_item.getList(["album"])
-        return list(map(lambda x : Album(x), albumList))
+        albumList: list = self.__select_item.getList(["album"])
+        return list(map(lambda x: Album(x), albumList))
 
-    def getStarred(self) -> str:        
+    def getStarred(self) -> str:
         return self.__select_item.getByName("starred")

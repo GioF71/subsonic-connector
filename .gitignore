@@ -1,5 +1,4 @@
 .env
-poetry.lock
 dist/*
 subsonic_connector/__pycache__/
 tests/__pycache__/**

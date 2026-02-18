@@ -2,14 +2,15 @@ from .item import Item
 from .song import Song
 from .multi_value import get_multi
 
+
 class Album:
 
-    __key_title : str = "title"
-    __key_name : str = "name"
+    __key_title: str = "title"
+    __key_name: str = "name"
 
-    __dict_name : str = "album"
+    __dict_name: str = "album"
 
-    def __init__(self, data : dict):
+    def __init__(self, data: dict):
         self.__item: Item = Item(data)
         select_item = self.__item
         if self.__item.isResponse() and Album.__dict_name in data:
@@ -91,10 +92,10 @@ class Album:
     def getSongCount(self) -> int:
         return self.__select_item.getByName("songCount")
 
-    def getStarred(self) -> str:        
+    def getStarred(self) -> str:
         return self.__select_item.getByName("starred")
 
     def getSongs(self) -> list[Song]:
         return list(map(
-            lambda x : Song(x), 
+            lambda x: Song(x),
             self.__select_item.getList(["song"])))

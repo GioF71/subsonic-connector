@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ListType(Enum):
     RANDOM = 0, "random"
     NEWEST = 1, "newest"
@@ -12,7 +13,7 @@ class ListType(Enum):
     BY_YEAR = 8, "byYear"
     BY_GENRE = 9, "byGenre"
 
-    def __init__(self, num, argValue : str):
+    def __init__(self, num, argValue: str):
         self.num = num
         self.argValue = argValue
 

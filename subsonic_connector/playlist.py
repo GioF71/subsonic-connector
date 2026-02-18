@@ -8,7 +8,7 @@ class Playlist:
 
     def __init__(self, data: dict):
         self.__item: Item = Item(data)
-        select_item: self.__item
+        select_item: Item
         if self.__item.isResponse() and Playlist.__dict_name in data:
             self.__is_response = True
             self.__response = self.__item

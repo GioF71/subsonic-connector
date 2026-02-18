@@ -1,9 +1,10 @@
 from .item import Item
 
+
 class ArtistListItem:
 
-    def __init__(self, data : dict):
-        self.__item : Item = Item(data)
+    def __init__(self, data: dict):
+        self.__item: Item = Item(data)
 
     def getItem(self): return self.__item
 

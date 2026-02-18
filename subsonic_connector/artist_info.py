@@ -1,13 +1,14 @@
 from .item import Item
 from .similar_artist import SimilarArtist
 
+
 class ArtistInfo:
 
-    __dict_name : str = "artistInfo2"
+    __dict_name: str = "artistInfo2"
 
-    def __init__(self, data : dict):
-        self.__item : Item = Item(data)
-        select_item : self.__item
+    def __init__(self, data: dict):
+        self.__item: Item = Item(data)
+        select_item: Item
         if self.__item.isResponse() and ArtistInfo.__dict_name in data:
             self.__is_response = True
             self.__response = self.__item
@@ -16,9 +17,10 @@ class ArtistInfo:
             self.__is_response = False
             self.__response = None
             select_item = self.__item
-        self.__select_item : Item = select_item
+        self.__select_item: Item = select_item
 
-    def getItem(self): return self.__select_item
+    def getItem(self):
+        return self.__select_item
 
     def getBiography(self) -> str:
         return self.__select_item.getByName("biography")
@@ -40,5 +42,5 @@ class ArtistInfo:
 
     def getSimilarArtists(self) -> list[SimilarArtist]:
         return list(map(
-            lambda x : SimilarArtist(x), 
+            lambda x: SimilarArtist(x),
             self.__select_item.getList(["similarArtist"])))
