@@ -1,5 +1,4 @@
 import libsonic
-
 import urllib.parse
 
 from .item import Item
@@ -23,12 +22,20 @@ from .similar_songs import SimilarSongs
 from .starred import Starred
 
 from .configuration import Configuration
+import urllib
+import os
+from hashlib import md5
+from enum import Enum
+
+
+class Constants(Enum):
+    API_VERSION = libsonic.API_VERSION
 
 
 class Connector:
 
     def __init__(self, configuration: Configuration):
-        self.__configuration = configuration
+        self.__configuration: Configuration = configuration
 
     def ping(self) -> bool:
         return self.__connect().ping()
@@ -63,7 +70,9 @@ class Connector:
             return None
         current_art: str = ""
         for current in songList:
-            current_art = current["coverArt"] if "coverArt" in current else None
+            current_art = (current["coverArt"]
+                           if "coverArt" in current
+                           else None)
             if current_art:
                 return current_art
 
@@ -235,7 +244,11 @@ class Connector:
         data: dict = self.__connect().getSimilarSongs2(iid=iid, count=count)
         return Response(data, SimilarSongs(data) if data else None)
 
-    def buildSongUrlBySong(self, song: Song, format: str = None, max_bitrate: int = None) -> str:
+    def buildSongUrlBySong(
+            self,
+            song: Song,
+            format: str = None,
+            max_bitrate: int = None) -> str:
         url_dict: dict[str, str] = dict()
         url_dict["id"] = song.getId()
         if format:
@@ -246,7 +259,11 @@ class Connector:
             verb="stream",
             url_dict=url_dict)
 
-    def buildSongUrl(self, song_id: str, format: str = None, max_bitrate: int = None) -> str:
+    def buildSongUrl(
+            self,
+            song_id: str,
+            format: str = None,
+            max_bitrate: int = None) -> str:
         song_res: Response[Song] = self.getSong(song_id)
         if song_res:
             return self.buildSongUrlBySong(
@@ -254,7 +271,11 @@ class Connector:
                 format=format,
                 max_bitrate=max_bitrate)
 
-    def scrobble(self, song_id: str, submission: bool = True, listenTime: int = None) -> dict:
+    def scrobble(
+            self,
+            song_id: str,
+            submission: bool = True,
+            listenTime: int = None) -> dict:
         return self.__connect().scrobble(
             sid=song_id,
             submission=submission,
@@ -265,11 +286,48 @@ class Connector:
             verb="getCoverArt",
             url_dict={"id": item_id})
 
+    def _hexEnc(self, raw):
+        """
+        Returns a "hex encoded" string per the Subsonic api docs
+
+        raw:str     The string to hex encode
+        """
+        ret = ''
+        for c in raw:
+            ret += '%02X' % ord(c)
+        return ret
+
+    def _getSalt(self, length=12):
+        salt = md5(os.urandom(100)).hexdigest()
+        return salt[:length]
+
+    def _get_base_qdict(self) -> dict[str, str]:
+        qdict = {
+            'f': 'json',
+            'v': self.__configuration.getApiVersion(),
+            'c': self.__configuration.getAppName(),
+            'u': self.__configuration.getUserName(),
+        }
+
+        if self.__configuration.getLegacyAuth():
+            qdict['p'] = 'enc:%s' % self._hexEnc(self.__configuration.getPassword())
+        else:
+            if self.__configuration.getPassword():
+                salt: str = self._getSalt()
+                token: str = md5((self.__configuration.getPassword() + salt).encode('utf-8')).hexdigest()
+            else:
+                salt = self.__configuration.getSalt()
+                token = self.__configuration.getToken()
+            qdict.update({
+                's': salt,
+                't': token,
+            })
+        return qdict
+
     def __addAuthParameters(
             self,
             url_dict: dict[str, str] = None) -> dict[str, str]:
-        connection = self.__connect()
-        qdict = connection._getBaseQdict()
+        qdict = self._get_base_qdict()
         url_dict["u"] = self.__configuration.getUserName()
         if "s" in qdict:
             url_dict["s"] = qdict["s"]  # salt
@@ -282,7 +340,7 @@ class Connector:
         return url_dict
 
     def __buildUrl(self, verb, url_dict: dict[str, str] = None) -> str:
-        url: str = "{}/rest/{}".format(self.__createBaseUrlWithPort(), verb)
+        url: str = "{}/{}".format(self.__createBaseUrlWithPort(), verb)
         local_url_dict: dict[str, str] = (self.__addAuthParameters(url_dict)
                                           if url_dict
                                           else dict())
@@ -290,25 +348,42 @@ class Connector:
         params: str = urllib.parse.urlencode(local_url_dict, doseq=True)
         return f"{url}?{params}"
 
-
     def __createBaseUrlWithPort(self):
-        baseUrl = self.__configuration.getBaseUrl()
+        base_url = self.__configuration.getBaseUrl()
         port = self.__configuration.getPort()
-        url = baseUrl
-        if ((baseUrl and baseUrl.startswith("https://") and port != 443) or
-           (baseUrl and baseUrl.startswith("http://") and port != 80)):
-            url = "{}:{}".format(baseUrl, port)
-        return url
+        url = base_url
+        if ((base_url and base_url.startswith("https://") and port != 443) or
+                (base_url and base_url.startswith("http://") and port != 80)):
+            url = "{}:{}".format(base_url, port)
+        server_path: str = self.__configuration.getServerPath()
+        if server_path and len(server_path) > 0:
+            if not server_path.startswith("/"):
+                server_path = f"/{server_path}"
+            server_path = "/".join([server_path, "rest"])
+        else:
+            server_path = "/rest"
+        return f"{url}{server_path}"
 
     def download(self, song_id: str):
         return self.__connect().download(song_id)
 
     def __connect(self):
+        server_path: str = self.__configuration.getServerPath()
+        if server_path and len(server_path) > 0:
+            if not server_path.startswith("/"):
+                server_path = f"/{server_path}"
+            server_path = "/".join([server_path, "rest"])
+        else:
+            # leave to default.
+            server_path = "/rest"
         return libsonic.Connection(
             baseUrl=self.__configuration.getBaseUrl(),
             username=self.__configuration.getUserName(),
             password=self.__configuration.getPassword(),
             port=int(str(self.__configuration.getPort())),
+            serverPath=server_path,
             legacyAuth=self.__configuration.getLegacyAuth(),
             appName=str(self.__configuration.getAppName()),
-            apiVersion=str(self.__configuration.getApiVersion()))
+            apiVersion=str(self.__configuration.getApiVersion()),
+            userAgent=self.__configuration.getUserAgent(),
+            customHeaders=self.__configuration.getCustomHeaders())

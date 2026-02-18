@@ -1,9 +1,10 @@
 from .item import Item
 
+
 class PlaylistEntry:
 
-    def __init__(self, data : dict):
-        self.__item : Item = Item(data)
+    def __init__(self, data: dict):
+        self.__item: Item = Item(data)
 
     def getItem(self): return self.__item
 
@@ -12,7 +13,7 @@ class PlaylistEntry:
 
     def getParent(self) -> str:
         return self.__item.getByName("parent")
-    
+
     def getTitle(self) -> str:
         return self.__item.getByName("title")
 
@@ -36,7 +37,7 @@ class PlaylistEntry:
 
     def getBitRate(self) -> str:
         return self.__item.getByName("bitRate")
-    
+
     def getTrack(self) -> str:
         return self.__item.getByName("track")
 
@@ -48,7 +49,7 @@ class PlaylistEntry:
 
     def getSuffix(self) -> str:
         return self.__item.getByName("suffix")
-    
+
     def getContentType(self) -> str:
         return self.__item.getByName("contentType")
 

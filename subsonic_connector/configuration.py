@@ -3,29 +3,46 @@ class ConfigurationMeta(type):
         return cls.__subclasscheck__(type(instance))
 
     def __subclasscheck__(cls, subclass):
-        return (hasattr(subclass, 'getBaseUrl') and 
+        return (hasattr(subclass, 'getBaseUrl') and
                 callable(subclass.getBaseUrl) and
                 hasattr(subclass, 'getPort') and
                 callable(subclass.getPort) and
+                hasattr(subclass, 'getServerPath') and
+                callable(subclass.getServerPath) and
                 hasattr(subclass, 'getUserName') and
                 callable(subclass.getUserName) and
                 hasattr(subclass, 'getPassword') and
                 callable(subclass.getPassword) and
+                hasattr(subclass, 'getSalt') and
+                callable(subclass.getSalt) and
+                hasattr(subclass, 'getToken') and
+                callable(subclass.getToken) and
                 hasattr(subclass, 'getLegacyAuth') and
                 callable(subclass.getLegacyAuth) and
+                hasattr(subclass, 'getUserAgent') and
+                callable(subclass.getUserAgent) and
+                hasattr(subclass, 'getCustomHeaders') and
+                callable(subclass.getCustomHeaders) and
                 hasattr(subclass, 'getApiVersion') and
                 callable(subclass.getApiVersion) and
                 hasattr(subclass, 'getAppName') and
                 callable(subclass.getAppName))
 
+
 class ConfigurationInterface:
     def getBaseUrl(self) -> str: pass
     def getPort(self) -> int: pass
+    def getServerPath(self) -> str: pass
     def getUserName(self) -> str: pass
     def getPassword(self) -> str: pass
+    def getToken(self) -> str: pass
+    def getSalt(self) -> str: pass
     def getApiVersion(self) -> str: pass
     def getAppName(self) -> str: pass
     def getLegacyAuth(self) -> bool: pass
+    def getUserAgent(self) -> str: pass
+    def getCustomHeaders(self) -> dict[str, str]: pass
 
-class Configuration(metaclass = ConfigurationMeta):
+
+class Configuration(metaclass=ConfigurationMeta):
     pass

@@ -49,14 +49,13 @@ def search_for_original_date():
     album_list: list[Album] = search_result.getAlbums()
     ac: int = 0
     for album in album_list:
-        print("Some Album ndx:[{}] T:[{}] G:[{}] Y:[{}] Ord:[{}] Ory:[{}] y_expr:[{}]".format(
-            ac,
-            album.getTitle(),
-            album.getGenre(),
-            album.getYear(),
-            album.getOriginalReleaseDate(),
-            album.getOriginalReleaseYear(),
-            album.getOriginalYearWithYear()))
+        print(f"Some Album ndx:[{ac}] "
+              f"T:[{album.getTitle()}] "
+              f"G:[{album.getGenre()}] "
+              f"Y:[{album.getYear()}] "
+              f"Ord:[{album.getOriginalReleaseDate()}] "
+              f"Ory:[{album.getOriginalReleaseYear()}] "
+              f"y_expr:[{album.getOriginalYearWithYear()}]")
         ac += 1
 
 
@@ -85,21 +84,21 @@ def search_something():
     some_song: Song
     sc: int = 0
     for some_song in some_songs:
-        print("Some Song ndx:[{}] Title:[{}] Art:[{}] A:[{}] D:[{}] T:[{}] G:[{}]".format(
-            sc,
-            some_song.getTitle(),
-            some_song.getArtist(),
-            some_song.getAlbum(),
-            some_song.getDiscNumber(),
-            some_song.getTrack(),
-            some_song.getGenre()))
+        print(f"Some Song ndx:[{sc}] "
+              f"Title:[{some_song.getTitle()}] "
+              f"Art:[{some_song.getArtist()}] "
+              f"A:[{some_song.getAlbum()}] "
+              f"D:[{some_song.getDiscNumber()}] "
+              f"T:[{some_song.getTrack()}] "
+              f"G:[{some_song.getGenre()}]")
         sc += 1
 
 
 def newest_albums():
     ssc = connector()
     # Newest albums (two albums expected)
-    newest_album_list: list[Album] = ssc.getNewestAlbumList(size=2).getObj().getAlbums()
+    res: Response[AlbumList] = ssc.getNewestAlbumList(size=2)
+    newest_album_list: list[Album] = res.getObj().getAlbums()
     album: Album
     for album in newest_album_list:
         print("Album [{}] [{}] Year [{}] Genre [{}]".format(
@@ -113,7 +112,9 @@ def highest_rated_albums():
     ssc = connector()
     # highest rated (two albums expected)
     try:
-        album_list: list[Album] = ssc.getAlbumList(ltype=ListType.HIGHEST, size=2).getObj().getAlbums()
+        album_list: list[Album] = ssc.getAlbumList(
+            ltype=ListType.HIGHEST,
+            size=2).getObj().getAlbums()
         album: Album
         for album in album_list:
             print("Album [{}] [{}] Year [{}] Genre [{}]".format(
@@ -179,8 +180,8 @@ def random_songs():
         song_id = current_song.getId()
         song_res: Response[Song] = ssc.getSong(song_id)
         print("Song Id:[{}] Title: [{}]".format(song_res.getObj().getId(), song_res.getObj().getTitle()))
-        streamable_url = ssc.buildSongUrl(id)
-        cover_url = ssc.buildCoverArtUrl(id)
+        streamable_url = ssc.buildSongUrl(song_id)
+        cover_url = ssc.buildCoverArtUrl(current_song.getCoverArt())
         print(" -> Stream = [" + streamable_url + "]")
         print(" -> Cover  = [" + cover_url + "]")
 
@@ -190,11 +191,13 @@ def show_artists():
     max_per_initial: int = 15
     artists: Artists = ssc.getArtists().getObj()
     all_artists_initials: list[ArtistsInitial] = artists.getArtistListInitials()
-    if not all_artists_initials or len(all_artists_initials) == 0: return
+    if not all_artists_initials or len(all_artists_initials) == 0:
+        return
     for current_initial in all_artists_initials:
         # get 1 random artist per initial
         all_list_items: list[ArtistListItem] = current_initial.getArtistListItems()
-        if not all_list_items or len(all_list_items) == 0: break
+        if not all_list_items or len(all_list_items) == 0:
+            break
         selected: list[ArtistListItem] = list()
         for _ in range(1):
             selected.append(secrets.choice(all_list_items))
@@ -216,30 +219,32 @@ def show_artists():
                 artist_art_url = artist_cover.getArtistArtUrl()
                 artist_album_id = artist_cover.getAlbumId()
                 hashed_cover_art = hashlib.md5(artist_art_url.encode('utf-8')).hexdigest() if artist_art_url else None
-                print("Artist Initial[{}] N:[{}] AC:[{}] HashedCover:[{}]".format(
-                    current_initial.getName(), 
-                    c.getName(), 
-                    c.getAlbumCount(),
-                    hashed_cover_art))
-                print(f"Artist [{c.getId()}] Art Url # [{hashed_cover_art}] Album_id [{artist_album_id}]")
+                print(f"Artist Initial[{current_initial.getName()}] "
+                      f"N:[{c.getName()}] "
+                      f"AC:[{c.getAlbumCount()}] "
+                      f"HashedCover:[{hashed_cover_art}]")
+                print(f"Artist [{c.getId()}] "
+                      f"Art Url # [{hashed_cover_art}] "
+                      f"Album_id [{artist_album_id}]")
 
 
 def display_genres(cache: dict[str, str]):
     ssc = connector()
     genres_response: Response[Genres] = ssc.getGenres()
     print("Genres Request: Status [{}] Version [{}]".format(
-        genres_response.getStatus(), 
+        genres_response.getStatus(),
         genres_response.getVersion()))
     genre: Genre
     for genre in genres_response.getObj().getGenres() if genres_response.getObj() else []:
-        if not genre.getName(): break
+        if not genre.getName():
+            break
         print("G:[{}] AC:[{}] SC:[{}]".format(
             genre.getName(),
             genre.getAlbumCount(),
             genre.getSongCount()))
         if genre.getSongCount() > 0 or genre.getAlbumCount() > 0:
             showCoverArtForGenre(
-                str(genre.getName()), 
+                str(genre.getName()),
                 cache)
 
 
@@ -258,14 +263,14 @@ def showCoverArtForGenre(genre: str, cache: dict[str, str]):
     select_cover_art_url = ssc.buildCoverArtUrl(select_cover_art)
     if select_cover_art_url:
         print("Cover art URL for genre: [{}] = {}".format(
-            genre, 
+            genre,
             select_cover_art_url))
 
 
 def display_random_album_list_for_genre():
     ssc = connector()
     response: Response[AlbumList] = ssc.getAlbumList(
-        ltype=ListType.BY_GENRE, 
+        ltype=ListType.BY_GENRE,
         genre=TestConfig().get_genre())
     album: Album
     for album in response.getObj().getAlbums():
@@ -276,20 +281,20 @@ def display_random_albums():
     ssc = connector()
     random_album_list: list[str] = random_albums()
     if random_album_list:
-        #show first
+        # show first
         first_random: Response[Album] = ssc.getAlbum(random_album_list[0])
         if (first_random):
-            print("getAlbum response status[{}] version[{}]".format(first_random.getStatus(), first_random.getVersion()))
+            print(f"getAlbum response status[{first_random.getStatus()}] version[{first_random.getVersion()}]")
         if (first_random and first_random.getObj()):
             print("{} [{}] {} [{}] Dur: [{}] Sc: [{}] Art: [{}]".format(
                 first_random.getObj().getArtist(),
-                first_random.getObj().getArtistId(), 
+                first_random.getObj().getArtistId(),
                 first_random.getObj().getTitle(),
                 first_random.getObj().getId(),
                 first_random.getObj().getDuration(),
                 first_random.getObj().getSongCount(),
                 first_random.getObj().getCoverArt()))
-            #pprint(first_random.getData())
+            # pprint(first_random.getData())
             song_list: list[Song] = first_random.getObj().getSongs()
             for current_song in song_list:
                 print("[{}] {} {}".format(
@@ -335,7 +340,8 @@ def print_playlist(playlist: Playlist):
 def show_playlists():
     print("using getPlaylists")
     playlists_response: Response[Playlists] = connector().getPlaylists()
-    if not playlists_response.isOk(): raise Exception("Cannot retrieve playlists")
+    if not playlists_response.isOk():
+        raise Exception("Cannot retrieve playlists")
     playlists: Playlists = playlists_response.getObj()
     playlist: Playlist
     for playlist in playlists.getPlaylists():
@@ -345,7 +351,8 @@ def show_playlists():
     for playlist in playlists.getPlaylists():
         id: str = playlist.getId()
         playlist_response: Response[Playlist] = connector().getPlaylist(id)
-        if not playlist_response.isOk(): raise Exception(f"Cannot retrieve playlist [{id}]")
+        if not playlist_response.isOk():
+            raise Exception(f"Cannot retrieve playlist [{id}]")
         print_playlist(playlist_response.getObj())
 
 
@@ -355,7 +362,8 @@ def get_artist_covers():
     ai: ArtistsInitial
     for ai in ai_list:
         ali_list: list[ArtistListItem] = ai.getArtistListItems()
-        if not ali_list or len(ali_list) == 0: break
+        if not ali_list or len(ali_list) == 0:
+            break
         # get 1 random artist
         select: list[ArtistListItem] = list()
         for _ in range(1):
@@ -368,25 +376,38 @@ def get_artist_covers():
             cover_art: str = ali.getCoverArt()
             artist_image_url: str = ali.getArtistImageUrl()
             cover_art_url: str = connector().buildCoverArtUrl(cover_art) if cover_art else None
-            print(f"found id {artist_id} name {artist_name} album_count {album_count} cover_art {cover_art} cover_art_url {cover_art_url} artist_image_url {artist_image_url}")
+            print(f"found id {artist_id} "
+                  f"name {artist_name} "
+                  f"album_count {album_count} "
+                  f"cover_art {cover_art} "
+                  f"cover_art_url {cover_art_url} "
+                  f"artist_image_url {artist_image_url}")
 
 
 def random_scrobble():
     response: Response[RandomSongs] = connector().getRandomSongs(size=1)
     song_list: list[Song] = response.getObj().getSongs()
-    if len(song_list) == 0: return
+    if len(song_list) == 0:
+        return
     song: Song = song_list[0]
     scrobble_result: dict = connector().scrobble(song.getId())
-    print(f"Song Artist:[{song.getArtist()}] Title:[{song.getTitle()}] Id:[{song.getId()}] scrobbled")
+    print(f"Song Artist:[{song.getArtist()}] "
+          f"Title:[{song.getTitle()}] "
+          f"Id:[{song.getId()}] "
+          f"scrobbled [{scrobble_result}]")
 
 
 def list_radios():
     try:
         response: Response[InternetRadioStations] = connector().getInternetRadioStations()
-        if not response.isOk(): raise Exception("Cannot get radio stations")
+        if not response.isOk():
+            raise Exception("Cannot get radio stations")
         current: InternetRadioStation
         for current in response.getObj().getStations():
-            print(f"Radio id:[{current.getId()}] name:[{current.getName()}] streamUrl:[{current.getStreamUrl()}] homePageUrl:[{current.getHomePageUrl()}]")
+            print(f"Radio id:[{current.getId()}] "
+                  f"name:[{current.getName()}] "
+                  f"streamUrl:[{current.getStreamUrl()}] "
+                  f"homePageUrl:[{current.getHomePageUrl()}]")
     except Exception as ex:
         print(f"Cannot get radio stations: [{type(ex)}] [{ex}]")
 
@@ -395,7 +416,8 @@ def top_songs():
     top_song_artist: str = TestConfig().get_top_song_artist()
     try:
         res: Response[TopSongs] = connector().getTopSongs(top_song_artist)
-        if not res.isOk(): raise Exception(f"Cannot get top songs for artist {top_song_artist}")
+        if not res.isOk():
+            raise Exception(f"Cannot get top songs for artist {top_song_artist}")
         song: Song
         for song in res.getObj().getSongs():
             print(f"Top song: {song.getTitle()}")

@@ -1,5 +1,34 @@
 # Release notes
 
+## 0.3.11
+
+- Use py-sonic 1.1.1
+- Add support for custom headers
+
+## 0.3.10
+
+- Use py-sonic 1.0.3
+
+## 0.3.10b5
+
+- Support server path (SUBSONIC_SERVER_PATH with default configuration method)
+
+## 0.3.10b4
+
+- Support server path (SUBSONIC_SERVER_PATH with default configuration method)
+
+## 0.3.10b3
+
+- Parametric user-agent
+
+## 0.3.10b2
+
+- Reduce dependency with libsonic
+
+## 0.3.10b1
+
+- Support for user agent
+
 ## 0.3.9
 
 - Fix url encoding
