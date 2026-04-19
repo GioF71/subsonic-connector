@@ -20,6 +20,7 @@ from .list_type import ListType
 from .internet_radio_stations import InternetRadioStations
 from .similar_songs import SimilarSongs
 from .starred import Starred
+from .music_folders import MusicFolders
 
 from .configuration import Configuration
 import urllib
@@ -40,6 +41,10 @@ class Connector:
     def ping(self) -> bool:
         return self.__connect().ping()
 
+    def getMusicFolders(self) -> Response[MusicFolders]:
+        data: dict = self.__connect().getMusicFolders()
+        return Response(data, MusicFolders(data) if data else None)
+
     def getIndexes(
             self,
             musicFolderId=None,
@@ -48,8 +53,8 @@ class Connector:
             musicFolderId=musicFolderId,
             ifModifiedSince=ifModifiedSince)
 
-    def getArtists(self) -> Response[Artists]:
-        data: dict = self.__connect().getArtists()
+    def getArtists(self, musicFolderId=None) -> Response[Artists]:
+        data: dict = self.__connect().getArtists(musicFolderId=musicFolderId)
         return Response(data, Artists(data) if data else None)
 
     def getGenres(self) -> Response[Genres]:
@@ -126,7 +131,8 @@ class Connector:
             offset=offset,
             fromYear=fromYear,
             toYear=toYear,
-            genre=genre)
+            genre=genre,
+            musicFolderId=musicFolderId)
         return Response(data, AlbumList(data) if data else None)
 
     def getAlbum(
