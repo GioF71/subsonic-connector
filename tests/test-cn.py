@@ -33,6 +33,8 @@ from subsonic_connector.similar_songs import SimilarSongs
 from subsonic_connector.response import Response
 from subsonic_connector.list_type import ListType
 from subsonic_connector.starred import Starred
+from subsonic_connector.music_folders import MusicFolders
+from subsonic_connector.music_folder import MusicFolder
 
 
 def connector():
@@ -495,8 +497,18 @@ def starred():
         print(f"Found starred song [{current_song.getTitle()}] starred [{current_song.getStarred()}]")
 
 
+def music_folders():
+    res: Response[MusicFolders] = connector().getMusicFolders()
+    if not res or not res.isOk:
+        raise Exception("Cannot get music folders")
+    mf: MusicFolders = res.getObj()
+    curr: MusicFolder
+    for curr in mf.getMusicFolders():
+        print(f"Music Folder [{curr.getId()}] [{curr.getName()}]")
+
 def main():
     invalid_credentials()
+    music_folders()
     starred()
     search_for_original_date()
     search_something()
